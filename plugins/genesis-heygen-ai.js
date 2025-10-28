@@ -1,5 +1,5 @@
 import axios from 'axios';
-const HEYGEN_API_KEY = 'sk...';
+const HEYGEN_API_KEY = 'sk_V2_hgu_khmNxKR2d7l_NpUnMdfNTYUiaJq12uYaIwGknp9rGkQw';
 const DEFAULT_AVATAR = 'Daisy-inskirt-20220818'; 
 const DEFAULT_VOICE = '2d5b0e6cf36f460aa7fc47e3eee4ba54'; 
 const heygenCommand = {
