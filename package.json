@@ -1,0 +1,59 @@
+{
+  "name": "nishikigi-chisato",
+  "version": "1.0.0",
+  "description": "un asistente que demuestra que los bots no tienen limites y lo que demuestra la verdadera Innovación",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "whatsapp",
+    "bot",
+    "baileys",
+    "telegram"
+  ],
+  "author": "DeltaByte",
+  "license": "MIT",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "@mediapipe/tasks-vision": "^0.10.22-rc.20250304",
+    "@napi-rs/canvas": "^0.1.80",
+    "@supabase/supabase-js": "^2.45.4",
+    "@whiskeysockets/baileys": "^6.7.8",
+    "archiver": "^7.0.1",
+    "axios": "^1.7.7",
+    "chalk": "^5.3.0",
+    "dotenv": "^16.4.5",
+    "form-data": "^4.0.0",
+    "genius-lyrics": "^4.4.7",
+    "googlethis": "^1.7.1",
+    "instagram-save": "^1.0.0",
+    "moment-timezone": "^0.5.45",
+    "node-cache": "^5.1.2",
+    "node-webpmux": "^3.1.7",
+    "pdf-lib": "^1.17.1",
+    "pino": "^9.4.0",
+    "pino-pretty": "^13.1.1",
+    "qrcode": "^1.5.3",
+    "qrcode-terminal": "^0.12.0",
+    "ruhend-scraper": "^9.0.8",
+    "spotify-dl": "^1.0.0",
+    "wikipedia": "^2.1.2",
+    "yt-search": "^2.10.4"
+  },
+  "optionalDependencies": {
+    "wa-sticker-formatter": "^4.4.4"
+  },
+  "devDependencies": {
+    "@types/archiver": "^6.0.2",
+    "@types/node": "^20.14.13",
+    "@types/qrcode": "^1.5.5",
+    "@types/yt-search": "^2.10.3",
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
