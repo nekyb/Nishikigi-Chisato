@@ -1,0 +1,40 @@
+const handler = (m) => m;
+handler.before = async function (m, { conn, isAdmin, isBotAdmin, isOwner, isROwner }) {
+  const datas = global
+  let idioma = datas.db.data.users[m.sender].language 
+  if (idioma === undefined || idioma === null) {
+    idioma = 'es'
+  }
+  const _translate = JSON.parse(fs.readFileSync(`./src/languages/${idioma}.json`))
+
+  const tradutor = _translate.plugins._antiarab
+  if (!m.isGroup) return !1;
+  const chat = global.db.data.chats[m.chat];
+  const bot = global.db.data.settings[conn.user.jid] || {};
+  if (isBotAdmin && chat.antiArab2 && !isAdmin && !isOwner && !isROwner && bot.restrict) {
+    if (m.sender.startsWith('212' || '212')) {
+      m.reply(tradutor.texto1);
+      const responseb = await conn.groupParticipantsUpdate(m.chat, [m.sender], 'remove');
+      if (responseb[0].status === '404') return;
+    }
+
+    if (m.sender.startsWith('265' || '265')) {
+      m.reply(tradutor.texto2);
+      const responseb = await conn.groupParticipantsUpdate(m.chat, [m.sender], 'remove');
+      if (responseb[0].status === '404') return;
+    }
+
+    if (m.sender.startsWith('92' || '92')) {
+      m.reply(tradutor.texto3);
+      const responseb = await conn.groupParticipantsUpdate(m.chat, [m.sender], 'remove');
+      if (responseb[0].status === '404') return;
+    }
+
+    if (m.sender.startsWith('234' || '234')) {
+      m.reply(tradutor.texto3);
+      const responseb = await conn.groupParticipantsUpdate(m.chat, [m.sender], 'remove');
+      if (responseb[0].status === '404') return;
+    }                                                       
+  }
+};
+export default handler;
