@@ -4,9 +4,9 @@ import { downloadMediaMessage } from '@whiskeysockets/baileys';
 import pino from 'pino';
 const logger = pino({ level: 'silent' });
 
-const GEMINI_API_KEY = 'AIzaSyBt77r0sl4YDcBqQBjHIMxu9ZvbjbzVqrk';
-const CLOUDFLARE_ACCOUNT_ID = '035b8c5bce80f27fa0a51d1aab5fdc90';
-const CLOUDFLARE_API_TOKEN = 'WObIA8PuuypSEv0-MPQcP0APJlkw2qMKxuDcUoBY';
+const GEMINI_API_KEY = 'AIza...';
+const CLOUDFLARE_ACCOUNT_ID = 'account-id';
+const CLOUDFLARE_API_TOKEN = 'api-token';
 const visionCommand = {
     name: 'vision',
     aliases: ['analyze', 'whatisthis', 'describe'],
