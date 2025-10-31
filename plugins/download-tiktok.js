@@ -1,4 +1,5 @@
-import axios from 'axios';
+import axios from 'axios'
+
 const tiktokCommand = {
     name: 'tiktok',
     aliases: ['ttk', 'tt'],
@@ -9,8 +10,8 @@ const tiktokCommand = {
     groupOnly: false,
     botAdminRequired: false,
     async execute(sock, msg, args) {
-        const chatId = msg.key.remoteJid;
-        const API_URL = 'https://api.betabotz.org/api/download/tiktok';
+        const chatId = msg.key.remoteJid
+        const API_URL = 'https://api.betabotz.org/api/download/tiktok'
         try {
             if (args.length === 0) {
                 return await sock.sendMessage(chatId, {
@@ -19,11 +20,12 @@ const tiktokCommand = {
                         `✿ #tiktok https://www.tiktok.com/@user/video/xxx\n` +
                         `✿ #ttk gatos graciosos\n` +
                         `✿ #tiktok baile viral`
-                });
+                })
             }
-            const query = args.join(' ');
-            const tiktokUrlRegex = /^https?:\/\/(www\.)?(vm\.)?tiktok\.com\/.+$/;
-            const isUrl = tiktokUrlRegex.test(query);
+
+            const query = args.join(' ')
+            const tiktokUrlRegex = /^https?:\/\/(www\.)?(vm\.)?tiktok\.com\/.+$/
+            const isUrl = tiktokUrlRegex.test(query)
             if (!isUrl) { return await sock.sendMessage(chatId, {
                     text: '《✧》 Por favor, proporciona una URL de TikTok válida.'
                 }, { quoted: msg })
@@ -31,20 +33,22 @@ const tiktokCommand = {
                 text: '《✧》 Descargando video de TikTok...'
             })
 
-            const response = await axios.get(`${API_URL}?url=${encodeURIComponent(query)}&apikey=beta-key`);
-            const data = response.data;
+            const response = await axios.get(`${API_URL}?url=${encodeURIComponent(query)}&apikey=beta-key`)
+            const data = response.data
             if (!data || data.status !== 'success' || !data.result) {
-                throw new Error('No se pudo obtener el video desde la API.');
+                throw new Error('No se pudo obtener el video desde la API.')
             }
-            const video = data.result;
-            const videoUrl = video.video.noWatermark;
+
+            const video = data.result
+            const videoUrl = video.video.noWatermark
             if (!videoUrl) {
-                return await sock.sendMessage(chatId, { text: '《✧》 No se encontró un video sin marca de agua.' }, { quoted: msg });
+                return await sock.sendMessage(chatId, { text: '《✧》 No se encontró un video sin marca de agua.' }, { quoted: msg })
             }
+
             const caption = `《✧》 *TikTok Download*\n\n` +
                 `✿ *Título:* ${video.title || 'Sin título'}\n` +
                 `✿ *Autor:* @${video.author.nickname || 'Desconocido'}\n\n` +
-                `_Descargado con Orcalero Orcala 2.0_`;
+                `_Powered By DeltaByte_`
             await sock.sendMessage(chatId, {
                 video: { url: videoUrl },
                 caption: caption,

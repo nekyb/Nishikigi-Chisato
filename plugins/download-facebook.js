@@ -1,4 +1,5 @@
-import { igdl } from 'ruhend-scraper';
+import { igdl } from 'ruhend-scraper'
+
 const facebookCommand = {
     name: 'facebook',
     aliases: ['fb', 'fbdl'],
@@ -23,7 +24,7 @@ const facebookCommand = {
             if (!url.includes('facebook.com') && !url.includes('fb.watch')) {
                 return await sock.sendMessage(chatId, {
                     text: '《✧》 Por favor ingresa un link válido de Facebook.'
-                });
+                })
             } await sock.sendMessage(chatId, {
                 text: '《✧》 Descargando video de Facebook...'
             })
@@ -76,7 +77,7 @@ const facebookCommand = {
                     text: `《✧》 ✅ *Descarga completada*`
                 })
             } catch (sendError) {
-                console.error('Error al enviar el video:', sendError);
+                console.error('Error al enviar el video:', sendError)
                 return await sock.sendMessage(chatId, {
                     text: '《✧》 Error al enviar el video.\n\n' +
                         '💡 *Tip:* El archivo puede ser demasiado grande.'
@@ -99,8 +100,9 @@ const facebookCommand = {
             }
             await sock.sendMessage(chatId, {
                 text: `${errorMessage}\n\n💡 *Tip:* Asegúrate de que el video sea público y el enlace esté correcto.`
-            });
+            })
         }
     }
-};
+}
+
 export default facebookCommand

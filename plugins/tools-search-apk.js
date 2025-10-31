@@ -20,8 +20,8 @@ const apkCommand = {
         if (!args || args.length === 0) {
             await sock.sendMessage(chatId, {
                 text: '《✧》 Por favor proporciona el nombre de la aplicación.\n\n*Ejemplo:* #apk proton vpn'
-            }, { quoted: msg });
-            return;
+            }, { quoted: msg })
+            return
         }
 
         const query = args.join(' ')
@@ -56,7 +56,7 @@ const apkCommand = {
             infoText += `🔒 *Seguridad:* ${app.file.malware.rank}\n\n`
             if (fileSize > MAX_SIZE) {
                 infoText += `⚠️ *El archivo pesa ${fileSizeMB} MB y supera el límite de 20 MB.*\n\n`
-                infoText += `🔗 *Descárgalo manualmente:*\n${app.file.path}`;
+                infoText += `🔗 *Descárgalo manualmente:*\n${app.file.path}`
                 await sock.sendMessage(chatId, {
                     text: infoText,
                     contextInfo: {
@@ -69,8 +69,8 @@ const apkCommand = {
                             renderLargerThumbnail: true
                         }
                     }
-                }, { quoted: msg });
-                return;
+                }, { quoted: msg })
+                return
             }
 
             infoText += `⏳ *Descargando APK...*`
@@ -120,9 +120,9 @@ const apkCommand = {
                 errorMsg = '《✧》 El archivo es demasiado grande para descargarse.'
             } await sock.sendMessage(chatId, {
                 text: errorMsg
-            }, { quoted: msg });
+            }, { quoted: msg })
         }
     }
-};
+}
 
-export default apkCommand;
+export default apkCommand

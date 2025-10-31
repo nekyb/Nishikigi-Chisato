@@ -30,4 +30,4 @@ const pingCommand = {
         }
     }
 };
-export default pingCommand;
+export default pingCommand

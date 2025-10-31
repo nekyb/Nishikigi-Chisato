@@ -1,97 +1,126 @@
-import Genius from 'genius-lyrics';
+import * as findLyricsModule from '@brandond/findthelyrics';
+const findLyrics = findLyricsModule.default || findLyricsModule;
 
-const Client = new Genius.Client();
 const lyricsCommand = {
     name: 'lyrics',
     aliases: ['letra', 'lyric', 'song'],
     category: 'utils',
-    description: 'Busca información de canciones en Genius',
-    usage: '#lyrics [nombre de la canción]',
+    description: 'Busca letras de canciones',
+    usage: '#lyrics <artista> <canción>',
     adminOnly: false,
     groupOnly: false,
     botAdminRequired: false,
+    
     async execute(sock, msg, args) {
         const chatId = msg.key.remoteJid;
+        
         try {
             if (args.length === 0) {
                 return await sock.sendMessage(chatId, {
-                    text: `《✧》 *Buscador de Canciones - Genius* 《✧》\n\n` +
-                        `Busca información sobre canciones y artistas.\n\n` +
-                        `*Uso:*\n` +
-                        `✿ #lyrics Bohemian Rhapsody Queen\n` +
-                        `✿ #letra Shape of You Ed Sheeran\n` +
-                        `✿ #song Blinding Lights\n\n` +
-                        `💡 *Nota:* Te proporciono el enlace para ver la letra completa.`
+                    text: `《✧》 *Buscador de Letras*\n\n` +
+                        `*Ejemplos:*\n` +
+                        `✿ #lyrics Queen Bohemian Rhapsody\n` +
+                        `✿ #letra Ed Sheeran Shape of You\n` +
+                        `✿ #song The Weeknd Blinding Lights\n\n` +
+                        `💡 Formato: artista + canción`
                 });
             }
-            const query = args.join(' ');
-            await sock.sendMessage(chatId, {
-                text: '《✧》 🔍 Buscando canción en Genius...'
-            });
 
-            const searches = await Client.songs.search(query);
-            if (!searches || searches.length === 0) {
+            const query = args.join(' ');
+            let artist = '';
+            let title = '';
+            
+            if (args.length >= 2) {
+                const midPoint = Math.floor(args.length / 2);
+                artist = args.slice(0, midPoint).join(' ');
+                title = args.slice(midPoint).join(' ');
+            } else {
+                title = query;
+            }
+
+            await sock.sendMessage(chatId, {
+                text: '《✧》 Buscando letra de la canción...'
+            });
+            
+            const result = await findLyrics(artist, title);
+
+            if (!result || !result.lyrics) {
                 return await sock.sendMessage(chatId, {
-                    text: '《✧》 ❌ No se encontró la canción\n\n' +
-                        `Búsqueda: "${query}"\n\n` +
-                        '💡 *Tip:* Intenta incluir el nombre del artista.'
-                });
+                    text: `《✧》 No se encontró la letra de "${query}"\n\n` +
+                        `💡 *Tips:*\n` +
+                        `✿ Usa el formato: artista canción\n` +
+                        `✿ Ejemplo: #lyrics Queen Bohemian Rhapsody\n` +
+                        `✿ Verifica la ortografía\n` +
+                        `✿ Intenta con el título en inglés`
+                }, { quoted: msg });
             }
-            const song = searches[0];
-            let artistInfo = '';
-            try {
-                artistInfo = song.artist?.name || 'Desconocido';
-            }
-            catch {
-                artistInfo = 'Desconocido';
-            }
-            let releaseDate = 'Desconocida';
-            try {
-                if (song.releasedAt) {
-                    releaseDate = new Date(song.releasedAt).toLocaleDateString();
+
+            const lyricsText = result.lyrics.trim();
+            const maxLength = 4000;
+            
+            if (lyricsText.length <= maxLength) {
+                const header = `《✧》 *Letra de Canción*\n\n` +
+                    `🎵 *Canción:* ${result.title || title}\n` +
+                    `🎤 *Artista:* ${result.artist || artist}\n` +
+                    `🌐 *Fuente:* ${result.source || 'Web'}\n\n` +
+                    `━━━━━━━━━━━━━━━━━━━\n\n`;
+
+                await sock.sendMessage(chatId, {
+                    text: header + lyricsText + `\n\n_Powered By DeltaByte_`
+                }, { quoted: msg });
+            } else {
+                const fragments = [];
+                const lyricsLines = lyricsText.split('\n');
+                let currentFragment = '';
+
+                for (const line of lyricsLines) {
+                    if ((currentFragment + line + '\n').length > maxLength) {
+                        fragments.push(currentFragment.trim());
+                        currentFragment = line + '\n';
+                    } else {
+                        currentFragment += line + '\n';
+                    }
                 }
-            }
-            catch {
-                releaseDate = 'Desconocida';
-            }
-            const response = `╔═══《 GENIUS SONG INFO 》═══╗\n` +
-                `║\n` +
-                `║ 🎵 *Canción:* ${song.title}\n` +
-                `║ 🎤 *Artista:* ${artistInfo}\n` +
-                `║ 📅 *Fecha:* ${releaseDate}\n` +
-                `║\n` +
-                `╚════════════════════╝\n\n` +
-                `🔗 *Ver letra completa:*\n${song.url}\n\n` +
-                `💡 *Nota:* Por derechos de autor, no puedo mostrar la letra aquí. Haz clic en el enlace para verla en Genius.com`;
-            if (song.thumbnail || song.image) {
-                try {
+                if (currentFragment.trim()) {
+                    fragments.push(currentFragment.trim());
+                }
+
+                const header = `《✧》 *Letra de Canción*\n\n` +
+                    `🎵 *Canción:* ${result.title || title}\n` +
+                    `🎤 *Artista:* ${result.artist || artist}\n` +
+                    `🌐 *Fuente:* ${result.source || 'Web'}\n` +
+                    `📄 *Partes:* ${fragments.length}\n\n` +
+                    `━━━━━━━━━━━━━━━━━━━\n\n`;
+
+                await sock.sendMessage(chatId, {
+                    text: header + `*Parte 1 de ${fragments.length}*\n\n` + fragments[0]
+                }, { quoted: msg });
+
+                for (let i = 1; i < fragments.length; i++) {
+                    await new Promise(resolve => setTimeout(resolve, 1500));
                     await sock.sendMessage(chatId, {
-                        image: { url: song.thumbnail || song.image },
-                        caption: response
-                    }, { quoted: msg });
-                }
-                catch {
-                    await sock.sendMessage(chatId, { text: response }, { quoted: msg });
+                        text: `《✧》 *Parte ${i + 1} de ${fragments.length}*\n\n` + fragments[i] + `\n\n_Powered By DeltaByte_`
+                    });
                 }
             }
-            else {
-                await sock.sendMessage(chatId, { text: response }, { quoted: msg });
-            }
-        }
-        catch (error) {
-            console.error('Error en lyrics:', error);
-            let errorMessage = '《✧》 Error al buscar la canción\n\n';
+
+        } catch (error) {
+            console.error('Error en comando lyrics:', error);
+            let errorMessage = '《✧》 Error al buscar la letra.';
+            
             if (error.message?.includes('timeout')) {
-                errorMessage += '⏱️ La búsqueda tardó demasiado.\nIntenta de nuevo.';
+                errorMessage = '《✧》 La búsqueda tardó demasiado. Intenta de nuevo.';
+            } else if (error.message?.includes('network') || error.message?.includes('ENOTFOUND')) {
+                errorMessage = '《✧》 Error de conexión. Verifica tu internet.';
+            } else if (error.message?.includes('not found')) {
+                errorMessage = '《✧》 No se encontró la canción. Verifica el nombre del artista y canción.';
             }
-            else if (error.message?.includes('network')) {
-                errorMessage += '🌐 Error de conexión.\nVerifica tu internet.';
-            }
-            else {
-                errorMessage += `💡 Error: ${error.message || 'Desconocido'}`;
-            }
-            await sock.sendMessage(chatId, { text: errorMessage });
+            
+            await sock.sendMessage(chatId, {
+                text: `${errorMessage}\n\n💡 *Tip:* Intenta con el formato: artista canción`
+            });
         }
     }
 };
+
 export default lyricsCommand;

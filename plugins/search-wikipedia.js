@@ -1,4 +1,5 @@
-import axios from 'axios';
+import axios from 'axios'
+
 const wikipediaCommand = {
     name: 'wikipedia',
     aliases: ['wiki', 'wp', 'wikip'],
@@ -9,7 +10,7 @@ const wikipediaCommand = {
     groupOnly: false,
     botAdminRequired: false,
     async execute(sock, msg, args) {
-        const chatId = msg.key.remoteJid;
+        const chatId = msg.key.remoteJid
         try {
             if (args.length === 0) {
                 return await sock.sendMessage(chatId, {
@@ -20,34 +21,36 @@ const wikipediaCommand = {
                         `✿ #wp Colombia`
                 }, { quoted: msg });
             }
-            const query = args.join(' ');
+            const query = args.join(' ')
             await sock.sendMessage(chatId, {
                 text: `《✧》 Buscando en Wikipedia: "${query}"...`
-            });
-            const searchUrl = `https://es.wikipedia.org/w/api.php?action=opensearch&search=${encodeURIComponent(query)}&limit=1&format=json`;
-            const searchResponse = await axios.get(searchUrl);
-            const [, titles, , urls] = searchResponse.data;
+            })
+
+            const searchUrl = `https://es.wikipedia.org/w/api.php?action=opensearch&search=${encodeURIComponent(query)}&limit=1&format=json`
+            const searchResponse = await axios.get(searchUrl)
+            const [, titles, , urls] = searchResponse.data
             if (!titles || titles.length === 0) {
                 return await sock.sendMessage(chatId, {
                     text: `《✧》 No se encontraron resultados en Wikipedia para: "${query}"\n\n` +
                         `💡 *Tip:* Intenta con otros términos de búsqueda.`
-                }, { quoted: msg });
+                }, { quoted: msg })
             }
-            const title = titles[0];
-            const pageUrl = urls[0];
-            const summaryUrl = `https://es.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`;
-            const summaryResponse = await axios.get(summaryUrl);
-            const pageData = summaryResponse.data;
-            let responseText = `《✧》 *Wikipedia*\n\n`;
-            responseText += `📚 *Título:* ${pageData.title}\n\n`;
+
+            const title = titles[0]
+            const pageUrl = urls[0]
+            const summaryUrl = `https://es.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`
+            const summaryResponse = await axios.get(summaryUrl)
+            const pageData = summaryResponse.data
+            let responseText = `《✧》 *Wikipedia*\n\n`
+            responseText += `📚 *Título:* ${pageData.title}\n\n`
             const extract = pageData.extract.length > 500
                 ? pageData.extract.substring(0, 500) + '...'
-                : pageData.extract;
-            responseText += `${extract}\n\n`;
-            responseText += `🔗 *Leer más:* ${pageUrl}\n`;
-            responseText += `─────────────────\n`;
-            responseText += `_Información de Wikipedia_`;
-            const imageUrl = pageData.originalimage?.source || pageData.thumbnail?.source || null;
+                : pageData.extract
+            responseText += `${extract}\n\n`
+            responseText += `🔗 *Leer más:* ${pageUrl}\n`
+            responseText += `─────────────────\n`
+            responseText += `_Información de Wikipedia_`
+            const imageUrl = pageData.originalimage?.source || pageData.thumbnail?.source || null
             if (imageUrl) {
                 try {
                     await sock.sendMessage(chatId, {
@@ -61,10 +64,9 @@ const wikipediaCommand = {
                                 serverMessageId: 1
                             }
                         }
-                    }, { quoted: msg });
-                }
-                catch (imgSendError) {
-                    console.error('Error enviando imagen:', imgSendError);
+                    }, { quoted: msg })
+                } catch (imgSendError) {
+                    console.error('Error enviando imagen:', imgSendError)
                     await sock.sendMessage(chatId, {
                         text: responseText,
                         contextInfo: {
@@ -75,10 +77,9 @@ const wikipediaCommand = {
                                 serverMessageId: 1
                             }
                         }
-                    }, { quoted: msg });
+                    }, { quoted: msg })
                 }
-            }
-            else {
+            } else {
                 await sock.sendMessage(chatId, {
                     text: responseText,
                     contextInfo: {
@@ -89,25 +90,22 @@ const wikipediaCommand = {
                             serverMessageId: 1
                         }
                     }
-                }, { quoted: msg });
+                }, { quoted: msg })
             }
-        }
-        catch (error) {
+        } catch (error) {
             console.error('Error en comando wikipedia:', error);
-            let errorMessage = '《✧》 Error al buscar en Wikipedia.';
+            let errorMessage = '《✧》 Error al buscar en Wikipedia.'
             if (error.response?.status === 404) {
-                errorMessage = `《✧》 No se encontró el artículo "${args.join(' ')}" en Wikipedia.`;
-            }
-            else if (error.code === 'ECONNABORTED' || error.code === 'ETIMEDOUT') {
-                errorMessage = '《✧》 La búsqueda tardó demasiado. Intenta de nuevo.';
-            }
-            else if (error.code === 'ENOTFOUND' || error.code === 'EAI_AGAIN') {
-                errorMessage = '《✧》 Error de conexión. Verifica tu internet.';
-            }
-            await sock.sendMessage(chatId, {
+                errorMessage = `《✧》 No se encontró el artículo "${args.join(' ')}" en Wikipedia.`
+            } else if (error.code === 'ECONNABORTED' || error.code === 'ETIMEDOUT') {
+                errorMessage = '《✧》 La búsqueda tardó demasiado. Intenta de nuevo.'
+            } else if (error.code === 'ENOTFOUND' || error.code === 'EAI_AGAIN') {
+                errorMessage = '《✧》 Error de conexión. Verifica tu internet.'
+            } await sock.sendMessage(chatId, {
                 text: `${errorMessage}\n\n💡 *Tip:* Verifica la ortografía o usa términos más específicos.`
-            }, { quoted: msg });
+            }, { quoted: msg })
         }
     }
-};
-export default wikipediaCommand;
+}
+
+export default wikipediaCommand

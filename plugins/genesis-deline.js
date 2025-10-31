@@ -1,7 +1,7 @@
-import axios from 'axios';
-import FormData from 'form-data';
-import { downloadMediaMessage } from '@whiskeysockets/baileys';
-import sharp from 'sharp';
+import axios from 'axios'
+import FormData from 'form-data'
+import { downloadMediaMessage } from '@whiskeysockets/baileys'
+import sharp from 'sharp'
 
 const delinearCommand = {
     name: 'delinear',

@@ -7,11 +7,10 @@ const __dirname = dirname(__filename)
 const charactersFilePath = join(__dirname, '../database/characters.json')
 async function loadCharacters() {
     try {
-        const data = await fs.readFile(charactersFilePath, 'utf-8');
-        return JSON.parse(data);
-    }
-    catch (error) {
-        throw new Error('《✧》No se pudo cargar el archivo characters.json.');
+        const data = await fs.readFile(charactersFilePath, 'utf-8')
+        return JSON.parse(data)
+    } catch (error) {
+        throw new Error('《✧》No se pudo cargar el archivo characters.json.')
     }
 }
 

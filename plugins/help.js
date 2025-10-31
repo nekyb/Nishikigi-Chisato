@@ -1,4 +1,5 @@
-import { config } from '../config/bot.js';
+import { config } from '../config/bot.js'
+
 const helpCommand = {
     name: 'help',
     aliases: ['ayuda', 'menu', 'comandos'],
@@ -6,7 +7,7 @@ const helpCommand = {
     description: 'Muestra todos los comandos disponibles',
     usage: '#help',
     async execute(sock, msg, args) {
-        const chatId = msg.key.remoteJid;
+        const chatId = msg.key.remoteJid
         try {
             const helpText = `Hola, soy *Nishikigi Chisato*, soy un asistente personalizado, aquí tienes los comandos. ૮꒰ ˶• ༝ •˶꒱ა ♡
 
@@ -41,8 +42,25 @@ const helpCommand = {
 
 » ⊹ ˚୨ •(=^●ω●^=)• Utilidades ⊹
 
+✿ *#profile* » *#pfp* + [ @user ]
+╰⪼ Muestra la foto de perfil de un usuario.
+
+✿ *#letra* » *#song* + [ text ]
+╰⪼ Busca la letra de una cancion.
+
+✿ *#upload* » *#subir* + [ archivo ]
+╰⪼ Sube un archivo a un servidor de una nube.
+
 ✿ *#removebg* » *#nobg* + [ image  ] 
 ╰⪼ Devuelve la imagen con transparencia.
+
+✿ *#improve* » *#hd* + [ imagen ]
+╰⪼ Mejora la calidad de una imagen.
+
+✿ *#sticker* » *#s* + [ imagen ]
+╰⪼ Convierte una imagen en sticker.
+
+» ⊹ ˚୨ •(=^●ω●^=)• Downloads ⊹
 
 ✿ *#mediafire* » *#mf* + [ enlace ]
 ╰⪼ Descarga archivos de MediaFire.
@@ -53,30 +71,34 @@ const helpCommand = {
 ✿ *#spotify* » *#sp* + [ enlace ]
 ╰⪼ Descarga canciones de Spotify.
 
-✿ *#profile* » *#pfp* + [ @user ]
-╰⪼ Muestra la foto de perfil de un usuario.
+✿ *#instagram* » *#ig* + [ link ]
+╰⪼ Descarga un video o imagen de instagram.
 
-✿ *#google* » *#ggl* + [ text ]
-╰⪼ Busca información en Google.
+✿ *#tiktok*  » *#ttk* + [ link ]
+╰⪼ Descarga un video de TikTok.
 
-✿ *#ytmp4* + [ text ]
-╰⪼ Busca un video en YouTube y lo descarga en formato mp4.
+✿ *#filedlname* + [ link ]
+╰⪼ Descarga un archivo con un link directo.
+
+✿ *#twidl*  » *#twitterdl* + [ link ]
+╰⪼ Descarga un video de Twitter.
+
+✿ *#imgdl*  » *#descargaimg* + [ link ]
+╰⪼ Descarga una imagen a traves de un link directo.
+
+» ⊹ ˚୨ •(=^●ω●^=)• Search ⊹
 
 ✿ *#pin* » *#pinterest* + [ text ] 
 ╰⪼ Busca una imagen en Pinterest.
 
-✿ *#improve* » *#hd* + [ imagen ]
-╰⪼ Mejora la calidad de una imagen.
+✿ *#ytmp4* + [ text ]
+╰⪼ Busca un video en YouTube y lo descarga en formato mp4.
 
-✿ *#sticker* » *#s* + [ imagen ]
-╰⪼ Convierte una imagen en sticker.
+✿ *#font* » *#ttf* + [ nombre de la fuente ]
+╰⪼ Busca y descarga fuentes tipográficas de DaFont.
 
-✿ *#instagram* » *#ig* + [ link ]
-╰⪼ Descarga un video o imagen de instagram.
-
-✿ *#tiktok*  » *#ttk* + [ texto ]
-╰⪼ Busca un video en TikTok.
-
+✿ *#ttss* » *#tiktoks* + [ texto ]
+╰⪼ Busca videos en TikTok.
 
 ✿ *#ping*  » *#p* 
 ╰⪼ Mira que tan rapido es el bot.
@@ -86,6 +108,24 @@ const helpCommand = {
 
 ✿ *#google*  » *#ggl* + [ texto ]
 ╰⪼ Busca informacion en Google.
+
+✿ *#apk* » *#aptoide* + [ texto ]
+╰⪼ Busca una aplicacion modificada en Aptoide.
+
+✿ *#ddg*  » *#duckgo* + [ texto ]
+╰⪼ Busca informacion o algo en DuckDuckGo.
+
+✿ *#brave*  » *#buscarb* + [ texto ]
+╰⪼ Busca informacion en Brave.
+
+✿ *#gis*  » *#googleimg* + [ texto ]
+╰⪼ Busca una imagen en Google.
+
+✿ *#redditsearch*  » *#rs* + [ texto ]
+╰⪼ Busca un post en reddit.
+
+✿ *#scsearch*  » *#sc* + [ texto ]
+╰⪼ Busca una cancion en SoundCloud.
 
 » ⊹ ˚୨ •(=^●ω●^=)• Economia ⊹
 
@@ -147,6 +187,9 @@ const helpCommand = {
 ✿ *#lyrics* » *#letra* » *#lyric* + [ nombre de la canción ]
 ╰⪼ Busca la letra de una canción.
 
+✿ *#shazam* » *#identificar* + [ cancion ]
+╰⪼ Busca informacion sobre la cancion.
+
 » ⊹ ˚୨ •(=^●ω●^=)• Innovacion ⊹
 
 ✿ *#vision* » *#analyze* » *#whatisthis* » *#describe* + [ imagen ] + [ pregunta ]
@@ -203,4 +246,3 @@ _𝕻𝖔𝖜𝖊𝖗𝖊𝖉 𝕭𝐲 𝕯𝖊𝖑𝖙𝖆𝕭𝐲𝖙𝖊_`;
     }
 };
 export default helpCommand;
-//# sourceMappingURL=help.js.map

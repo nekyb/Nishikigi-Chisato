@@ -3,11 +3,11 @@ import { downloadMediaMessage } from '@whiskeysockets/baileys';
 import pino from 'pino';
 const logger = pino({ level: 'silent' });
 
-// ⚙️ CONFIGURACIÓN: Agrega todas tus API Keys de Gemini aquí
+// ⚙️ CONFIGURACIÓN: API Keys de Gemini
 const GEMINI_API_KEYS = [
     'AIzaSyBt77r0sl4YDcBqQBjHIMxu9ZvbjbzVqrk',
-    // 'TU_SEGUNDA_API_KEY_AQUI',
-    // 'TU_TERCERA_API_KEY_AQUI',
+    'AIzaSyB147GA8T_Yw3YMChXocBL0W4qvIFYGw6o',
+    'AIzaSyDi444P77L6Xor9w8Nq1mXT-eT_7jyybGA',
     // Agrega más keys según necesites
 ];
 
@@ -134,12 +134,16 @@ const visionCommand = {
 };
 
 async function analyzeWithGemini(imageBuffer, prompt) {
-    // Lista de modelos Gemini Vision con nombres correctos de la API
+    // Modelos Gemini Vision actualizados y ordenados por prioridad
     const models = [
-        'gemini-1.5-flash-latest',
-        'gemini-1.5-pro-latest',
-        'gemini-1.5-flash',
-        'gemini-1.5-pro'
+        'gemini-2.0-flash-exp',      // Experimental más rápido
+        'gemini-2.0-flash-thinking-exp-1219', // Con capacidad de razonamiento
+        'gemini-exp-1206',           // Experimental avanzado
+        'gemini-2.0-flash',          // Flash estable
+        'gemini-2.0-flash-lite',     // Versión ligera
+        'gemini-1.5-flash',          // Flash anterior estable
+        'gemini-1.5-flash-8b',       // Flash 8B anterior
+        'gemini-1.5-pro',            // Pro anterior
     ];
     
     let lastError = null;
@@ -159,7 +163,7 @@ async function analyzeWithGemini(imageBuffer, prompt) {
                 const model = genAI.getGenerativeModel({ 
                     model: modelName,
                     generationConfig: {
-                        maxOutputTokens: 1024,
+                        maxOutputTokens: 2048,
                         temperature: 0.4,
                     }
                 });
@@ -187,21 +191,32 @@ async function analyzeWithGemini(imageBuffer, prompt) {
                 };
                 
             } catch (error) {
-                console.error(`  ✗ Falló: ${error.message}`);
+                console.error(`  ✗ Falló ${modelName}: ${error.message}`);
                 lastError = error;
                 
                 // Si el error es de quota o rate limit, probar siguiente key
                 if (error.message.includes('quota') || 
                     error.message.includes('rate limit') || 
-                    error.message.includes('429')) {
-                    console.log(`  ⚠️  Límite alcanzado, probando siguiente API key...`);
+                    error.message.includes('429') ||
+                    error.message.includes('RESOURCE_EXHAUSTED')) {
+                    console.log(`  ⚠️  Límite alcanzado con esta API key, probando siguiente...`);
                     break; // Salir del loop de modelos y probar siguiente key
                 }
                 
-                // Si el error es 404, probar siguiente modelo con la misma key
+                // Si el error es 404 o modelo no encontrado, probar siguiente modelo
                 if (error.message.includes('404') || 
-                    error.message.includes('not found')) {
+                    error.message.includes('not found') ||
+                    error.message.includes('does not exist')) {
+                    console.log(`  ⚠️  Modelo no disponible, probando siguiente...`);
                     continue; // Probar siguiente modelo
+                }
+                
+                // Para errores de permisos, probar siguiente modelo
+                if (error.message.includes('403') ||
+                    error.message.includes('permission') ||
+                    error.message.includes('PERMISSION_DENIED')) {
+                    console.log(`  ⚠️  Sin permisos para este modelo, probando siguiente...`);
+                    continue;
                 }
                 
                 // Para otros errores, continuar con siguiente modelo
@@ -211,8 +226,8 @@ async function analyzeWithGemini(imageBuffer, prompt) {
     }
     
     // Si todas las API keys y modelos fallaron
-    console.error(`\n❌ Todas las ${GEMINI_API_KEYS.length} API keys fallaron con todos los modelos`);
-    throw lastError || new Error(`Todas las ${GEMINI_API_KEYS.length} API keys de Gemini Vision fallaron`);
+    console.error(`\n❌ Todas las ${GEMINI_API_KEYS.length} API keys fallaron con todos los modelos disponibles`);
+    throw lastError || new Error(`Todas las ${GEMINI_API_KEYS.length} API keys de Gemini Vision fallaron. Verifica que las keys sean válidas y tengan permisos para Vision API.`);
 }
 
 export default visionCommand;

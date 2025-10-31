@@ -67,21 +67,20 @@ const shazamCommand = {
             if (track.sections) {
                 for (const section of track.sections) {
                     if (section.type === 'SONG' && section.metadata) {
-                        const metadata = section.metadata;
-                        
+                        const metadata = section.metadata
                         if (metadata.find(m => m.title === 'Album')) {
-                            const album = metadata.find(m => m.title === 'Album').text;
+                            const album = metadata.find(m => m.title === 'Album').text
                             response += `║ 💿 *Álbum:* ${album}\n`;
                         }
                         
                         if (metadata.find(m => m.title === 'Released')) {
-                            const year = metadata.find(m => m.title === 'Released').text;
+                            const year = metadata.find(m => m.title === 'Released').text
                             response += `║ 📅 *Año:* ${year}\n`;
                         }
                         
                         if (metadata.find(m => m.title === 'Genre')) {
-                            const genre = metadata.find(m => m.title === 'Genre').text;
-                            response += `║ 🎸 *Género:* ${genre}\n`;
+                            const genre = metadata.find(m => m.title === 'Genre').text
+                            response += `║ 🎸 *Género:* ${genre}\n`
                         }
                     }
                 }
@@ -115,11 +114,10 @@ const shazamCommand = {
 
             response += `✨ Identificado por Shazam`
             if (track.images?.coverart || track.images?.background) {
-                try {
-                    await sock.sendMessage(chatId, {
+                try { await sock.sendMessage(chatId, {
                         image: { url: track.images.coverart || track.images.background },
                         caption: response
-                    }, { quoted: msg });
+                    }, { quoted: msg })
                 } catch {
                     await sock.sendMessage(chatId, { text: response }, { quoted: msg })
                 }
@@ -188,7 +186,6 @@ async function identifySong(audioBuffer) {
     }
 }
 
-// Alternativa con Audd.io
 async function identifyWithAudd(audioBuffer) {
     const formData = new FormData();
     formData.append('file', audioBuffer, {

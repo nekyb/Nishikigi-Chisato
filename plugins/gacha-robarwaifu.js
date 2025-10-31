@@ -123,4 +123,4 @@ const robarwaifuCommand = {
     }
 }
 
-export default robarwaifuCommand;
+export default robarwaifuCommand

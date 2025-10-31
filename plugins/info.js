@@ -1,4 +1,4 @@
-import * as baileys from '@whiskeysockets/baileys';
+import * as baileys from '@whiskeysockets/baileys'
 
 const infobotCommand = {
     name: 'infobot',
@@ -11,8 +11,7 @@ const infobotCommand = {
     botAdminRequired: false,
     
     async execute(sock, msg, args) {
-        const chatId = msg.key.remoteJid;
-        
+        const chatId = msg.key.remoteJid
         const infoMessage = baileys.generateWAMessageFromContent(chatId, {
             viewOnceMessage: {
                 message: {
@@ -34,16 +33,13 @@ const infobotCommand = {
                                   '✦ Administración de grupos\n' +
                                   '✦ Entretenimiento\n' +
                                   '✦ Y mucho más...\n\n' +
-                                  '━━━━━━━━━━━━━━━━━━━'
-                        }),
+                                  '━━━━━━━━━━━━━━━━━━━'}),
                         footer: baileys.proto.Message.InteractiveMessage.Footer.create({
-                            text: '© Nishikigi Chisato Bot 2025'
-                        }),
+                            text: '© Nishikigi Chisato Bot 2025'}),
                         header: baileys.proto.Message.InteractiveMessage.Header.create({
                             title: '🤖 Nishikigi Chisato',
                             subtitle: 'Bot Multifuncional',
-                            hasMediaAttachment: false
-                        }),
+                            hasMediaAttachment: false}),
                         nativeFlowMessage: baileys.proto.Message.InteractiveMessage.NativeFlowMessage.create({
                             buttons: [
                                 {
@@ -74,12 +70,11 @@ const infobotCommand = {
                     })
                 }
             }
-        }, { quoted: msg });
-
+        }, { quoted: msg })
         await sock.relayMessage(chatId, infoMessage.message, {
             messageId: infoMessage.key.id
-        });
+        })
     }
-};
+}
 
-export default infobotCommand;
+export default infobotCommand

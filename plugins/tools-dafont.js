@@ -1,5 +1,5 @@
-import axios from 'axios';
-import * as cheerio from 'cheerio';
+import axios from 'axios'
+import * as cheerio from 'cheerio'
 
 const dafontCommand = {
     name: 'font',
@@ -82,7 +82,6 @@ const dafontCommand = {
                 alternativesList += `💡 Encontradas ${searchResults.length} fuentes en total`
                 await sock.sendMessage(chatId, { text: alternativesList });
             }
-
         } catch (error) {
             console.error('Error en comando font:', error)
             let errorMessage = '《✧》 ❌ Error al procesar la solicitud\n\n'
@@ -101,9 +100,7 @@ const dafontCommand = {
             } else {
                 errorMessage += `⚠️ *Error:* ${error.message || 'Desconocido'}\n\n` +
                     '💡 *Tip:* Verifica tu conexión e intenta con otro término.'
-            }
-            
-            await sock.sendMessage(chatId, { text: errorMessage });
+            } await sock.sendMessage(chatId, { text: errorMessage })
         }
     }
 };
@@ -167,7 +164,7 @@ async function searchDaFont(query) {
                         author: author,
                         downloadUrl: fullDownloadUrl,
                         styles: styles
-                    });
+                    })
                     console.log('Fuente encontrada:', fontName)
                 }
             } catch (err) {
@@ -177,7 +174,7 @@ async function searchDaFont(query) {
 
         return results
     } catch (error) {
-        console.error('Error en searchDaFont:', error.message);
+        console.error('Error en searchDaFont:', error.message)
         throw error
     }
 }
