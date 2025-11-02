@@ -18,28 +18,40 @@ const smokeCommand = {
     groupOnly: false,
     botAdminRequired: false,
     async execute(sock, msg, args) {
-        const chatId = msg.key.remoteJid;
-        const sender = msg.sender;
+    const chatId = msg.key.remoteJid;
+    const sender = msg.sender || msg.key.participant || msg.key.remoteJid || '';
         try {
             const randomGif = smokeGifs[Math.floor(Math.random() * smokeGifs.length)];
             const response = await axios.get(randomGif, {
                 responseType: 'arraybuffer'
             });
             const imageBuffer = Buffer.from(response.data);
-            const caption = `@${sender.split('@')[0]} está fumando 🚬 (˵ ͡° ͜ʖ ͡°˵)`;
-            await sock.sendMessage(chatId, {
-                image: imageBuffer,
-                caption: caption,
-                mentions: [sender],
-                contextInfo: {
-                    isForwarded: true,
-                    forwardedNewsletterMessageInfo: {
-                        newsletterJid: "120363421377964290@newsletter",
-                        newsletterName: "𝕻𝖔𝖜𝖊𝖗𝖊𝖉 𝕭𝐲 𝕯𝖊𝖑𝖙𝖆𝕭𝐲𝖙𝖊",
-                        serverMessageId: 1,
-                    }
+            const senderId = sender ? String(sender) : '';
+            const username = senderId ? senderId.replace(/@.*$/, '') : '';
+            const caption = username ? `@${username} está fumando 🚬 (˵ ͡° ͜ʖ ͡°˵)` : `¡Alguien está fumando! 🚬`;
+            const mentions = senderId ? [senderId] : [];
+
+            const contentType = response.headers?.['content-type'] || '';
+            let payload = {};
+            if (contentType.includes('gif') || /\.gif(\?|$)/i.test(randomGif)) {
+                payload = { video: imageBuffer, gifPlayback: true, caption, mentions };
+            } else if (contentType.startsWith('video/') || /\.(mp4|webm)(\?|$)/i.test(randomGif)) {
+                payload = { video: imageBuffer, caption, mentions };
+            } else {
+                const ext = contentType.includes('webp') ? 'webp' : (contentType.split('/')[1] || 'bin')
+                payload = { document: imageBuffer, fileName: `smoke.${ext}`, caption, mimetype: contentType || 'application/octet-stream', mentions };
+            }
+
+            payload.contextInfo = {
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: "120363421377964290@newsletter",
+                    newsletterName: "𝕻𝖔𝖜𝖊𝖗𝖊𝖉 𝕭𝐲 𝕯𝖊𝖑𝖙𝖆𝕭𝐲𝖙𝖊",
+                    serverMessageId: 1,
                 }
-            });
+            };
+
+            await sock.sendMessage(chatId, payload);
         }
         catch (error) {
             console.error('Error en comando smoke:', error);

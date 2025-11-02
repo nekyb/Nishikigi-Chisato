@@ -8,9 +8,9 @@ export default {
   
   async execute(sock, msg, args) {
     try {
-      const chatId = msg.key.remoteJid
-      const sender = msg.key.participant || msg.key.remoteJid
-      const senderName = msg.pushName || sender.split('@')[0]
+  const chatId = msg.key.remoteJid
+  const sender = msg.sender || msg.key.participant || msg.key.remoteJid || ''
+  const senderName = msg.pushName || String(sender).replace(/@.*$/, '')
       const mentionedJid = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid?.[0]
       let responseText
       let mentions = []
@@ -37,17 +37,22 @@ export default {
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
         },
-        timeout: 10000})
-      const buffer = Buffer.from(response.data)
-      const fileType = await fileTypeFromBuffer(buffer)
-      if (!fileType || !fileType.mime.startsWith('image/')) {throw new Error('El archivo descargado no es una imagen válida');}
-      await sock.sendMessage(chatId, {
-        video: buffer,
-        caption: responseText,
-        mentions: mentions,
-        gifPlayback: true,
-        ptv: false
+        timeout: 10000
       })
+      const buffer = Buffer.from(response.data)
+      const contentType = response.headers?.['content-type'] || ''
+
+      let payload = {}
+      if (contentType.includes('gif') || /\.gif(\?|$)/i.test(randomGif)) {
+        payload = { video: buffer, gifPlayback: true, caption: responseText, mentions }
+      } else if (contentType.startsWith('video/') || /\.(mp4|webm)(\?|$)/i.test(randomGif)) {
+        payload = { video: buffer, caption: responseText, mentions }
+      } else {
+        const ext = contentType.includes('webp') ? 'webp' : (contentType.split('/')[1] || 'bin')
+        payload = { document: buffer, fileName: `media.${ext}`, caption: responseText, mimetype: contentType || 'application/octet-stream', mentions }
+      }
+
+      await sock.sendMessage(chatId, payload)
     } catch (error) {
       console.error('Error en comando kill:', error)
       const sender = msg.key.participant || msg.key.remoteJid
