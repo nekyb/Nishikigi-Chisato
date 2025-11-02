@@ -118,7 +118,7 @@ const helpCommand = {
 ✿ *#brave*  » *#buscarb* + [ texto ]
 ╰⪼ Busca informacion en Brave.
 
-✿ *#gis*  » *#googleimg* + [ texto ]
+✿ *#gimage* + [ texto ]
 ╰⪼ Busca una imagen en Google.
 
 ✿ *#redditsearch*  » *#rs* + [ texto ]
@@ -149,6 +149,37 @@ const helpCommand = {
 
 ✿ *#baltop*  » *#eboard* 
 ╰⪼ Mira el top 1 con mas coins
+
+» ⊹ ˚୨ •(=^●ω●^=)• Random ⊹
+
+✿ *#meme* 
+╰⪼ Mira un meme.
+
+✿ *#cat* 
+╰⪼ Mira un gato.
+
+» ⊹ ˚୨ •(=^●ω●^=)• Games ⊹
+
+✿ *#carrera* 
+╰⪼ ¿QUIEN ES EL MAS RAPIDO AQUI? >:v
+
+✿ *#adivina* » *#guess*
+╰⪼ Responde una adivinanza.
+
+✿ *#math* » *#mates*
+╰⪼ Resuelve una operacion matematica.
+
+✿ *#topgays* » *#topotakus*
+╰⪼ Haz un top de los mas Gays y Otakus del grupo.
+
+✿ *#formarpareja* 
+╰⪼ Forma una pareja en el grupo.
+
+✿ *#ppt* » *#rockpaperscissors* + [ piedra / papel / tijera ]
+╰⪼ Juega piedra, papel o tijera contra el bot.
+
+✿ *#glx* 
+╰⪼ Juega en el espacio, explora, mina, descubre.
 
 » ⊹ ˚୨ •(=^●ω●^=)• Gacha ⊹
 

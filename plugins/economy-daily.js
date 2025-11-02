@@ -1,4 +1,5 @@
 import { loadUsers, saveUsers } from '../lib/database.js';
+import { getUserId, getChatId } from '../lib/getUserId.js';
 const BASE_REWARD = 10000;
 const STREAK_BONUS = 10000;
 const COOLDOWN_TIME = 24 * 60 * 60 * 1000;
@@ -12,8 +13,8 @@ const dailyCommand = {
     groupOnly: false,
     botAdminRequired: false,
     async execute(sock, msg, args) {
-        const chatId = msg.key.remoteJid;
-        const userId = msg.key.participant || msg.key.remoteJid;
+        const chatId = getChatId(msg);
+        const userId = getUserId(msg);
         try {
             const users = await loadUsers();
             if (!users[userId]) {

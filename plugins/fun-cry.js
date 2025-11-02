@@ -1,53 +1,67 @@
-import axios from 'axios';
-const cryGifs = [
-    'https://i.pinimg.com/originals/c1/be/30/c1be3022e608a33db43ed06e629ae31a.gif',
-    'https://i.pinimg.com/originals/9c/c9/a0/9cc9a05e21b99ee8bc4cd5d62901dc99.gif',
-    'https://i.pinimg.com/originals/4d/9c/ef/4d9cef56c589d417ae779ba6b1c20c5b.gif',
-    'https://i.pinimg.com/originals/6b/d7/38/6bd73801b4f4eff060238e39a523505f.gif',
-    'https://i.pinimg.com/originals/1d/14/31/1d1431d43329a5d05ebaada7ee8b1547.gif',
-    'https://i.pinimg.com/originals/3b/99/c3/3b99c394a306d04b8462f3ae781302bf.gif',
-    'https://i.pinimg.com/originals/b9/01/6c/b9016c33357dc0589090e0d1eaf957e7.gif',
-    'https://i.pinimg.com/originals/40/73/6b/40736b738fe7584ce5afe61e78312d7a.gif'
-];
-const cryCommand = {
-    name: 'cry',
-    aliases: ['llorar'],
-    category: 'fun',
-    description: 'Llora en el chat',
-    usage: '#cry',
-    adminOnly: false,
-    groupOnly: false,
-    botAdminRequired: false,
-    async execute(sock, msg, args) {
-        const chatId = msg.key.remoteJid;
-        const sender = msg.sender;
-        try {
-            const randomGif = cryGifs[Math.floor(Math.random() * cryGifs.length)];
-            const response = await axios.get(randomGif, {
-                responseType: 'arraybuffer'
-            });
-            const imageBuffer = Buffer.from(response.data);
-            const caption = `@${sender.split('@')[0]} está llorando (˵•́ ಎ •̀˵) ੭`;
-            await sock.sendMessage(chatId, {
-                image: imageBuffer,
-                caption: caption,
-                mentions: [sender],
-                contextInfo: {
-                    isForwarded: true,
-                    forwardedNewsletterMessageInfo: {
-                        newsletterJid: "120363421377964290@newsletter",
-                        newsletterName: "𝕻𝖔𝖜𝖊𝖗𝖊𝖉 𝕭𝐲 𝕯𝖊𝖑𝖙𝖆𝕭𝐲𝖙𝖊",
-                        serverMessageId: 1,
-                    }
-                }
-            });
-        }
-        catch (error) {
-            console.error('Error en comando cry:', error);
-            await sock.sendMessage(chatId, {
-                text: '《✧》 Error al enviar el llanto.'
-            });
-        }
-    }
-};
-export default cryCommand;
+import axios from 'axios'
+import { fileTypeFromBuffer } from 'file-type'
+
+export default {
+  name: 'cry',
+  description: 'Llora por alguien',
+  category: 'fun',
+  
+  async execute(sock, msg, args) {
+    try {
+      const chatId = msg.key.remoteJid
+      const sender = msg.key.participant || msg.key.remoteJid
+      const senderName = msg.pushName || sender.split('@')[0]
+      const mentionedJid = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid?.[0]
+      let responseText
+      let mentions = []
+      if (mentionedJid) {
+        const mentionedName = mentionedJid.split('@')[0]
+        responseText = `@${senderName} esta llorando por @${mentionedName} 😭`
+        mentions = [sender, mentionedJid]
+      } else {
+        responseText = `@${senderName} esta llorando 😭`;
+        mentions = [sender];
+      }
+      
+      const deathGifs = [
+        'https://rogddqelmxyuvhpjvxbf.supabase.co/storage/v1/object/public/files/6itgmgukzk3.gif',
+        'https://rogddqelmxyuvhpjvxbf.supabase.co/storage/v1/object/public/files/s86ls47tujg.gif',
+        'https://rogddqelmxyuvhpjvxbf.supabase.co/storage/v1/object/public/files/1pbqv2z2oyk.gif',
+        'https://rogddqelmxyuvhpjvxbf.supabase.co/storage/v1/object/public/files/8w99luhn3gy.gif',
+        'https://rogddqelmxyuvhpjvxbf.supabase.co/storage/v1/object/public/files/5v3gqtc50sn.gif',
+        'https://rogddqelmxyuvhpjvxbf.supabase.co/storage/v1/object/public/files/gk7my7jklfo.gif',
+        'https://rogddqelmxyuvhpjvxbf.supabase.co/storage/v1/object/public/files/jor8mixfih.gif'
+      ];
+      
+      const randomGif = deathGifs[Math.floor(Math.random() * deathGifs.length)]
+      const response = await axios.get(randomGif, {
+        responseType: 'arraybuffer',
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        },
+        timeout: 10000})
+      const buffer = Buffer.from(response.data)
+      const fileType = await fileTypeFromBuffer(buffer)
+      if (!fileType || !fileType.mime.startsWith('image/')) {throw new Error('El archivo descargado no es una imagen válida');}
+      await sock.sendMessage(chatId, {
+        video: buffer,
+        caption: responseText,
+        mentions: mentions,
+        gifPlayback: true,
+        ptv: false
+      })
+    } catch (error) {
+      console.error('Error en comando kill:', error)
+      const sender = msg.key.participant || msg.key.remoteJid
+      const senderName = msg.pushName || sender.split('@')[0]
+      const mentionedJid = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid?.[0]
+      let fallbackText
+      let mentions = []
+      if (mentionedJid) {const mentionedName = mentionedJid.split('@')[0]
+        fallbackText = `@${senderName} ha matado a @${mentionedName} 💀🔪\n\n_(Error al cargar el GIF)_`;
+        mentions = [sender, mentionedJid]}
+         else {fallbackText = `@${senderName} se mató a sí mismo 💀\n\n_(Error al cargar el GIF)_`;
+        mentions = [sender]}
+      await sock.sendMessage(msg.key.remoteJid, {
+        text: fallbackText,
+        mentions: mentions})}}}

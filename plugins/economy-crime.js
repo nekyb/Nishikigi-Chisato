@@ -1,4 +1,5 @@
 import { loadUsers, saveUsers } from '../lib/database.js';
+import { getUserId, getChatId } from '../lib/getUserId.js';
 const COOLDOWN_TIME = 8 * 60 * 1000;
 const crimeResults = [
     {

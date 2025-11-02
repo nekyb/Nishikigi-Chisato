@@ -3,12 +3,10 @@ import { downloadMediaMessage } from '@whiskeysockets/baileys';
 import pino from 'pino';
 const logger = pino({ level: 'silent' });
 
-// ⚙️ CONFIGURACIÓN: API Keys de Gemini
 const GEMINI_API_KEYS = [
     'AIzaSyBt77r0sl4YDcBqQBjHIMxu9ZvbjbzVqrk',
     'AIzaSyB147GA8T_Yw3YMChXocBL0W4qvIFYGw6o',
     'AIzaSyDi444P77L6Xor9w8Nq1mXT-eT_7jyybGA',
-    // Agrega más keys según necesites
 ];
 
 const visionCommand = {
@@ -25,8 +23,6 @@ const visionCommand = {
         try {
             let imageBuffer = null;
             let imageMessage = msg.message?.imageMessage;
-            
-            // Verificar si es una respuesta a una imagen
             if (!imageMessage && msg.message?.extendedTextMessage?.contextInfo?.quotedMessage) {
                 imageMessage = msg.message.extendedTextMessage.contextInfo.quotedMessage.imageMessage;
             }
@@ -54,7 +50,6 @@ const visionCommand = {
                 text: `《✧》 Analizando imagen con Gemini Vision AI...\n\n⏳ Esto puede tardar unos segundos.\n🔑 Probando con ${GEMINI_API_KEYS.length} API key(s) disponible(s)...`
             });
 
-            // Descargar la imagen
             try {
                 const messageToDownload = msg.message?.imageMessage ? msg : {
                     message: {
@@ -85,7 +80,6 @@ const visionCommand = {
                 });
             }
             
-            // Analizar con Gemini Vision (probando todas las API keys)
             let analysis = '';
             let usedKeyIndex = -1;
             let usedModel = '';
@@ -109,7 +103,6 @@ const visionCommand = {
                 });
             }
             
-            // Enviar el análisis
             const response = `╔═══《 GEMINI VISION AI 》═══╗\n` +
                 `║\n` +
                 `║ ✦ *Pregunta:* ${prompt}\n` +
@@ -117,7 +110,8 @@ const visionCommand = {
                 `║ ✦ *API Key:* #${usedKeyIndex + 1} de ${GEMINI_API_KEYS.length}\n` +
                 `║\n` +
                 `╚═════════════════════════╝\n\n` +
-                `*Análisis:*\n${analysis}`;
+                `*Análisis:*\n${analysis}\n\n` +
+                `> _*By Soblend | Development Studio Creative*_`;
             
             await sock.sendMessage(chatId, {
                 text: response
@@ -134,28 +128,25 @@ const visionCommand = {
 };
 
 async function analyzeWithGemini(imageBuffer, prompt) {
-    // Modelos Gemini Vision actualizados y ordenados por prioridad
     const models = [
-        'gemini-2.0-flash-exp',      // Experimental más rápido
-        'gemini-2.0-flash-thinking-exp-1219', // Con capacidad de razonamiento
-        'gemini-exp-1206',           // Experimental avanzado
-        'gemini-2.0-flash',          // Flash estable
-        'gemini-2.0-flash-lite',     // Versión ligera
-        'gemini-1.5-flash',          // Flash anterior estable
-        'gemini-1.5-flash-8b',       // Flash 8B anterior
-        'gemini-1.5-pro',            // Pro anterior
+        'gemini-2.0-flash-exp',      
+        'gemini-2.0-flash-thinking-exp-1219',
+        'gemini-exp-1206',           
+        'gemini-2.0-flash',          
+        'gemini-2.0-flash-lite',     
+        'gemini-1.5-flash',          
+        'gemini-1.5-flash-8b',       
+        'gemini-1.5-pro',            
     ];
     
     let lastError = null;
     
-    // Probar cada API key
     for (let keyIndex = 0; keyIndex < GEMINI_API_KEYS.length; keyIndex++) {
         const apiKey = GEMINI_API_KEYS[keyIndex];
         console.log(`\n🔑 Probando API Key #${keyIndex + 1}...`);
         
         const genAI = new GoogleGenerativeAI(apiKey);
-        
-        // Probar cada modelo con esta API key
+
         for (const modelName of models) {
             try {
                 console.log(`  └─ Intentando modelo: ${modelName}...`);
@@ -194,24 +185,21 @@ async function analyzeWithGemini(imageBuffer, prompt) {
                 console.error(`  ✗ Falló ${modelName}: ${error.message}`);
                 lastError = error;
                 
-                // Si el error es de quota o rate limit, probar siguiente key
                 if (error.message.includes('quota') || 
                     error.message.includes('rate limit') || 
                     error.message.includes('429') ||
                     error.message.includes('RESOURCE_EXHAUSTED')) {
                     console.log(`  ⚠️  Límite alcanzado con esta API key, probando siguiente...`);
-                    break; // Salir del loop de modelos y probar siguiente key
+                    break; 
                 }
                 
-                // Si el error es 404 o modelo no encontrado, probar siguiente modelo
                 if (error.message.includes('404') || 
                     error.message.includes('not found') ||
                     error.message.includes('does not exist')) {
                     console.log(`  ⚠️  Modelo no disponible, probando siguiente...`);
-                    continue; // Probar siguiente modelo
+                    continue; 
                 }
                 
-                // Para errores de permisos, probar siguiente modelo
                 if (error.message.includes('403') ||
                     error.message.includes('permission') ||
                     error.message.includes('PERMISSION_DENIED')) {
@@ -219,13 +207,11 @@ async function analyzeWithGemini(imageBuffer, prompt) {
                     continue;
                 }
                 
-                // Para otros errores, continuar con siguiente modelo
                 continue;
             }
         }
     }
     
-    // Si todas las API keys y modelos fallaron
     console.error(`\n❌ Todas las ${GEMINI_API_KEYS.length} API keys fallaron con todos los modelos disponibles`);
     throw lastError || new Error(`Todas las ${GEMINI_API_KEYS.length} API keys de Gemini Vision fallaron. Verifica que las keys sean válidas y tengan permisos para Vision API.`);
 }

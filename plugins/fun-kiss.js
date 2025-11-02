@@ -1,67 +1,65 @@
-import axios from 'axios';
-const kissGifs = [
-    'https://i.pinimg.com/originals/ea/de/5b/eade5b83bc8764de3037fcab1f5e2dec.gif',
-    'https://i.pinimg.com/originals/da/64/eb/da64eb02a04941d4eb31f173cc2c6c40.gif',
-    'https://i.pinimg.com/originals/6c/05/e5/6c05e58405258b50711b84ac9db7441a.gif',
-    'https://i.pinimg.com/originals/e3/4e/31/e34e31123f8f35d5c771a2d6a70bef52.gif',
-    'https://i.pinimg.com/originals/56/0b/b3/560bb37b1596f48d93a76db4f87dc2f9.gif',
-    'https://i.pinimg.com/originals/42/c3/85/42c3851fc31dc3434dfe5fa7e3463f1d.gif',
-    'https://i.pinimg.com/originals/cf/d2/2d/cfd22dd39db5f07aac1c580debc3626d.gif',
-    'https://i.pinimg.com/originals/6b/4b/1a/6b4b1aeec35403f13089dd844f674ed0.gif'
-];
-const kissCommand = {
-    name: 'kiss',
-    aliases: ['besar', 'beso'],
-    category: 'fun',
-    description: 'Besa a otro usuario',
-    usage: '#kiss @usuario',
-    adminOnly: false,
-    groupOnly: false,
-    botAdminRequired: false,
-    async execute(sock, msg, args) {
-        const chatId = msg.key.remoteJid;
-        const sender = msg.sender;
-        try {
-            const mentionedJid = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid;
-            if (!mentionedJid || mentionedJid.length === 0) {
-                await sock.sendMessage(chatId, {
-                    text: 'ᯓ★ Debes etiquetar a alguien para besarlo.\nUso: #kiss @usuario'
-                }, { quoted: msg });
-                return;
-            }
-            const targetUser = mentionedJid[0];
-            if (targetUser === sender) {
-                await sock.sendMessage(chatId, {
-                    text: 'ᯓ★ No puedes besarte a ti mismo, eso sería raro (˵ ͡° ͜ʖ ͡°˵)'
-                }, { quoted: msg });
-                return;
-            }
-            const randomGif = kissGifs[Math.floor(Math.random() * kissGifs.length)];
-            const response = await axios.get(randomGif, {
-                responseType: 'arraybuffer'
-            });
-            const imageBuffer = Buffer.from(response.data);
-            const caption = `@${sender.split('@')[0]} le ha dado un beso a @${targetUser.split('@')[0]} (˵ ͡~ ͜ʖ ͡°˵)ノ⌒♡*:・。.`;
-            await sock.sendMessage(chatId, {
-                image: imageBuffer,
-                caption: caption,
-                mentions: [sender, targetUser],
-                contextInfo: {
-                    isForwarded: true,
-                    forwardedNewsletterMessageInfo: {
-                        newsletterJid: "120363421377964290@newsletter",
-                        newsletterName: "𝕻𝖔𝖜𝖊𝖗𝖊𝖉 𝕭𝐲 𝕯𝖊𝖑𝖙𝖆𝕭𝐲𝖙𝖊",
-                        serverMessageId: 1,
-                    }
-                }
-            });
-        }
-        catch (error) {
-            console.error('Error en comando kiss:', error);
-            await sock.sendMessage(chatId, {
-                text: '《✧》 Error al enviar el beso.'
-            });
-        }
-    }
-};
-export default kissCommand;
+import axios from 'axios'
+import { fileTypeFromBuffer } from 'file-type'
+
+export default {
+  name: 'kiss',
+  description: 'Besa a alguien',
+  category: 'fun',
+  
+  async execute(sock, msg, args) {
+    try {
+      const chatId = msg.key.remoteJid
+      const sender = msg.key.participant || msg.key.remoteJid
+      const senderName = msg.pushName || sender.split('@')[0]
+      const mentionedJid = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid?.[0]
+      let responseText
+      let mentions = []
+      if (mentionedJid) {
+        const mentionedName = mentionedJid.split('@')[0]
+        responseText = `@${senderName} esta besando a @${mentionedName} 😘`
+        mentions = [sender, mentionedJid]
+      } else {
+        responseText = `@${senderName} se esta besando a si mismo 😘`;
+        mentions = [sender];
+      }
+      
+      const deathGifs = [
+'https://telegra.ph/file/d6ece99b5011aedd359e8.mp4',
+'https://telegra.ph/file/ba841c699e9e039deadb3.mp4',
+'https://telegra.ph/file/6497758a122357bc5bbb7.mp4',
+'https://telegra.ph/file/8c0f70ed2bfd95a125993.mp4',
+'https://telegra.ph/file/826ce3530ab20b15a496d.mp4'
+      ];
+      
+      const randomGif = deathGifs[Math.floor(Math.random() * deathGifs.length)]
+      const response = await axios.get(randomGif, {
+        responseType: 'arraybuffer',
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        },
+        timeout: 10000})
+      const buffer = Buffer.from(response.data)
+      const fileType = await fileTypeFromBuffer(buffer)
+      if (!fileType || !fileType.mime.startsWith('image/')) {throw new Error('El archivo descargado no es una imagen válida');}
+      await sock.sendMessage(chatId, {
+        video: buffer,
+        caption: responseText,
+        mentions: mentions,
+        gifPlayback: true,
+        ptv: false
+      })
+    } catch (error) {
+      console.error('Error en comando kill:', error)
+      const sender = msg.key.participant || msg.key.remoteJid
+      const senderName = msg.pushName || sender.split('@')[0]
+      const mentionedJid = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid?.[0]
+      let fallbackText
+      let mentions = []
+      if (mentionedJid) {const mentionedName = mentionedJid.split('@')[0]
+        fallbackText = `@${senderName} ha matado a @${mentionedName} 💀🔪\n\n_(Error al cargar el GIF)_`;
+        mentions = [sender, mentionedJid]}
+         else {fallbackText = `@${senderName} se mató a sí mismo 💀\n\n_(Error al cargar el GIF)_`;
+        mentions = [sender]}
+      await sock.sendMessage(msg.key.remoteJid, {
+        text: fallbackText,
+        mentions: mentions})}}}

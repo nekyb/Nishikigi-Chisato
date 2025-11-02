@@ -1,3 +1,5 @@
+import { getChatId } from '../lib/getUserId.js';
+
 const offCommand = {
     name: 'off',
     aliases: ['apagar', 'shutdown', 'stop'],
@@ -6,7 +8,7 @@ const offCommand = {
     usage: '#off',
     ownerOnly: true,
     async execute(sock, msg, args) {
-        const chatId = msg.key.remoteJid;
+        const chatId = getChatId(msg);
         try {
             await sock.sendMessage(chatId, {
                 text: `《✧》 *Apagando bot...*\n\n` +

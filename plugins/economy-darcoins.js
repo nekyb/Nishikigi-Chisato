@@ -1,4 +1,5 @@
 import { loadUsers, saveUsers } from '../lib/database.js';
+import { getUserId, getChatId } from '../lib/getUserId.js';
 const darcoinsCommand = {
     name: 'darcoins',
     aliases: ['givecoins', 'addcoins', 'dc'],

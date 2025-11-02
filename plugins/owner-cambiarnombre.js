@@ -1,3 +1,5 @@
+import { getChatId } from '../lib/getUserId.js';
+
 const cambiarNombreCommand = {
     name: 'cambiarnombre',
     aliases: ['nuevonombrebot', 'setbotname', 'namebot'],
@@ -6,7 +8,7 @@ const cambiarNombreCommand = {
     usage: '#cambiarnombre [nuevo nombre]',
     ownerOnly: true,
     async execute(sock, msg, args) {
-        const chatId = msg.key.remoteJid;
+        const chatId = getChatId(msg);
         try {
             if (args.length === 0) {
                 return await sock.sendMessage(chatId, {

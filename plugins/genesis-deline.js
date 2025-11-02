@@ -17,7 +17,6 @@ const delinearCommand = {
         const chatId = msg.key.remoteJid;
         
         try {
-            // Verificar si hay una imagen
             const quotedMsg = msg.message?.extendedTextMessage?.contextInfo?.quotedMessage;
             const imageMessage = msg.message?.imageMessage || quotedMsg?.imageMessage;
             
@@ -32,12 +31,10 @@ const delinearCommand = {
                 });
             }
 
-            // Mensaje de procesamiento
             await sock.sendMessage(chatId, {
                 text: '《✧》 🎨 Delineando imagen...\n⏳ Esto puede tomar unos segundos...'
             });
 
-            // Descargar la imagen
             const buffer = await downloadMediaMessage(
                 quotedMsg || msg,
                 'buffer',
@@ -50,25 +47,21 @@ const delinearCommand = {
 
             console.log('Imagen descargada:', buffer.length, 'bytes');
 
-            // Procesar imagen con diferentes APIs
             let processedImage = null;
             let method = '';
 
-            // Método 1: Replicate API (mejor calidad, requiere token)
             try {
                 processedImage = await processWithReplicate(buffer);
                 method = 'Replicate AI';
             } catch (error) {
                 console.log('Replicate falló, intentando alternativa...');
-                
-                // Método 2: ClipDrop API (buena calidad)
+   
                 try {
                     processedImage = await processWithClipdrop(buffer);
                     method = 'ClipDrop AI';
                 } catch (error2) {
                     console.log('ClipDrop falló, usando procesamiento local...');
                     
-                    // Método 3: Procesamiento local con Sharp (fallback)
                     processedImage = await processLocalLineArt(buffer);
                     method = 'Procesamiento Local';
                 }
@@ -78,13 +71,14 @@ const delinearCommand = {
                 throw new Error('No se pudo procesar la imagen con ningún método');
             }
 
-            // Enviar imagen delineada
+
             await sock.sendMessage(chatId, {
                 image: processedImage,
                 caption: `《✧》 *Imagen Delineada* 《✧》\n\n` +
                     `✨ Conversión completada\n` +
                     `🎨 Line art generado exitosamente\n` +
-                    `🔧 Método: ${method}`
+                    `🔧 Método: ${method}\n` +
+                    `> _*By Soblend | Development Studio Creative*_`
             }, { quoted: msg });
 
         } catch (error) {
@@ -109,15 +103,11 @@ const delinearCommand = {
                     `• Tener buena conexión a internet`;
             }
             
-            await sock.sendMessage(chatId, { text: errorMessage });
+            await sock.sendMessage(chatId, { text: errorMessage })
         }
     }
-};
+}
 
-/**
- * Método 1: Replicate API - ControlNet Line Art
- * Mejor calidad, requiere token gratuito
- */
 async function processWithReplicate(imageBuffer) {
     const REPLICATE_TOKEN = 'TU_REPLICATE_TOKEN'; // Obtener en replicate.com
     
@@ -125,10 +115,7 @@ async function processWithReplicate(imageBuffer) {
         throw new Error('Token de Replicate no configurado');
     }
 
-    // Convertir buffer a base64
     const base64Image = `data:image/jpeg;base64,${imageBuffer.toString('base64')}`;
-
-    // Crear predicción
     const response = await axios.post(
         'https://api.replicate.com/v1/predictions',
         {
@@ -149,7 +136,6 @@ async function processWithReplicate(imageBuffer) {
 
     const predictionId = response.data.id;
 
-    // Esperar resultado
     let result = null;
     for (let i = 0; i < 30; i++) {
         await new Promise(resolve => setTimeout(resolve, 2000));
@@ -159,31 +145,27 @@ async function processWithReplicate(imageBuffer) {
             {
                 headers: { 'Authorization': `Token ${REPLICATE_TOKEN}` }
             }
-        );
+        )
 
         if (statusResponse.data.status === 'succeeded') {
             result = statusResponse.data.output;
             break;
         } else if (statusResponse.data.status === 'failed') {
-            throw new Error('Procesamiento falló en Replicate');
+            throw new Error('Procesamiento falló en Replicate')
         }
     }
 
     if (!result) {
-        throw new Error('Timeout esperando resultado de Replicate');
+        throw new Error('Timeout esperando resultado de Replicate')
     }
 
-    // Descargar imagen procesada
     const imageResponse = await axios.get(result, {
         responseType: 'arraybuffer'
-    });
+    })
 
     return Buffer.from(imageResponse.data);
 }
 
-/**
- * Método 2: ClipDrop API - Sketch Converter
- */
 async function processWithClipdrop(imageBuffer) {
     const CLIPDROP_KEY = '1a936d1e2f23decaa0638273e4ac65c754194792c360f79de928e992ce2791029f0f19bfc15aa37a061ff6a5a465c999'; // Obtener en clipdrop.co/apis
     
@@ -213,23 +195,17 @@ async function processWithClipdrop(imageBuffer) {
     return Buffer.from(response.data);
 }
 
-/**
- * Método 3: Procesamiento local con Sharp (Fallback)
- * Crea efecto de líneas básico sin APIs externas
- */
 async function processLocalLineArt(imageBuffer) {
     try {
-        // Convertir a escala de grises y aplicar detección de bordes
         const processed = await sharp(imageBuffer)
             .greyscale()
             .normalize()
-            .linear(1.5, -(128 * 0.5)) // Aumentar contraste
-            .threshold(128) // Umbralización
-            .negate() // Invertir colores
+            .linear(1.5, -(128 * 0.5)) 
+            .threshold(128) 
+            .negate() 
             .png()
             .toBuffer();
 
-        // Aplicar un segundo procesamiento para afinar líneas
         const final = await sharp(processed)
             .blur(0.3)
             .threshold(200)

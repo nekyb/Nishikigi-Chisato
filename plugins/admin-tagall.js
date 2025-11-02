@@ -1,3 +1,5 @@
+import { isBotAdmin, isUserAdmin } from '../lib/adminUtils.js';
+
 const tagallCommand = {
     name: 'tagall',
     aliases: ['todos', 'invocar'],
@@ -9,7 +11,17 @@ const tagallCommand = {
     botAdminRequired: false,
     async execute(sock, msg, args) {
         const chatId = msg.key.remoteJid
+        const sender = msg.key.participant || msg.key.remoteJid
+
         try {
+            // Verificar si el usuario es admin
+            const userIsAdmin = await isUserAdmin(sock, chatId, sender)
+            if (!userIsAdmin) {
+                return await sock.sendMessage(chatId, {
+                    text: '❌ Solo los administradores pueden usar este comando.'
+                }, { quoted: msg })
+            }
+
             const groupMetadata = await sock.groupMetadata(chatId)
             const participants = groupMetadata.participants;
             const mentions = participants.map((p) => p.id);

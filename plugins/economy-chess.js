@@ -1,5 +1,6 @@
 import { loadUsers, saveUsers } from '../lib/database.js';
-const COOLDOWN_TIME = 10 * 60 * 1000;
+import { getUserId, getChatId } from '../lib/getUserId.js';
+const COOLDOWN_TIME = 15 * 60 * 1000;
 const chestResults = [
     { text: 'un cofre oxidado en el bosque', min: 100, max: 800 },
     { text: 'un cofre enterrado en la playa', min: 500, max: 1500 },

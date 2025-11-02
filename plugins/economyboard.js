@@ -1,4 +1,6 @@
 import { loadUsers } from '../lib/database.js';
+import { getUserId, getChatId } from '../lib/getUserId.js';
+
 const economyboardCommand = {
     name: 'economyboard',
     aliases: ['eboard', 'baltop'],
@@ -9,7 +11,7 @@ const economyboardCommand = {
     groupOnly: false,
     botAdminRequired: false,
     async execute(sock, msg, args) {
-        const chatId = msg.key.remoteJid;
+        const chatId = getChatId(msg);
         try {
             const users = await loadUsers();
             const userEntries = Object.entries(users);
@@ -21,7 +23,11 @@ const economyboardCommand = {
             }
             const sortedUsers = userEntries
                 .filter(([userId, _]) => !userId.includes('@g.us')) 
-                .sort(([, a], [, b]) => (b.coins || 0) - (a.coins || 0))
+                .sort(([, a], [, b]) => {
+                    const aTotal = ((a.economy?.coins || 0) + (a.economy?.bank || 0));
+                    const bTotal = ((b.economy?.coins || 0) + (b.economy?.bank || 0));
+                    return bTotal - aTotal;
+                })
                 .slice(0, 10);
             if (sortedUsers.length === 0) {
                 await sock.sendMessage(chatId, {
@@ -57,13 +63,17 @@ const economyboardCommand = {
                     leaderboard += `   │ 𝗣𝗼𝘀𝗶𝗰𝗶𝗼𝗻: #${position}\n`;
                     leaderboard += `   │ 𝗨𝘀𝘂𝗮𝗿𝗶𝗼: @${phoneNumber}\n`;
                     leaderboard += `   │ 𝗡𝗼𝗺𝗯𝗿𝗲: ${userData.name}\n`;
-                    leaderboard += `   │ 𝗖𝗼𝗶𝗻𝘀: ${formatCoins(userData.coins)} 💰\n`;
+                    leaderboard += `   │ 𝗖𝗼𝗶𝗻𝘀: ${formatCoins(userData.economy?.coins || 0)} 💰\n`;
+                    leaderboard += `   │ 𝗕𝗮𝗻𝗰𝗼: ${formatCoins(userData.economy?.bank || 0)} 🏦\n`;
+                    leaderboard += `   │ 𝗧𝗼𝘁𝗮𝗹: ${formatCoins((userData.economy?.coins || 0) + (userData.economy?.bank || 0))} 💎\n`;
                     leaderboard += `   ─────────────\n\n`;
                 }
                 else {
                     leaderboard += `${medal} ${position}. @${phoneNumber}\n`;
                     leaderboard += `   ├─ ${userData.name}\n`;
-                    leaderboard += `   └─ ${formatCoins(userData.coins)} Coins\n\n`;
+                    leaderboard += `   ├─ 💰 ${formatCoins(userData.economy?.coins || 0)} Coins\n`;
+                    leaderboard += `   ├─ 🏦 ${formatCoins(userData.economy?.bank || 0)} Bank\n`;
+                    leaderboard += `   └─ 💎 ${formatCoins((userData.economy?.coins || 0) + (userData.economy?.bank || 0))} Total\n\n`;
                 }
             }
             leaderboard += `╭─────────────────────────╮\n`;

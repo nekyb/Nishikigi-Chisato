@@ -1,4 +1,5 @@
 import { loadUsers, saveUsers } from '../lib/database.js';
+import { getUserId, getChatId } from '../lib/getUserId.js';
 const COOLDOWN_TIME = 5 * 60 * 1000;
 const slutResults = [
     { text: 'trabajaste como modelo de fotografía', min: 600, max: 2000 },

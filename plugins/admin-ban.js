@@ -1,5 +1,6 @@
 import { isGroupAdmin, createChannelButton } from '../lib/handler.js'
 import { isOwner } from '../config/bot.js'
+import { isBotAdmin, isUserAdmin } from '../lib/adminUtils.js'
 
 export default {
   command: 'ban',
@@ -11,15 +12,18 @@ export default {
     try {
       const groupMetadata = await sock.groupMetadata(chatId)
       const participants = groupMetadata.participants
-      const isBotAdmin = isGroupAdmin(participants, botNumber)
-      if (!isBotAdmin) {
+      
+      // Verificar si el bot es admin
+      const botIsAdmin = await isBotAdmin(sock, chatId)
+      if (!botIsAdmin) {
         return sock.sendMessage(chatId, createChannelButton(
           "૮₍˃̵֊ ˂̵ ₎ა Lo siento, no soy administrador en este grupo."
         ))
       }
 
-      const isUserAdmin = isGroupAdmin(participants, sender)
-      if (!isUserAdmin) {
+      // Verificar si el usuario es admin
+      const userIsAdmin = await isUserAdmin(sock, chatId, sender)
+      if (!userIsAdmin) {
         return sock.sendMessage(chatId, { 
           text: 'ꕤ Solo los administradores pueden usar este comando'
         })

@@ -101,13 +101,20 @@ async function connectToWhatsApp(options) {
             }
         }
         if (qr && !usePairingCode) {
-            console.log('📱 QR Code generado, enviando...');
-            const qrBuffer = await qrcode.toBuffer(qr, { scale: 8 });
-            const qrMsg = await conn.sendMessage(m.sender, {
-                image: qrBuffer,
-                caption: rtx
-            }, { quoted: m });
-            setTimeout(() => conn.sendMessage(m.sender, { delete: qrMsg.key }), 45000);
+            try {
+                console.log('📱 QR Code generado, enviando...');
+                const qrBuffer = await qrcode.toBuffer(qr, { scale: 8 });
+                const qrMsg = await conn.sendMessage(m.key.remoteJid, {
+                    image: qrBuffer,
+                    caption: rtx
+                }, { quoted: m });
+                setTimeout(() => {
+                    try {
+                        conn.sendMessage(m.key.remoteJid, { delete: qrMsg.key });
+                    } catch (err) {
+                        console.error('Error al eliminar QR:', err);
+                    }
+                }, 45000);
         }
     });
     sock.ev.on('creds.update', saveCreds);
@@ -126,7 +133,7 @@ const serbotCommand = {
     usage: '#serbot [--code]',
     ownerOnly: true,
     async execute(sock, msg, args) {
-        const sender = msg.sender.split('@')[0];
+        const sender = (msg.key.participant || msg.key.remoteJid).split('@')[0];
         const sessPath = path.join(__dirname, '../../../sessions/subbots', sender);
         if (global.conns.some(c => c.user?.id.split('@')[0] === sender)) {
             return sock.sendMessage(msg.sender, {
@@ -198,7 +205,7 @@ export const stopSerbotCommand = {
     usage: '#stopbot',
     ownerOnly: true,
     async execute(sock, msg, args) {
-        const sender = msg.sender.split('@')[0];
+        const sender = (msg.key.participant || msg.key.remoteJid).split('@')[0];
         const sessPath = path.join(__dirname, '../../../sessions/subbots', sender);
         const bot = global.conns.find(c => c.user?.id.split('@')[0] === sender);
         if (!bot) {

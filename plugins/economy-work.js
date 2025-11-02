@@ -1,4 +1,5 @@
-import { loadUsers, saveUsers } from '../lib/database.js';
+import { loadEconomy, saveEconomy } from '../lib/database.js';
+import { getUserId, getChatId, normalizeUserId } from '../lib/getUserId.js';
 const COOLDOWN_TIME = 7 * 60 * 1000;
 const workResponses = [
     { text: 'vendiendo globos durante toda la tarde', min: 500, max: 2000 },
@@ -22,23 +23,12 @@ const workCommand = {
     groupOnly: false,
     botAdminRequired: false,
     async execute(sock, msg, args) {
-        const chatId = msg.key.remoteJid;
-        const userId = msg.key.participant || msg.key.remoteJid;
+        const chatId = getChatId(msg);
+        const userId = getUserId(msg);
         try {
-            const users = await loadUsers();
-            if (!users[userId]) {
-                let userName = 'Usuario';
-                try {
-                    const contact = await sock.onWhatsApp(userId);
-                    if (contact && contact[0]?.notify) {
-                        userName = contact[0].notify;
-                    }
-                }
-                catch (e) {
-                    console.log('No se pudo obtener el nombre del usuario');
-                }
-                users[userId] = {
-                    name: userName,
+            const economy = await loadEconomy();
+            if (!economy[userId]) {
+                economy[userId] = {
                     coins: 0,
                     last_work: null,
                     last_daily: null,
@@ -49,7 +39,7 @@ const workCommand = {
                     registered_at: new Date().toISOString()
                 };
             }
-            const user = users[userId];
+            const user = economy[userId];
             if (user.last_work) {
                 const now = Date.now();
                 const lastWork = new Date(user.last_work).getTime();
@@ -70,7 +60,7 @@ const workCommand = {
             const earnedCoins = Math.floor(Math.random() * (randomWork.max - randomWork.min + 1)) + randomWork.min;
             user.coins += earnedCoins;
             user.last_work = new Date().toISOString();
-            await saveUsers(users);
+            await saveEconomy(economy);
             await sock.sendMessage(chatId, {
                 text: `ᯓ★ Has trabajado ${randomWork.text} y ganaste *${earnedCoins.toLocaleString()}* Coins.`
             }, { quoted: msg });
