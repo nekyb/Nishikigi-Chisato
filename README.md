@@ -94,8 +94,8 @@
 ## 👨‍💻 Sobre DeltaByte (Drexel)
 
 <div align="center">
-<img src="https://github-readme-stats.vercel.app/api?username=TU_USUARIO&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0D1117&title_color=A855F7&icon_color=A855F7" width="48%" />
-<img src="https://github-readme-streak-stats.herokuapp.com/?user=TU_USUARIO&theme=tokyonight&hide_border=true&background=0D1117&stroke=A855F7&ring=A855F7&fire=FF6B6B&currStreakLabel=A855F7" width="48%" />
+<img src="https://github-readme-stats.vercel.app/api?username=nekyb&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0D1117&title_color=A855F7&icon_color=A855F7" width="48%" />
+<img src="https://github-readme-streak-stats.herokuapp.com/?user=nekyb&theme=tokyonight&hide_border=true&background=0D1117&stroke=A855F7&ring=A855F7&fire=FF6B6B&currStreakLabel=A855F7" width="48%" />
 </div>
 
 Desarrollador **Full-Stack** especializado en **Back-End**, apasionado por la innovación y la creación de soluciones tecnológicas que marquen la diferencia.
@@ -199,5 +199,6 @@ Ver el archivo [LICENSE](LICENSE) para más detalles
 ![Visitors](https://visitor-badge.laobi.icu/badge?page_id=nekyb.nishikigi-chisato)
 ![Stars](https://img.shields.io/github/stars/nekyb/nishikigi-chisato?style=social)
 ![Forks](https://img.shields.io/github/forks/nekyb/nishikigi-chisato?style=social)
+
 
 </div>
