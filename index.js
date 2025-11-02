@@ -7,6 +7,7 @@ import { loadCommands } from './handlers/commands.js';
 import { handleMessage } from './handlers/messages.js';
 import { handleEvents } from './handlers/events.js';
 import { registerUser, checkUserRegistered } from './database/users.js';
+import makeWASocketLegacy, { useMultiFileAuthState as useLegacyAuth } from '@adiwajshing/baileys'
 
 const logger = pino({
     level: process.env.LOG_LEVEL || 'silent'
