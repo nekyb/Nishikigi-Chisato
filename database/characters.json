@@ -4989,8 +4989,8 @@
       "https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1742846768187.mp4",
       "https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1742846759178.mp4"
     ],
-    "user": null,
-    "status": "Libre",
+    "user": "170893057728762@s.whatsapp.net",
+    "status": "Reclamado",
     "votes": 0
   },
   {
@@ -6495,6 +6495,63 @@
     ],
     "user": null,
     "status": "Libre",
+    "votes": 0
+  },
+  {
+    "id": "356",
+    "name": "Cyn",
+    "gender": "Mujer",
+    "value": "500000",
+    "source": "Murder Drones",
+    "img": [
+      "https://rogddqelmxyuvhpjvxbf.supabase.co/storage/v1/object/public/files/qku25j0fvs.jpg",
+      "https://rogddqelmxyuvhpjvxbf.supabase.co/storage/v1/object/public/files/7k1va7wlmh6.jpg",
+      "https://rogddqelmxyuvhpjvxbf.supabase.co/storage/v1/object/public/files/qku25j0fvs.jpg"
+    ],
+    "vid": [
+      "https://files.catbox.moe/fydk.mp4",
+      "https://files.catbox.moe/l2tscdfh.mp4"
+    ],
+    "user": "184147192578115@lid",
+    "status": "Reclamado",
+    "votes": 0
+  },
+  {
+    "id": "357",
+    "name": "Uzi",
+    "gender": "Mujer",
+    "value": "3200",
+    "source": "Murder Drones",
+    "img": [
+      "https://rogddqelmxyuvhpjvxbf.supabase.co/storage/v1/object/public/files/tivllcnyuwc.jpg",
+      "https://rogddqelmxyuvhpjvxbf.supabase.co/storage/v1/object/public/files/tivllcnyuwc.jpg",
+      "https://rogddqelmxyuvhpjvxbf.supabase.co/storage/v1/object/public/files/tivllcnyuwc.jpg"
+    ],
+    "vid": [
+      "https://files.catbox.moe/fydswk.mp4",
+      "https://files.catbox.moe/l2tscdfwwwh.mp4"
+    ],
+    "user": "184147192578115@lid",
+    "status": "Reclamado",
+    "votes": 0
+  },
+  {
+    "id": "358",
+    "name": "Absolute Solver",
+    "gender": "No Identificado",
+    "value": "7361",
+    "source": "Murder Drones",
+    "img": [
+      "https://rogddqelmxyuvhpjvxbf.supabase.co/storage/v1/object/public/files/qez4lqz7x9.jpg",
+      "https://rogddqelmxyuvhpjvxbf.supabase.co/storage/v1/object/public/files/qez4lqz7x9.jpg",
+      "https://rogddqelmxyuvhpjvxbf.supabase.co/storage/v1/object/public/files/qez4lqz7x9.jpg"
+    ],
+    "vid": [
+      "https://files.catbox.moe/fydswk.mp4",
+      "https://files.catbox.moe/l2tscdfwwwh.mp4"
+    ],
+    "user": "184147192578115@lid",
+    "status": "Reclamado",
     "votes": 0
   }
 ]

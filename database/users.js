@@ -1,64 +1,63 @@
-import { promises as fs } from 'fs';
-import path from 'path';
+import { promises as fs } from 'fs'
+import path from 'path'
 
-const usersFilePath = path.join(process.cwd(), 'database', 'users.json');
-const groupsFilePath = path.join(process.cwd(), 'database', 'groups.json');
-
+const usersFilePath = path.join(process.cwd(), 'database', 'users.json')
+const groupsFilePath = path.join(process.cwd(), 'database', 'groups.json')
 async function ensureFile(filePath, defaultData = []) {
     try {
-        await fs.access(filePath);
-        const content = await fs.readFile(filePath, 'utf-8');
+        await fs.access(filePath)
+        const content = await fs.readFile(filePath, 'utf-8')
         if (!content || content.trim() === '') {
-            await fs.writeFile(filePath, JSON.stringify(defaultData, null, 2), 'utf-8');
+            await fs.writeFile(filePath, JSON.stringify(defaultData, null, 2), 'utf-8')
         }
     } catch {
-        await fs.mkdir(path.dirname(filePath), { recursive: true });
-        await fs.writeFile(filePath, JSON.stringify(defaultData, null, 2), 'utf-8');
+        await fs.mkdir(path.dirname(filePath), { recursive: true })
+        await fs.writeFile(filePath, JSON.stringify(defaultData, null, 2), 'utf-8')
     }
 }
 
 async function loadUsers() {
-    await ensureFile(usersFilePath);
+    await ensureFile(usersFilePath)
     try {
-        const data = await fs.readFile(usersFilePath, 'utf-8');
+        const data = await fs.readFile(usersFilePath, 'utf-8')
         if (!data || data.trim() === '') {
-            return [];
+            return []
         }
-        return JSON.parse(data);
+        return JSON.parse(data)
     } catch (error) {
-        console.error('Error parseando users.json, recreando archivo:', error);
-        await fs.writeFile(usersFilePath, JSON.stringify([], null, 2), 'utf-8');
-        return [];
+        console.error('Error parseando users.json, recreando archivo:', error)
+        await fs.writeFile(usersFilePath, JSON.stringify([], null, 2), 'utf-8')
+        return []
     }
 }
 
 async function saveUsers(users) {
-    await fs.writeFile(usersFilePath, JSON.stringify(users, null, 2), 'utf-8');
+    await fs.writeFile(usersFilePath, JSON.stringify(users, null, 2), 'utf-8')
 }
 
 async function loadGroups() {
-    await ensureFile(groupsFilePath);
+    await ensureFile(groupsFilePath)
     try {
-        const data = await fs.readFile(groupsFilePath, 'utf-8');
+        const data = await fs.readFile(groupsFilePath, 'utf-8')
         if (!data || data.trim() === '') {
-            return [];
+            return []
         }
-        return JSON.parse(data);
+        return JSON.parse(data)
     } catch (error) {
-        console.error('Error parseando groups.json, recreando archivo:', error);
-        await fs.writeFile(groupsFilePath, JSON.stringify([], null, 2), 'utf-8');
-        return [];
+        console.error('Error parseando groups.json, recreando archivo:', error)
+        await fs.writeFile(groupsFilePath, JSON.stringify([], null, 2), 'utf-8')
+        return []
     }
 }
 
 async function saveGroups(groups) {
-    await fs.writeFile(groupsFilePath, JSON.stringify(groups, null, 2), 'utf-8');
+    await fs.writeFile(groupsFilePath, JSON.stringify(groups, null, 2), 'utf-8')
 }
 
 export async function registerUser(userData) {
     try {
         const users = await loadUsers();
-        const existingUser = users.find(u => u.user_id === userData.userId);
+        const existingUser = users.find(u => u.user_id === userData.userId)
         if (existingUser) {
             return false;
         }
@@ -68,81 +67,104 @@ export async function registerUser(userData) {
             registered_at: userData.registeredAt,
             is_banned: false,
             created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
+            updated_at: new Date().toISOString(),
+            economy: {
+                coins: 1000,
+                bank: 0,
+                last_daily: null,
+                last_work: null,
+                inventory: [],
+                stats: {
+                    commands_used: 0,
+                    messages_sent: 0,
+                    items_bought: 0,
+                    items_sold: 0
+                }
+            },
+            settings: {
+                notifications: true,
+                language: "es"
+            },
+            achievements: [],
+            xp: {
+                level: 1,
+                current: 0,
+                required: 100
+            }
         };
-        users.push(newUser);
-        await saveUsers(users);
-        return true;
+        users.push(newUser)
+        await saveUsers(users)
+        return true
     } catch (error) {
-        console.error('Error en registerUser:', error);
-        return false;
+        console.error('Error en registerUser:', error)
+        return false
     }
 }
 
 export async function checkUserRegistered(userId) {
     try {
-        const users = await loadUsers();
-        return users.some(u => u.user_id === userId);
+        const users = await loadUsers()
+        return users.some(u => u.user_id === userId)
     } catch (error) {
-        console.error('Error en checkUserRegistered:', error);
-        return false;
+        console.error('Error en checkUserRegistered:', error)
+        return false
     }
 }
 
 export async function getUser(userId) {
     try {
-        const users = await loadUsers();
-        return users.find(u => u.user_id === userId) || null;
+        const users = await loadUsers()
+        return users.find(u => u.user_id === userId) || null
     } catch (error) {
-        console.error('Error en getUser:', error);
-        return null;
+        console.error('Error en getUser:', error)
+        return null
     }
 }
 
 export async function isUserBanned(userId) {
     try {
-        const user = await getUser(userId);
-        return user?.is_banned || false;
+        const user = await getUser(userId)
+        return user?.is_banned || false
     } catch (error) {
-        console.error('Error en isUserBanned:', error);
-        return false;
+        console.error('Error en isUserBanned:', error)
+        return false
     }
 }
 
 export async function setBanStatus(userId, banned) {
     try {
-        const users = await loadUsers();
-        const userIndex = users.findIndex(u => u.user_id === userId);
+        const users = await loadUsers()
+        const userIndex = users.findIndex(u => u.user_id === userId)
         if (userIndex === -1) {
-            return false;
+            return false
         }
-        users[userIndex].is_banned = banned;
-        users[userIndex].updated_at = new Date().toISOString();
-        await saveUsers(users);
-        return true;
+        users[userIndex].is_banned = banned
+        users[userIndex].updated_at = new Date().toISOString()
+        await saveUsers(users)
+        return true
     } catch (error) {
-        console.error('Error en setBanStatus:', error);
-        return false;
+        console.error('Error en setBanStatus:', error)
+        return false
     }
 }
 
 export async function getGroupSettings(groupId) {
     try {
-        const groups = await loadGroups();
-        let group = groups.find(g => g.group_id === groupId);
+        const groups = await loadGroups()
+        let group = groups.find(g => g.group_id === groupId)
         if (!group) {
-            return await createGroupSettings(groupId);
+            return await createGroupSettings(groupId)
         }
-        return group;
+        return group
     } catch (error) {
-        console.error('Error en getGroupSettings:', error);
-        return null;
+        console.error('Error en getGroupSettings:', error)
+        return null
     }
 }
 
 export async function createGroupSettings(groupId) {
     try {
-        const groups = await loadGroups();
+        const groups = await loadGroups()
         const newGroup = {
             group_id: groupId,
             alertas: true,
@@ -151,55 +173,163 @@ export async function createGroupSettings(groupId) {
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString()
         };
-        groups.push(newGroup);
-        await saveGroups(groups);
+        groups.push(newGroup)
+        await saveGroups(groups)
         return newGroup;
     } catch (error) {
-        console.error('Error en createGroupSettings:', error);
-        return null;
+        console.error('Error en createGroupSettings:', error)
+        return null
     }
 }
 
 export async function updateGroupSettings(groupId, settings) {
     try {
-        const groups = await loadGroups();
-        const groupIndex = groups.findIndex(g => g.group_id === groupId);
+        const groups = await loadGroups()
+        const groupIndex = groups.findIndex(g => g.group_id === groupId)
         if (groupIndex === -1) {
-            return false;
+            return false
         }
         groups[groupIndex] = {
             ...groups[groupIndex],
             ...settings,
             updated_at: new Date().toISOString()
-        };
-        await saveGroups(groups);
+        }
+        await saveGroups(groups)
         return true;
     } catch (error) {
-        console.error('Error en updateGroupSettings:', error);
+        console.error('Error en updateGroupSettings:', error)
         return false;
     }
 }
 
 export async function getAllUsers() {
     try {
-        const users = await loadUsers();
+        const users = await loadUsers()
         return users.sort((a, b) => {
-            const dateA = new Date(a.created_at || 0).getTime();
-            const dateB = new Date(b.created_at || 0).getTime();
-            return dateB - dateA;
+            const dateA = new Date(a.created_at || 0).getTime()
+            const dateB = new Date(b.created_at || 0).getTime()
+            return dateB - dateA
         });
     } catch (error) {
-        console.error('Error en getAllUsers:', error);
-        return [];
+        console.error('Error en getAllUsers:', error)
+        return []
     }
 }
 
 export async function countUsers() {
     try {
-        const users = await loadUsers();
-        return users.length;
+        const users = await loadUsers()
+        return users.length
     } catch (error) {
-        console.error('Error en countUsers:', error);
-        return 0;
+        console.error('Error en countUsers:', error)
+        return 0
+    }
+}
+
+export async function updateUser(userId, updates) {
+    try {
+        const users = await loadUsers();
+        const userIndex = users.findIndex(u => u.user_id === userId);
+        if (userIndex === -1) return false;
+        
+        users[userIndex] = {
+            ...users[userIndex],
+            ...updates,
+            updated_at: new Date().toISOString()
+        };
+        
+        await saveUsers(users);
+        return users[userIndex];
+    } catch (error) {
+        console.error('Error en updateUser:', error);
+        return false;
+    }
+}
+
+export async function addCoins(userId, amount) {
+    try {
+        const users = await loadUsers()
+        const userIndex = users.findIndex(u => u.user_id === userId)
+        if (userIndex === -1) return false
+
+        if (!users[userIndex].economy) {
+            users[userIndex].economy = {
+                coins: 0,
+                bank: 0,
+                last_daily: null,
+                last_work: null,
+                inventory: [],
+                stats: {
+                    commands_used: 0,
+                    messages_sent: 0,
+                    items_bought: 0,
+                    items_sold: 0
+                }
+            }
+        }
+
+        users[userIndex].economy.coins = (users[userIndex].economy.coins || 0) + amount
+        users[userIndex].updated_at = new Date().toISOString()
+        await saveUsers(users)
+        return users[userIndex].economy.coins
+    } catch (error) {
+        console.error('Error en addCoins:', error)
+        return false
+    }
+}
+
+export async function removeCoins(userId, amount) {
+    try {
+        const users = await loadUsers()
+        const userIndex = users.findIndex(u => u.user_id === userId)
+        if (userIndex === -1) return false
+
+        if (!users[userIndex].economy || users[userIndex].economy.coins < amount) {
+            return false
+        }
+
+        users[userIndex].economy.coins -= amount
+        users[userIndex].updated_at = new Date().toISOString()
+        await saveUsers(users)
+        return users[userIndex].economy.coins
+    } catch (error) {
+        console.error('Error en removeCoins:', error)
+        return false
+    }
+}
+
+export async function updateUserStats(userId, stat, value = 1) {
+    try {
+        const users = await loadUsers()
+        const userIndex = users.findIndex(u => u.user_id === userId)
+        if (userIndex === -1) return false
+
+        if (!users[userIndex].economy) {
+            users[userIndex].economy = {
+                coins: 0,
+                bank: 0,
+                last_daily: null,
+                last_work: null,
+                inventory: [],
+                stats: {
+                    commands_used: 0,
+                    messages_sent: 0,
+                    items_bought: 0,
+                    items_sold: 0
+                }
+            }
+        }
+
+        if (!users[userIndex].economy.stats[stat]) {
+            users[userIndex].economy.stats[stat] = 0
+        }
+
+        users[userIndex].economy.stats[stat] += value
+        users[userIndex].updated_at = new Date().toISOString()
+        await saveUsers(users)
+        return users[userIndex].economy.stats[stat]
+    } catch (error) {
+        console.error('Error en updateUserStats:', error)
+        return false
     }
 }

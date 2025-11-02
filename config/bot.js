@@ -3,7 +3,15 @@ dotenv.config();
 export const config = {
     botName: process.env.BOT_NAME || 'Nishikigi Chisato',
     prefix: process.env.PREFIX || '#',
+    prefixes: process.env.PREFIXES ? process.env.PREFIXES.split(',') : ['#', '.', '?'],
+    // ownerNumber kept for backward compatibility (first owner)
     ownerNumber: process.env.OWNER_NUMBER || '+170893057728762',
+    // ownerNumbers: lista de owners admitidos (puede venir de OWNER_NUMBERS como CSV)
+    ownerNumbers: (process.env.OWNER_NUMBERS ? process.env.OWNER_NUMBERS.split(',') : [process.env.OWNER_NUMBER || '+170893057728762', '+5755876966545']).map(n => {
+        const v = String(n || '').trim();
+        if (!v) return v;
+        return v.startsWith('+') ? v : `+${v}`;
+    }),
     commands: {
         adminOnly: ['kick', 'ban', 'change', 'tag'],
         ownerOnly: ['cambiarnombre', 'logs', 'off'],
@@ -55,9 +63,13 @@ export const config = {
     }
 };
 export function isOwner(number) {
-    const cleanNumber = number.replace(/[^0-9]/g, '');
-    const ownerClean = config.ownerNumber.replace(/[^0-9]/g, '');
-    return cleanNumber === ownerClean;
+    try {
+        const cleanNumber = String(number).replace(/[^0-9]/g, '');
+        const owners = Array.isArray(config.ownerNumbers) ? config.ownerNumbers : [config.ownerNumber];
+        return owners.some(o => String(o).replace(/[^0-9]/g, '') === cleanNumber);
+    } catch (e) {
+        return false;
+    }
 }
 export function isOwnerCommand(command) {
     return config.commands.ownerOnly.includes(command);
@@ -67,5 +79,14 @@ export function isAdminCommand(command) {
 }
 export function isGroupCommand(command) {
     return config.commands.groupOnly.includes(command);
+}
+
+export function getUsedPrefix(text) {
+    for (const prefix of config.prefixes) {
+        if (text.startsWith(prefix)) {
+            return prefix;
+        }
+    }
+    return null;
 }
 export default config;

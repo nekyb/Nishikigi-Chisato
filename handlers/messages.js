@@ -1,5 +1,5 @@
-import { config, isOwner, isOwnerCommand, isAdminCommand, isGroupCommand } from '../config/bot.js';
-import { isUserAdmin, isBotAdmin } from './events.js';
+import { config, isOwner, isOwnerCommand, isAdminCommand, isGroupCommand, getUsedPrefix } from '../config/bot.js';
+import { isUserAdmin, isBotAdmin } from '../utils/permissions.js';
 import { isUserBanned } from '../database/users.js';
 import antilinkEvent from '../events/antilink.js';
 import baileys from '@whiskeysockets/baileys';
@@ -54,10 +54,12 @@ export async function handleMessage(sock, msg, commands, events) {
         const messageText = getMessageText(msg)
         if (!messageText)
             return
-        if (!messageText.startsWith(config.prefix))
+        
+        const usedPrefix = getUsedPrefix(messageText)
+        if (!usedPrefix)
             return
         
-        const args = messageText.slice(config.prefix.length).trim().split(/\s+/)
+        const args = messageText.slice(usedPrefix.length).trim().split(/\s+/)
         const commandName = args.shift()?.toLowerCase()
         if (!commandName)
             return
@@ -65,7 +67,7 @@ export async function handleMessage(sock, msg, commands, events) {
         if (!command)
             return
         if (config.logs.commands) {
-            console.log(`📝 Comando: ${commandName} | Usuario: ${userNumber} | Grupo: ${isGroup ? 'Sí' : 'No'}`);
+            console.log(`📝 Comando: ${usedPrefix}${commandName} | Usuario: ${userNumber} | Grupo: ${isGroup ? 'Sí' : 'No'}`);
         }
         const canExecute = await checkCommandPermissions(sock, msg, command, senderId, chatId, isGroup);
         if (!canExecute)
