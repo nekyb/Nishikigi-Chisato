@@ -1,4 +1,4 @@
-import { jidNormalizedUser } from '@whiskeysockets/baileys';
+import { jidNormalizedUser } from '@neoxr/baileys';
 import alertasEvent from '../events/alertas.js';
 import welcomeEvent from '../events/welcome.js';
 import antiarabes from '../events/antiarab.js';
