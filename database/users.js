@@ -3,6 +3,8 @@ import path from 'path'
 
 const usersFilePath = path.join(process.cwd(), 'database', 'users.json')
 const groupsFilePath = path.join(process.cwd(), 'database', 'groups.json')
+const warningsFilePath = path.join(process.cwd(), 'database', 'warnings.json')
+
 async function ensureFile(filePath, defaultData = []) {
     try {
         await fs.access(filePath)
@@ -52,6 +54,25 @@ async function loadGroups() {
 
 async function saveGroups(groups) {
     await fs.writeFile(groupsFilePath, JSON.stringify(groups, null, 2), 'utf-8')
+}
+
+async function loadWarnings() {
+    await ensureFile(warningsFilePath, {})
+    try {
+        const data = await fs.readFile(warningsFilePath, 'utf-8')
+        if (!data || data.trim() === '') {
+            return {}
+        }
+        return JSON.parse(data)
+    } catch (error) {
+        console.error('Error parseando warnings.json, recreando archivo:', error)
+        await fs.writeFile(warningsFilePath, JSON.stringify({}, null, 2), 'utf-8')
+        return {}
+    }
+}
+
+async function saveWarnings(warnings) {
+    await fs.writeFile(warningsFilePath, JSON.stringify(warnings, null, 2), 'utf-8')
 }
 
 export async function registerUser(userData) {
@@ -169,6 +190,7 @@ export async function createGroupSettings(groupId) {
             group_id: groupId,
             alertas: true,
             antilink: false,
+            antinsfw: false,
             welcome: true,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString()
@@ -330,6 +352,137 @@ export async function updateUserStats(userId, stat, value = 1) {
         return users[userIndex].economy.stats[stat]
     } catch (error) {
         console.error('Error en updateUserStats:', error)
+        return false
+    }
+}
+
+// ============================================
+// SISTEMA DE WARNINGS
+// ============================================
+
+/**
+ * Actualiza las advertencias de un usuario en un grupo
+ * @param {string} groupJid - ID del grupo
+ * @param {string} userJid - ID del usuario
+ * @param {number} warnings - Número de advertencias
+ * @returns {Promise<boolean>}
+ */
+export async function updateGroupWarnings(groupJid, userJid, warnings) {
+    try {
+        const warningsData = await loadWarnings()
+        
+        if (!warningsData[groupJid]) {
+            warningsData[groupJid] = {}
+        }
+        
+        warningsData[groupJid][userJid] = {
+            count: warnings,
+            lastUpdate: new Date().toISOString(),
+            expiresAt: new Date(Date.now() + 3600000).toISOString() // 1 hora
+        }
+        
+        await saveWarnings(warningsData)
+        return true
+    } catch (error) {
+        console.error('Error en updateGroupWarnings:', error)
+        return false
+    }
+}
+
+/**
+ * Obtiene las advertencias de un usuario en un grupo
+ * @param {string} groupJid - ID del grupo
+ * @param {string} userJid - ID del usuario
+ * @returns {Promise<number>}
+ */
+export async function getGroupWarnings(groupJid, userJid) {
+    try {
+        const warningsData = await loadWarnings()
+        
+        if (!warningsData[groupJid] || !warningsData[groupJid][userJid]) {
+            return 0
+        }
+        
+        const userData = warningsData[groupJid][userJid]
+        
+        // Verificar si las advertencias expiraron
+        if (new Date(userData.expiresAt) < new Date()) {
+            await updateGroupWarnings(groupJid, userJid, 0)
+            return 0
+        }
+        
+        return userData.count || 0
+    } catch (error) {
+        console.error('Error en getGroupWarnings:', error)
+        return 0
+    }
+}
+
+/**
+ * Limpia las advertencias expiradas
+ * @returns {Promise<boolean>}
+ */
+export async function cleanExpiredWarnings() {
+    try {
+        const warningsData = await loadWarnings()
+        const now = new Date()
+        let hasChanges = false
+        
+        for (const groupJid in warningsData) {
+            for (const userJid in warningsData[groupJid]) {
+                const userData = warningsData[groupJid][userJid]
+                
+                if (new Date(userData.expiresAt) < now) {
+                    delete warningsData[groupJid][userJid]
+                    hasChanges = true
+                }
+            }
+            
+            // Eliminar grupos vacíos
+            if (Object.keys(warningsData[groupJid]).length === 0) {
+                delete warningsData[groupJid]
+            }
+        }
+        
+        if (hasChanges) {
+            await saveWarnings(warningsData)
+        }
+        
+        return true
+    } catch (error) {
+        console.error('Error en cleanExpiredWarnings:', error)
+        return false
+    }
+}
+
+/**
+ * Obtiene todas las advertencias de un grupo
+ * @param {string} groupJid - ID del grupo
+ * @returns {Promise<Object>}
+ */
+export async function getAllGroupWarnings(groupJid) {
+    try {
+        const warningsData = await loadWarnings()
+        return warningsData[groupJid] || {}
+    } catch (error) {
+        console.error('Error en getAllGroupWarnings:', error)
+        return {}
+    }
+}
+
+/**
+ * Resetea todas las advertencias de un grupo
+ * @param {string} groupJid - ID del grupo
+ * @returns {Promise<boolean>}
+ */
+export async function resetGroupWarnings(groupJid) {
+    try {
+        const warningsData = await loadWarnings()
+        delete warningsData[groupJid]
+        await saveWarnings(warningsData)
+        return true
+    } catch (error) {
+        console.error('Error en resetGroupWarnings:', error)
         return false
     }
 }

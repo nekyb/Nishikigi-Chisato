@@ -153,5 +153,284 @@
       "current": 0,
       "required": 100
     }
+  },
+  {
+    "user_id": "178052231340271",
+    "name": "Axel",
+    "registered_at": "2025-11-03T01:57:37.423Z",
+    "is_banned": false,
+    "created_at": "2025-11-03T01:57:37.426Z",
+    "updated_at": "2025-11-03T01:57:37.426Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "66611033710670",
+    "name": "Hitori",
+    "registered_at": "2025-11-03T01:57:44.645Z",
+    "is_banned": false,
+    "created_at": "2025-11-03T01:57:44.646Z",
+    "updated_at": "2025-11-03T01:57:44.646Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "146690464084114",
+    "name": "...",
+    "registered_at": "2025-11-03T01:58:52.355Z",
+    "is_banned": false,
+    "created_at": "2025-11-03T01:58:52.357Z",
+    "updated_at": "2025-11-03T01:58:52.357Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "262036575486149",
+    "name": "Alejandro",
+    "registered_at": "2025-11-03T03:23:22.594Z",
+    "is_banned": false,
+    "created_at": "2025-11-03T03:23:22.597Z",
+    "updated_at": "2025-11-03T03:23:22.597Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "231542223843427",
+    "name": "Frn",
+    "registered_at": "2025-11-03T03:23:44.028Z",
+    "is_banned": false,
+    "created_at": "2025-11-03T03:23:44.033Z",
+    "updated_at": "2025-11-03T03:23:44.033Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "144577289805867",
+    "name": "Seb",
+    "registered_at": "2025-11-03T03:24:02.363Z",
+    "is_banned": false,
+    "created_at": "2025-11-03T03:24:02.367Z",
+    "updated_at": "2025-11-03T03:24:02.367Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "90023101747205",
+    "name": "yo",
+    "registered_at": "2025-11-03T04:21:40.911Z",
+    "is_banned": false,
+    "created_at": "2025-11-03T04:21:40.912Z",
+    "updated_at": "2025-11-03T04:21:40.912Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "249679803592711",
+    "name": "Desert",
+    "registered_at": "2025-11-03T04:24:34.395Z",
+    "is_banned": false,
+    "created_at": "2025-11-03T04:24:34.398Z",
+    "updated_at": "2025-11-03T04:24:34.398Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "229089864642645",
+    "name": "🥷🏽✨ゲール✨🥷🏽",
+    "registered_at": "2025-11-03T05:15:38.532Z",
+    "is_banned": false,
+    "created_at": "2025-11-03T05:15:38.534Z",
+    "updated_at": "2025-11-03T05:15:38.534Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
   }
 ]
