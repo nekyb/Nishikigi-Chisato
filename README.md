@@ -128,6 +128,36 @@ const DeltaByte = {
 
 ---
 
+## Genesis
+
+<div align="center" style="display: flex; align-items: center; justify-content: center; gap: 20px;">
+
+  <img src="https://rogddqelmxyuvhpjvxbf.supabase.co/storage/v1/object/public/files/v17xyixfsi.jpeg" 
+       alt="Genesis Logo" 
+       width="120" 
+       style="border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);"/>
+
+  <div style="text-align: left;">
+    <h1 style="font-family: 'Google Sans', sans-serif; font-size: 28px; margin: 0;">Genesis OziUpdate</h1>
+    <p style="font-family: 'Google Sans', sans-serif; font-size: 16px; color: #888; margin: 4px 0 0 0;">
+      la inteligencia artificial, no tiene límites
+    </p>
+  </div>
+
+</div>
+
+---
+
+<p align="center">
+  ✨ Proyecto impulsado por creatividad e innovación ✨
+</p>
+
+>  **¡IMPORTANT!**
+> 
+> Genesis esta creado por Soblend Development Studio en colaboracion con JJSnice Team los creadores de Ozireth, queremos darles las gracias a ellos por su modelo > de inteligencia artificial
+
+---
+
 ## Colaboradores
 
 Mira quienes ayudaron a este proyecto a mejorar poco a poco, sin su ayuda, no estariamos a este alcanze.
@@ -202,3 +232,4 @@ Ver el archivo [LICENSE](LICENSE) para más detalles
 
 
 </div>
+
