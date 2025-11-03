@@ -2,7 +2,6 @@
 
 import axios from 'axios'
 import yts from 'yt-search'
-import { prepareWAMessageMedia, generateWAMessageFromContent, proto } from '@whiskeysockets/baileys'
 
 const MAX_FILE_SIZE = 280 * 1024 * 1024
 const VIDEO_THRESHOLD = 70 * 1024 * 1024
@@ -267,7 +266,7 @@ No se encontraron videos para tu búsqueda
 
       const video = searchResults[0]
 
-      const body = `╭────────────────────╮
+      const caption = `╭────────────────────╮
 │  🎬 *YOUTUBE SEARCH*  │
 ╰────────────────────╯
 
@@ -276,74 +275,34 @@ No se encontraron videos para tu búsqueda
 📅 *Publicado:* ${video.ago}
 📺 *Canal:* ${video.author.name}
 
-Elige una opción para descargar:
+✨ Elige una opción para descargar:
 
 > _*By Soblend | Development Studio Creative*_`
 
-      // Preparar imagen
-      const mediaMessage = await prepareWAMessageMedia(
-        { image: { url: video.image } },
-        { upload: sock.waUploadToServer }
-      )
-
-      // Crear mensaje con botones interactivos
-      const interactiveMessage = {
-        body: proto.Message.InteractiveMessage.Body.create({
-          text: body
-        }),
-        footer: proto.Message.InteractiveMessage.Footer.create({
-          text: 'Genesis YouTube Downloader'
-        }),
-        header: proto.Message.InteractiveMessage.Header.create({
-          title: '🎬 YouTube Video',
-          hasMediaAttachment: true,
-          imageMessage: mediaMessage.imageMessage
-        }),
-        nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
-          buttons: [
-            {
-              name: 'quick_reply',
-              buttonParamsJson: JSON.stringify({
-                display_text: '🎧 Audio MP3',
-                id: `#ytmp3 ${video.url}`
-              })
-            },
-            {
-              name: 'quick_reply',
-              buttonParamsJson: JSON.stringify({
-                display_text: '📽️ Video MP4',
-                id: `#ytmp4 ${video.url}`
-              })
-            },
-            {
-              name: 'quick_reply',
-              buttonParamsJson: JSON.stringify({
-                display_text: '💿 Audio Doc',
-                id: `#ytmp3doc ${video.url}`
-              })
-            },
-            {
-              name: 'quick_reply',
-              buttonParamsJson: JSON.stringify({
-                display_text: '🎥 Video Doc',
-                id: `#ytmp4doc ${video.url}`
-              })
-            }
-          ]
-        })
-      }
-
-      const message = generateWAMessageFromContent(chatId, {
-        viewOnceMessage: {
-          message: {
-            interactiveMessage: proto.Message.InteractiveMessage.create(interactiveMessage)
+      // Enviar mensaje con imagen y botones
+      await sock.sendMessage(chatId, {
+        image: { url: video.image },
+        caption: caption,
+        footer: "Genesis YouTube Downloader",
+        buttons: [
+          { 
+            buttonId: `ytmp3 ${video.url}`, 
+            buttonText: { displayText: "🎧 Audio MP3" }, 
+            type: 1 
+          },
+          { 
+            buttonId: `ytmp4 ${video.url}`, 
+            buttonText: { displayText: "📽️ Video MP4" }, 
+            type: 1 
+          },
+          { 
+            buttonId: `ytmp3doc ${video.url}`, 
+            buttonText: { displayText: "💿 Audio Doc" }, 
+            type: 1 
           }
-        }
+        ],
+        headerType: 4
       }, { quoted: msg })
-
-      await sock.relayMessage(chatId, message.message, {
-        messageId: message.key.id
-      })
 
     } catch (error) {
       console.error('Error en comando ytmp4:', error)

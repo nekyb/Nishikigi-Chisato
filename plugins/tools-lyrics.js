@@ -16,7 +16,7 @@ const lyricsCommand = {
         
         try {
             if (args.length === 0) {
-                return await sock.sendMessage(chatId, {
+                await sock.sendMessage(chatId, {
                     text: `《✧》 *Buscador de Letras*\n\n` +
                         `*Ejemplos:*\n` +
                         `✿ #lyrics Queen Bohemian Rhapsody\n` +
@@ -24,6 +24,7 @@ const lyricsCommand = {
                         `✿ #song The Weeknd Blinding Lights\n\n` +
                         `💡 Formato: artista + canción`
                 });
+                return
             }
 
             const query = args.join(' ');
@@ -42,10 +43,28 @@ const lyricsCommand = {
                 text: '《✧》 Buscando letra de la canción...'
             });
             
-            const result = await findLyrics(artist, title);
+            let result;
+            try {
+                if (typeof findLyrics === 'function') {
+                    result = await findLyrics(artist, title);
+                } else if (typeof findLyricsModule === 'function') {
+                    result = await findLyricsModule(artist, title);
+                } else {
+                    throw new Error('Módulo de letras no disponible');
+                }
+            } catch (moduleError) {
+                console.error('Error con el módulo findLyrics:', moduleError);
+                await sock.sendMessage(chatId, {
+                    text: `《✧》 El servicio de letras no está disponible temporalmente.\n\n` +
+                        `💡 *Alternativas:*\n` +
+                        `✿ Busca en Genius.com\n` +
+                        `✿ Intenta más tarde`
+                }, { quoted: msg });
+                return
+            }
 
             if (!result || !result.lyrics) {
-                return await sock.sendMessage(chatId, {
+                await sock.sendMessage(chatId, {
                     text: `《✧》 No se encontró la letra de "${query}"\n\n` +
                         `💡 *Tips:*\n` +
                         `✿ Usa el formato: artista canción\n` +
@@ -53,6 +72,7 @@ const lyricsCommand = {
                         `✿ Verifica la ortografía\n` +
                         `✿ Intenta con el título en inglés`
                 }, { quoted: msg });
+                return
             }
 
             const lyricsText = result.lyrics.trim();
@@ -81,15 +101,16 @@ const lyricsCommand = {
                         currentFragment += line + '\n';
                     }
                 }
+                
                 if (currentFragment.trim()) {
                     fragments.push(currentFragment.trim());
                 }
 
                 const header = `《✧》 *Letra de Canción*\n\n` +
-                    `🎵 *Canción:* ${result.title || title}\n` +
-                    `🎤 *Artista:* ${result.artist || artist}\n` +
-                    `🌐 *Fuente:* ${result.source || 'Web'}\n` +
-                    `📄 *Partes:* ${fragments.length}\n\n` +
+                    `✩ *Canción:* ${result.title || title}\n` +
+                    `✩ *Artista:* ${result.artist || artist}\n` +
+                    `✩ *Fuente:* ${result.source || 'Web'}\n` +
+                    `✩ *Partes:* ${fragments.length}\n\n` +
                     `━━━━━━━━━━━━━━━━━━━\n\n`;
 
                 await sock.sendMessage(chatId, {

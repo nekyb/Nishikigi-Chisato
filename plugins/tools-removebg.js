@@ -1,5 +1,7 @@
 import axios from 'axios'
 import FormData from 'form-data'
+import { downloadMediaMessage } from '@neoxr/baileys'
+
 const removebgCommand = {
     name: 'removebg',
     aliases: ['nobg', 'rembg'],
@@ -12,39 +14,67 @@ const removebgCommand = {
     async execute(sock, msg, args) {
         const chatId = msg.key.remoteJid;
         const API_KEY = 'XHZ5spgQ1RPgPJHx5RfVV8V8'
+        
         try {
             let imageBuffer = null
             let imageMessage = msg.message?.imageMessage
+            
             if (!imageMessage && msg.message?.extendedTextMessage?.contextInfo?.quotedMessage) {
                 imageMessage = msg.message.extendedTextMessage.contextInfo.quotedMessage.imageMessage
             }
+            
             if (!imageMessage) {
-                return await sock.sendMessage(chatId, {
+                await sock.sendMessage(chatId, {
                     text: `《✧》 *Uso incorrecto del comando*\n\n` +
                         `Debes enviar una imagen o responder a una imagen con el comando:\n` +
                         `✿ Envía una imagen con caption: #removebg\n` +
                         `✿ Responde a una imagen: #removebg`
                 });
+                return
             }
+            
             await sock.sendMessage(chatId, {
                 text: '《✧》 Procesando imagen...\n\n' +
                     '⏳ Esto puede tardar unos segundos.'
             });
 
             try {
-                imageBuffer = await sock.downloadMediaMessage(msg.message?.imageMessage ? msg :
-                    { message: { imageMessage: msg.message.extendedTextMessage.contextInfo.quotedMessage.imageMessage } })
+                if (msg.message?.imageMessage) {
+                    imageBuffer = await downloadMediaMessage(msg, 'buffer', {}, {
+                        logger: console,
+                        reuploadRequest: sock.updateMediaMessage
+                    })
+                } else {
+                    const quotedMsg = {
+                        key: {
+                            remoteJid: chatId,
+                            fromMe: false,
+                            id: msg.message.extendedTextMessage.contextInfo.stanzaId,
+                            participant: msg.message.extendedTextMessage.contextInfo.participant
+                        },
+                        message: {
+                            imageMessage: msg.message.extendedTextMessage.contextInfo.quotedMessage.imageMessage
+                        }
+                    }
+                    imageBuffer = await downloadMediaMessage(quotedMsg, 'buffer', {}, {
+                        logger: console,
+                        reuploadRequest: sock.updateMediaMessage
+                    })
+                }
             } catch (downloadError) {
                 console.error('Error al descargar imagen:', downloadError)
-                return await sock.sendMessage(chatId, {
+                await sock.sendMessage(chatId, {
                     text: '《✧》 Error al descargar la imagen.\n\n' +
                         '💡 *Tip:* Intenta enviar la imagen nuevamente.'
                 })
+                return
             }
+            
             if (!imageBuffer) {
-                return await sock.sendMessage(chatId, {
+                await sock.sendMessage(chatId, {
                     text: '《✧》 No se pudo obtener la imagen.'
                 })
+                return
             }
 
             const formData = new FormData();
@@ -53,6 +83,7 @@ const removebgCommand = {
                 filename: 'image.jpg',
                 contentType: 'image/jpeg'
             })
+            
             await sock.sendMessage(chatId, {
                 text: '《✧》 Eliminando fondo de la imagen...'
             })
@@ -64,22 +95,27 @@ const removebgCommand = {
                         ...formData.getHeaders()
                     },
                     responseType: 'arraybuffer',
-                    timeout: 60000 
+                    timeout: 60000
                 })
+                
                 const resultBuffer = Buffer.from(response.data);
+                
                 await sock.sendMessage(chatId, {
                     image: resultBuffer,
                     caption: `《✧》 *RemoveBG* ✨\n\n` +
                         `✿ *Fondo eliminado exitosamente*\n` +
                         `✿ *Formato:* PNG con transparencia`
                 }, { quoted: msg });
+                
                 await sock.sendMessage(chatId, {
                     text: `《✧》 ✅ *Proceso completado*\n\n` +
                         `💡 *Tip:* Puedes usar esta imagen como sticker o editarla.`
                 })
+                
             } catch (apiError) {
                 console.error('Error de API remove.bg:', apiError);
                 let errorMessage = '《✧》 Error al procesar la imagen.'
+                
                 if (apiError.response?.status === 403) {
                     errorMessage = '《✧》 API Key inválida o sin créditos disponibles.'
                 } else if (apiError.response?.status === 400) {
@@ -92,10 +128,13 @@ const removebgCommand = {
                     errorMessage = '《✧》 El procesamiento tardó demasiado.\n\n' +
                         '💡 *Tip:* Intenta con una imagen más pequeña.'
                 }
-                return await sock.sendMessage(chatId, {
+                
+                await sock.sendMessage(chatId, {
                     text: errorMessage
                 })
+                return
             }
+            
         } catch (error) {
             console.error('Error en comando removebg:', error)
             await sock.sendMessage(chatId, {
@@ -105,4 +144,5 @@ const removebgCommand = {
         }
     }
 }
+
 export default removebgCommand
