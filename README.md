@@ -56,6 +56,18 @@
 <tr>
 <td width="50%">
 
+<tr>
+<td width="50%">
+
+### 🤍 Genesis Ai
+- 💫 Innovacion & Manejos especiales
+- 🏪 Importacion de librerias
+- 🤗 Creacion de scrapers
+- 🎁 Funciones innovadoras
+
+</td>
+<td width="50%">
+
 ### 💰 Economía Virtual
 - 💳 Monedas y transacciones
 - 🏪 Tienda integrada
@@ -149,12 +161,36 @@ const DeltaByte = {
 ---
 
 <p align="center">
-  ✨ Proyecto impulsado por creatividad e innovación ✨
+   Proyecto impulsado por creatividad e innovación 
 </p>
 
 >  **¡IMPORTANT!**
 > 
-> Genesis esta creado por Soblend Development Studio en colaboracion con JJSnice Team los creadores de Ozireth, queremos darles las gracias a ellos por su modelo > de inteligencia artificial
+> Genesis esta creado por Soblend Development Studio en colaboracion con JJSnice Team los creadores de Ozireth, queremos darles las gracias a ellos por su modelo  de inteligencia artificial
+
+### ¿Que es Genesis Ai?
+
+Genesis es un modelo de inteligencia artificial en colaboracion con Ozireth Ai, esta es la IA de este bot, importada en las funciones de categoria de innovacion y otros, proximamente se va a lanzar Genesis StarUp y Genesis Moderator, que seran 2 modelos especiales para este bot, agradecemos su pasiencia.
+
+<p align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <img src="https://rogddqelmxyuvhpjvxbf.supabase.co/storage/v1/object/public/files/79e8bjaxod4.jpg" width="120" height="120"><br>
+        <b>Ozireth AI</b>
+      </td>
+      <td align="center" width="120">
+        🤝<br>
+        <b>Colaboración</b>
+      </td>
+      <td align="center">
+        <img src="https://avatars.githubusercontent.com/u/241550431?s=200&v=4" width="120" height="120"><br>
+        <b>Soblend</b>
+      </td>
+    </tr>
+  </table>
+</p>
+
 
 ---
 
@@ -232,4 +268,5 @@ Ver el archivo [LICENSE](LICENSE) para más detalles
 
 
 </div>
+
 
