@@ -1,4 +1,5 @@
-import { search } from 'googlethis'
+import axios from 'axios'
+import * as cheerio from 'cheerio'
 
 const googleCommand = {
     name: 'google',
@@ -11,95 +12,105 @@ const googleCommand = {
     botAdminRequired: false,
     async execute(sock, msg, args) {
         const chatId = msg.key.remoteJid;
+        
         try {
             if (args.length === 0) {
-                return await sock.sendMessage(chatId, {
+                await sock.sendMessage(chatId, {
                     text: `《✧》 *Uso incorrecto del comando*\n\n` +
                         `*Ejemplos:*\n` +
                         `✿ #google clima hoy\n` +
                         `✿ #ggl recetas de pizza\n` +
                         `✿ #google inteligencia artificial`
                 });
+                return
             }
+            
             const query = args.join(' ')
+            
             await sock.sendMessage(chatId, {
                 text: `《✧》 Buscando en Google: "${query}"...`
             })
 
-            const options = {
-                page: 0,
-                safe: false,
-                parse_ads: false,
-                additional_params: {
-                    hl: 'es'
+            const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}&hl=es`
+            
+            const response = await axios.get(searchUrl, {
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                    'Accept-Language': 'es-ES,es;q=0.9,en;q=0.8',
+                    'Accept-Encoding': 'gzip, deflate, br',
+                    'Connection': 'keep-alive',
+                    'Upgrade-Insecure-Requests': '1'
+                },
+                timeout: 15000
+            })
+
+            const $ = cheerio.load(response.data)
+            const results = []
+            
+            $('div.g').each((i, elem) => {
+                if (i >= 5) return false
+                
+                const title = $(elem).find('h3').first().text()
+                const url = $(elem).find('a').first().attr('href')
+                const description = $(elem).find('.VwiC3b, .yXK7lf, .lyLwlc').first().text()
+                
+                if (title && url) {
+                    results.push({
+                        title: title.trim(),
+                        url: url.startsWith('http') ? url : `https://www.google.com${url}`,
+                        description: description.trim()
+                    })
                 }
-            }
+            })
 
-            const results = await search(query, options);
-            if (!results || !results.results || results.results.length === 0) {
-                return await sock.sendMessage(chatId, {
-                    text: `《✧》 No se encontraron resultados para: "${query}"`
+            if (results.length === 0) {
+                await sock.sendMessage(chatId, {
+                    text: `《✧》 No se encontraron resultados para: "${query}"\n\n💡 *Tip:* Intenta con otras palabras clave.`
                 })
+                return
             }
 
-            const topResults = results.results.slice(0, 5)
             let responseText = `《✧》 *Resultados de Google*\n\n`
             responseText += `🔍 Búsqueda: *${query}*\n`
-            responseText += `📊 Resultados encontrados: ${results.results.length}\n\n`
+            responseText += `📊 Resultados encontrados: ${results.length}\n\n`
             responseText += `─────────────────\n\n`
-            if (results.knowledge_panel) {
-                const kp = results.knowledge_panel;
-                responseText += `📌 *${kp.title || 'Información destacada'}*\n`
-                if (kp.type)
-                    responseText += `Tipo: ${kp.type}\n`
-                if (kp.description) {
-                    const shortDesc = kp.description.length > 200
-                        ? kp.description.substring(0, 200) + '...'
-                        : kp.description;
-                    responseText += `${shortDesc}\n`
-                }
-                responseText += `\n─────────────────\n\n`
-            }
 
-            topResults.forEach((result, index) => {
+            results.forEach((result, index) => {
                 responseText += `${index + 1}. *${result.title}*\n`
+                
                 if (result.description) {
                     const shortDesc = result.description.length > 150
                         ? result.description.substring(0, 150) + '...'
                         : result.description;
                     responseText += `   ${shortDesc}\n`
                 }
+                
                 responseText += `   🔗 ${result.url}\n\n`
             })
 
-            if (results.people_also_search && Array.isArray(results.people_also_search) && results.people_also_search.length > 0) {
-                responseText += `─────────────────\n\n`
-                responseText += `🔎 *Búsquedas relacionadas:*\n`
-                results.people_also_search.slice(0, 4).forEach((related) => {
-                    responseText += `• ${related.title}\n`;
-                })
-            }
-
-            responseText += `\n─────────────────\n`
+            responseText += `─────────────────\n`
             responseText += `_Resultados obtenidos de Google_`
+            
             await sock.sendMessage(chatId, {
                 text: responseText
             }, { quoted: msg })
+            
         } catch (error) {
             console.error('Error en comando google:', error);
+            
             let errorMessage = '《✧》 Error al realizar la búsqueda en Google.'
-            if (error.message?.includes('timeout')) {
+            
+            if (error.code === 'ECONNABORTED' || error.code === 'ETIMEDOUT') {
                 errorMessage = '《✧》 La búsqueda tardó demasiado. Intenta de nuevo.'
-            }
-            else if (error.message?.includes('network')) {
+            } else if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED') {
                 errorMessage = '《✧》 Error de conexión. Verifica tu internet.'
+            } else if (error.response?.status === 429) {
+                errorMessage = '《✧》 Demasiadas búsquedas. Espera un momento.'
+            } else if (error.response?.status === 403) {
+                errorMessage = '《✧》 Google bloqueó la solicitud. Intenta más tarde.'
             }
-            else if (error.message?.includes('rate limit')) {
-                errorMessage = '《✧》 Demasiadas búsquedas. Espera un momento.';
-            }
-            else if (error.message?.includes('blocked')) {
-                errorMessage = '《✧》 Google bloqueó la solicitud. Intenta más tarde.';
-            }
+            
             await sock.sendMessage(chatId, {
                 text: `${errorMessage}\n\n💡 *Tip:* Intenta con palabras clave más específicas.`
             })

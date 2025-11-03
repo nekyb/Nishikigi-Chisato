@@ -42,6 +42,9 @@ const helpCommand = {
 
 » ⊹ ˚୨ •(=^●ω●^=)• Utilidades ⊹
 
+✿ *#clima* + [ ciudad ] 
+╰⪼ Muestra el clima de una ciudad.
+
 ✿ *#profile* » *#pfp* + [ @user ]
 ╰⪼ Muestra la foto de perfil de un usuario.
 
@@ -221,7 +224,19 @@ const helpCommand = {
 ✿ *#shazam* » *#identificar* + [ cancion ]
 ╰⪼ Busca informacion sobre la cancion.
 
+✿ *#news* + [ tema (opcional) ] 
+╰⪼ Mira las noticias de ultima hora.
+
 » ⊹ ˚୨ •(=^●ω●^=)• Innovacion ⊹
+
+✿ *#crypto* » *#coin* 
+╰⪼ Muestra el precio de una criptomoneda actualmente.
+
+✿ *#speak* + [ texto ]
+╰⪼ Genera un audio a partir de un texto.
+
+✿ *#recordar* » *#reminder* + [ dia ] + [ hora ] + [ texto ]
+╰⪼ Genesis te recordara los labores que pidas.
 
 ✿ *#vision* » *#analyze* » *#whatisthis* » *#describe* + [ imagen ] + [ pregunta ]
 ╰⪼ Analiza imágenes con IA y responde preguntas sobre ellas.

@@ -1,4 +1,4 @@
-import { downloadMediaMessage } from '@whiskeysockets/baileys'
+import { downloadMediaMessage } from '@neoxr/baileys'
 import axios from 'axios'
 
 const improveCommand = {

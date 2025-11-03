@@ -63,4 +63,4 @@ const hidetagCommand = {
         }
     }
 };
-export default hidetagCommand;
+export default hidetagCommand

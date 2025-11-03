@@ -1,6 +1,6 @@
 import { FilesetResolver, FaceDetector } from '@mediapipe/tasks-vision';
 import { createCanvas, loadImage } from '@napi-rs/canvas';
-import { downloadMediaMessage } from '@whiskeysockets/baileys';
+import { downloadMediaMessage } from '@neoxr/baileys';
 import pino from 'pino';
 const logger = pino({ level: 'silent' });
 let faceDetector = null;

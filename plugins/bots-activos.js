@@ -31,8 +31,8 @@ const botsCommand = {
                     return fs.statSync(itemPath).isDirectory()}).length}
             let message = `╭━━━[ 𝗦𝘂𝗯𝗕𝗼𝘁𝘀 ]━━━━⬣\n`
             message += `┃\n`
-            message += `┃ 📱 *SubBots Activos:* ${activeBots.length}\n`
-            message += `┃ 📂 *Total Registrados:* ${totalFolders}\n`
+            message += `┃ ✩ *SubBots Activos:* ${activeBots.length}\n`
+            message += `┃ ✩ *Total Registrados:* ${totalFolders}\n`
             message += `┃\n`
             if (activeBots.length > 0) {
                 message += `┃ *Lista de SubBots:*\n`

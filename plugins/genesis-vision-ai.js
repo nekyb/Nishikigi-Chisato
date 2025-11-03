@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { downloadMediaMessage } from '@whiskeysockets/baileys';
+import { downloadMediaMessage } from '@neoxr/baileys';
 import pino from 'pino';
 const logger = pino({ level: 'silent' });
 

@@ -21,35 +21,40 @@ export default {
       const senderNumber = sender.replace(/[^0-9]/g, '')
 
       if (!isOwner(senderNumber)) {
-        return await sock.sendMessage(from, { text: '❌ Solo los owners pueden usar este comando.' }, { quoted: msg })
+        await sock.sendMessage(from, { text: '❌ Solo los owners pueden usar este comando.' }, { quoted: msg })
+        return
       }
 
       if (!args[0]) {
-        return await sock.sendMessage(from, { text: '❌ Falta el nombre del plugin' }, { quoted: msg })
+        await sock.sendMessage(from, { text: '❌ Falta el nombre del plugin' }, { quoted: msg })
+        return
       }
 
       const name = args[0].toLowerCase()
       const fileName = name.endsWith('.js') ? name : name + '.js'
       const filePath = path.join(pluginsDir, fileName)
 
-      // Obtener el código del mensaje citado o del mensaje mismo
-      let code = msg.message?.extendedTextMessage?.contextInfo?.quotedMessage?.conversation ||
-                msg.message?.extendedTextMessage?.contextInfo?.quotedMessage?.extendedTextMessage?.text ||
-                msg.message?.conversation ||
-                msg.message?.extendedTextMessage?.text || ''
-
-      // Quitar la primera línea si contiene el comando
-      const lines = code.split('\n')
-      if (lines[0].startsWith('#addplugin')) {
-        lines.shift()
-        code = lines.join('\n')
+      let code = ''
+      
+      const quotedMsg = msg.message?.extendedTextMessage?.contextInfo?.quotedMessage
+      if (quotedMsg) {
+        code = quotedMsg.conversation || quotedMsg.extendedTextMessage?.text || ''
+      } else {
+        code = msg.message?.conversation || msg.message?.extendedTextMessage?.text || ''
       }
 
+      const lines = code.split('\n')
+      if (lines[0].startsWith('#addplugin')) lines.shift()
+      
+      code = lines.join('\n')
+
       if (!code.trim()) {
-        return await sock.sendMessage(from, { text: '❌ No se encontró código para el plugin' }, { quoted: msg })
+        await sock.sendMessage(from, { text: '❌ No se encontró código para el plugin' }, { quoted: msg })
+        return
       }
 
       await fs.writeFile(filePath, code.trim(), 'utf8')
+      
       await sock.sendMessage(from, { text: `✅ Plugin guardado como: ${fileName}` }, { quoted: msg })
 
     } catch (error) {

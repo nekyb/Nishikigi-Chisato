@@ -2,7 +2,7 @@
 
 import Replicate from 'replicate'
 import axios from 'axios'
-import { downloadContentFromMessage } from '@whiskeysockets/baileys'
+import { downloadContentFromMessage } from '@neoxr/baileys'
 
 const animeyouCommand = {
     name: 'animeyou',

@@ -14,30 +14,40 @@ const tagallCommand = {
         const sender = msg.key.participant || msg.key.remoteJid
 
         try {
-            // Verificar si el usuario es admin
             const userIsAdmin = await isUserAdmin(sock, chatId, sender)
+            
             if (!userIsAdmin) {
-                return await sock.sendMessage(chatId, {
+                await sock.sendMessage(chatId, {
                     text: '❌ Solo los administradores pueden usar este comando.'
                 }, { quoted: msg })
+                return
             }
 
             const groupMetadata = await sock.groupMetadata(chatId)
             const participants = groupMetadata.participants;
             const mentions = participants.map((p) => p.id);
             const message = args.join(' ') || 'Invocación grupal'
+            
             let text = `《✧》 *INVOCACIÓN GRUPAL* 《✧》\n\n`
             text += `✿ *Mensaje:* ${message}\n\n`
             text += `━━━━━━━━━━━━━━━\n\n`
+            
             participants.forEach((p, i) => {
                 text += `${i + 1}. @${p.id.split('@')[0]}\n`
-            }); await sock.sendMessage(chatId, {
+            });
+            
+            await sock.sendMessage(chatId, {
                 text: text,
                 mentions: mentions
             }, { quoted: msg })
+            
         } catch (error) {
             console.error('Error en tagall:', error)
             await sock.sendMessage(chatId, {
                 text: '《✧》 Error al mencionar a todos.\n\n💡 *Tip:* Este comando solo funciona en grupos.'
-            })}}}
+            }, { quoted: msg })
+        }
+    }
+}
+
 export default tagallCommand
