@@ -2,7 +2,12 @@ import { config, isOwner, isOwnerCommand, isAdminCommand, isGroupCommand, getUse
 import { isUserAdmin, isBotAdmin } from '../utils/permissions.js';
 import { isUserBanned } from '../database/users.js';
 import antilinkEvent from '../events/antilink.js';
-import baileys from '@whiskeysockets/baileys';
+import baileys from '@neoxr/baileys';
+import { createRequire } from 'module';
+
+// Importar el módulo CJS de anti-porn
+const require = createRequire(import.meta.url);
+const { antinsfwEvent } = require('../events/anti-porn.cjs');
 
 const {
   proto,
@@ -15,16 +20,25 @@ export async function handleMessage(sock, msg, commands, events) {
         const senderId = msg.key.participant || msg.key.remoteJid;
         const chatId = msg.key.remoteJid;
         const userNumber = senderId.split('@')[0]
+        
         if (await isUserBanned(userNumber)) {
             return
         }
         
         const isGroup = chatId.endsWith('@g.us')
+        
         if (isGroup) {
             const userIsAdmin = await isUserAdmin(sock, chatId, senderId);
             const botIsAdmin = await isBotAdmin(sock, chatId);
-            const wasRemoved = await antilinkEvent.handleMessage(sock, msg, userIsAdmin, botIsAdmin);
-            if (wasRemoved)
+            
+            // Ejecutar antilink
+            const wasRemovedByAntilink = await antilinkEvent.handleMessage(sock, msg, userIsAdmin, botIsAdmin);
+            if (wasRemovedByAntilink)
+                return
+            
+            // Ejecutar anti-NSFW
+            const wasRemovedByAntinsfw = await antinsfwEvent.handleMessage(sock, msg, userIsAdmin, botIsAdmin);
+            if (wasRemovedByAntinsfw)
                 return
         }
 
