@@ -1,6 +1,32 @@
 import { config } from '../config/bot.js';
 import { isUserBanned } from '../database/users.js';
 
+const metadataCache = new Map();
+const CACHE_TIMEOUT = 60000; // 1 minuto
+
+async function getGroupMetadata(sock, groupId) {
+    const cached = metadataCache.get(groupId);
+    if (cached && (Date.now() - cached.timestamp) < CACHE_TIMEOUT) {
+        return cached.data;
+    }
+    
+    try {
+        const metadata = await sock.groupMetadata(groupId);
+        metadataCache.set(groupId, {
+            data: metadata,
+            timestamp: Date.now()
+        });
+        return metadata;
+    } catch (error) {
+        // Si hay rate limit, usar cache aunque esté expirado
+        if (error.data === 429 && cached) {
+            console.log('⚠️ Rate limit, usando cache para', groupId);
+            return cached.data;
+        }
+        throw error;
+    }
+}
+
 export function isOwner(numberOrJid) {
     const cleanNumber = numberOrJid.replace(/[^0-9]/g, '');
     const ownerClean = config.ownerNumber.replace(/[^0-9]/g, '');
@@ -9,7 +35,7 @@ export function isOwner(numberOrJid) {
 
 export async function isUserAdmin(sock, groupId, userId) {
     try {
-        const groupMetadata = await sock.groupMetadata(groupId);
+        const groupMetadata = await getGroupMetadata(sock, groupId);
         const userNumber = userId.split('@')[0];
         
         const participant = groupMetadata.participants.find((p) => {
@@ -27,7 +53,7 @@ export async function isUserAdmin(sock, groupId, userId) {
 
 export async function isBotAdmin(sock, groupId) {
     try {
-        const groupMetadata = await sock.groupMetadata(groupId);
+        const groupMetadata = await getGroupMetadata(sock, groupId);
         const botNumber = sock.user.id.split(':')[0];
         
         const participant = groupMetadata.participants.find((p) => {
@@ -45,7 +71,7 @@ export async function isBotAdmin(sock, groupId) {
 
 export async function isSuperAdmin(sock, groupId, userId) {
     try {
-        const groupMetadata = await sock.groupMetadata(groupId);
+        const groupMetadata = await getGroupMetadata(sock, groupId);
         const participant = groupMetadata.participants.find((p) => p.id === userId);
         return participant?.admin === 'superadmin';
     }
@@ -57,7 +83,7 @@ export async function isSuperAdmin(sock, groupId, userId) {
 
 export async function getGroupOwner(sock, groupId) {
     try {
-        const groupMetadata = await sock.groupMetadata(groupId);
+        const groupMetadata = await getGroupMetadata(sock, groupId);
         return groupMetadata.owner || null;
     }
     catch (error) {
@@ -79,7 +105,7 @@ export async function isGroupOwner(sock, groupId, userId) {
 
 export async function getGroupAdmins(sock, groupId) {
     try {
-        const groupMetadata = await sock.groupMetadata(groupId);
+        const groupMetadata = await getGroupMetadata(sock, groupId);
         const admins = groupMetadata.participants
             .filter((p) => p.admin === 'admin' || p.admin === 'superadmin')
             .map((p) => p.id);
@@ -187,7 +213,7 @@ export async function getUserPermissionLevel(sock, groupId, userId) {
 
 export async function isUserInGroup(sock, groupId, userId) {
     try {
-        const groupMetadata = await sock.groupMetadata(groupId);
+        const groupMetadata = await getGroupMetadata(sock, groupId);
         return groupMetadata.participants.some((p) => p.id === userId);
     }
     catch (error) {

@@ -1,11 +1,166 @@
 [
   {
+    "user_id": "228874612957325",
+    "name": "Baggio",
+    "registered_at": "2025-11-08T14:30:56.739Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:30:56.742Z",
+    "updated_at": "2025-11-08T14:30:56.742Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "164678240092182",
+    "name": "Loco",
+    "registered_at": "2025-11-08T14:30:56.800Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:30:56.801Z",
+    "updated_at": "2025-11-08T14:30:56.801Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
     "user_id": "170893057728762",
     "name": "Drexel",
-    "registered_at": "2025-11-02T02:34:07.566Z",
+    "registered_at": "2025-11-08T14:30:57.166Z",
     "is_banned": false,
-    "created_at": "2025-11-02T02:34:07.567Z",
-    "updated_at": "2025-11-02T02:34:07.567Z",
+    "created_at": "2025-11-08T14:30:57.167Z",
+    "updated_at": "2025-11-08T14:30:57.167Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "247274202472627",
+    "name": "🇦🇷𝐀𝐝𝐯𝐢𝐱♂️",
+    "registered_at": "2025-11-08T14:30:57.205Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:30:57.206Z",
+    "updated_at": "2025-11-08T14:30:57.206Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "165597312721022",
+    "name": "clariita",
+    "registered_at": "2025-11-08T14:30:57.316Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:30:57.316Z",
+    "updated_at": "2025-11-08T14:30:57.316Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "106679018479802",
+    "name": "juan",
+    "registered_at": "2025-11-08T14:30:57.341Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:30:57.342Z",
+    "updated_at": "2025-11-08T14:30:57.342Z",
     "economy": {
       "coins": 1000,
       "bank": 0,
@@ -32,11 +187,11 @@
   },
   {
     "user_id": "84564265443395",
-    "name": "Huh",
-    "registered_at": "2025-11-02T03:25:56.878Z",
+    "name": "Soblend",
+    "registered_at": "2025-11-08T14:30:57.505Z",
     "is_banned": false,
-    "created_at": "2025-11-02T03:25:56.884Z",
-    "updated_at": "2025-11-02T03:25:56.884Z",
+    "created_at": "2025-11-08T14:30:57.505Z",
+    "updated_at": "2025-11-08T14:30:57.505Z",
     "economy": {
       "coins": 1000,
       "bank": 0,
@@ -62,12 +217,12 @@
     }
   },
   {
-    "user_id": "573115434166",
-    "name": "Drexel",
-    "registered_at": "2025-11-02T04:32:25.777Z",
+    "user_id": "115973344469111",
+    "name": "InYourFace",
+    "registered_at": "2025-11-08T14:30:57.596Z",
     "is_banned": false,
-    "created_at": "2025-11-02T04:32:25.778Z",
-    "updated_at": "2025-11-02T04:32:25.778Z",
+    "created_at": "2025-11-08T14:30:57.597Z",
+    "updated_at": "2025-11-08T14:30:57.597Z",
     "economy": {
       "coins": 1000,
       "bank": 0,
@@ -93,12 +248,12 @@
     }
   },
   {
-    "user_id": "5755876966545",
-    "name": "Eder",
-    "registered_at": "2025-11-02T04:53:54.465Z",
+    "user_id": "7396588028071",
+    "name": "Isabela Jiménez",
+    "registered_at": "2025-11-08T14:30:57.658Z",
     "is_banned": false,
-    "created_at": "2025-11-02T04:53:54.466Z",
-    "updated_at": "2025-11-02T04:53:54.466Z",
+    "created_at": "2025-11-08T14:30:57.658Z",
+    "updated_at": "2025-11-08T14:30:57.658Z",
     "economy": {
       "coins": 1000,
       "bank": 0,
@@ -124,12 +279,12 @@
     }
   },
   {
-    "user_id": "239754268389439",
-    "name": "Neykoor🌿",
-    "registered_at": "2025-11-02T16:44:36.689Z",
+    "user_id": "77151168667891",
+    "name": "angel🙃",
+    "registered_at": "2025-11-08T14:30:57.722Z",
     "is_banned": false,
-    "created_at": "2025-11-02T16:44:36.691Z",
-    "updated_at": "2025-11-02T16:44:36.691Z",
+    "created_at": "2025-11-08T14:30:57.723Z",
+    "updated_at": "2025-11-08T14:30:57.723Z",
     "economy": {
       "coins": 1000,
       "bank": 0,
@@ -155,12 +310,12 @@
     }
   },
   {
-    "user_id": "178052231340271",
-    "name": "Axel",
-    "registered_at": "2025-11-03T01:57:37.423Z",
+    "user_id": "253738681892948",
+    "name": "𝓥.",
+    "registered_at": "2025-11-08T14:30:57.799Z",
     "is_banned": false,
-    "created_at": "2025-11-03T01:57:37.426Z",
-    "updated_at": "2025-11-03T01:57:37.426Z",
+    "created_at": "2025-11-08T14:30:57.801Z",
+    "updated_at": "2025-11-08T14:30:57.801Z",
     "economy": {
       "coins": 1000,
       "bank": 0,
@@ -186,12 +341,12 @@
     }
   },
   {
-    "user_id": "66611033710670",
-    "name": "Hitori",
-    "registered_at": "2025-11-03T01:57:44.645Z",
+    "user_id": "259012834680834",
+    "name": "Angelinne‼️",
+    "registered_at": "2025-11-08T14:30:57.864Z",
     "is_banned": false,
-    "created_at": "2025-11-03T01:57:44.646Z",
-    "updated_at": "2025-11-03T01:57:44.646Z",
+    "created_at": "2025-11-08T14:30:57.865Z",
+    "updated_at": "2025-11-08T14:30:57.865Z",
     "economy": {
       "coins": 1000,
       "bank": 0,
@@ -217,12 +372,632 @@
     }
   },
   {
-    "user_id": "146690464084114",
+    "user_id": "110586834735202",
+    "name": "Adriel",
+    "registered_at": "2025-11-08T14:30:57.955Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:30:57.955Z",
+    "updated_at": "2025-11-08T14:30:57.955Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "267074572173474",
+    "name": "ִ⋆˙ ࣪𖤐ᶻ 𝗓 𐰁 .ᐟ",
+    "registered_at": "2025-11-08T14:30:58.055Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:30:58.056Z",
+    "updated_at": "2025-11-08T14:30:58.056Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "1929010802738",
+    "name": "★",
+    "registered_at": "2025-11-08T14:30:58.120Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:30:58.124Z",
+    "updated_at": "2025-11-08T14:30:58.125Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "245157270155407",
+    "name": "Choco🫩",
+    "registered_at": "2025-11-08T14:30:58.172Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:30:58.204Z",
+    "updated_at": "2025-11-08T14:30:58.204Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "82545647612045",
+    "name": "Yuneydi Esquivel",
+    "registered_at": "2025-11-08T14:30:58.213Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:30:58.220Z",
+    "updated_at": "2025-11-08T14:30:58.220Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "181913692180698",
+    "name": "★",
+    "registered_at": "2025-11-08T14:30:58.299Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:30:58.299Z",
+    "updated_at": "2025-11-08T14:30:58.299Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "179272337641507",
+    "name": "Sofía 👍🏻",
+    "registered_at": "2025-11-08T14:30:58.364Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:30:58.394Z",
+    "updated_at": "2025-11-08T14:30:58.394Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "74689581998291",
+    "name": ":akeemi",
+    "registered_at": "2025-11-08T14:30:58.470Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:30:58.471Z",
+    "updated_at": "2025-11-08T14:30:58.471Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "251530951295072",
+    "name": "روح",
+    "registered_at": "2025-11-08T14:30:58.547Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:30:58.547Z",
+    "updated_at": "2025-11-08T14:30:58.547Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "210762769387654",
+    "name": "Cami",
+    "registered_at": "2025-11-08T14:30:58.696Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:30:58.697Z",
+    "updated_at": "2025-11-08T14:30:58.697Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "195803884847172",
+    "name": "Sofia ୨ৎoo",
+    "registered_at": "2025-11-08T14:30:58.802Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:30:58.803Z",
+    "updated_at": "2025-11-08T14:30:58.803Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "1490890575916",
+    "name": "🤡🪼chuchooo🐋🎨",
+    "registered_at": "2025-11-08T14:30:58.897Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:30:58.898Z",
+    "updated_at": "2025-11-08T14:30:58.898Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "278859358441637",
+    "name": "Nadie En Común",
+    "registered_at": "2025-11-08T14:30:58.963Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:30:58.995Z",
+    "updated_at": "2025-11-08T14:30:58.995Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "44075608735813",
+    "name": ".",
+    "registered_at": "2025-11-08T14:30:59.059Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:30:59.060Z",
+    "updated_at": "2025-11-08T14:30:59.060Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "45999703752862",
+    "name": "Gustambito",
+    "registered_at": "2025-11-08T14:30:59.124Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:30:59.125Z",
+    "updated_at": "2025-11-08T14:30:59.125Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "138779687915740",
+    "name": "Marlon 🫅",
+    "registered_at": "2025-11-08T14:30:59.201Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:30:59.206Z",
+    "updated_at": "2025-11-08T14:30:59.206Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "253725226627092",
+    "name": "Xoná",
+    "registered_at": "2025-11-08T14:30:59.269Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:30:59.270Z",
+    "updated_at": "2025-11-08T14:30:59.270Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "170880307044550",
+    "name": "~🕷️",
+    "registered_at": "2025-11-08T14:30:59.778Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:30:59.779Z",
+    "updated_at": "2025-11-08T14:30:59.779Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "87708064043013",
+    "name": "ғᴇʀᴍɪɴ ɴ ✰",
+    "registered_at": "2025-11-08T14:30:59.841Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:30:59.842Z",
+    "updated_at": "2025-11-08T14:30:59.842Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "275212947984480",
+    "name": "Thiago",
+    "registered_at": "2025-11-08T14:30:59.918Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:30:59.919Z",
+    "updated_at": "2025-11-08T14:30:59.919Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "36958327845074",
     "name": "...",
-    "registered_at": "2025-11-03T01:58:52.355Z",
+    "registered_at": "2025-11-08T14:31:00.032Z",
     "is_banned": false,
-    "created_at": "2025-11-03T01:58:52.357Z",
-    "updated_at": "2025-11-03T01:58:52.357Z",
+    "created_at": "2025-11-08T14:31:00.033Z",
+    "updated_at": "2025-11-08T14:31:00.033Z",
     "economy": {
       "coins": 1000,
       "bank": 0,
@@ -248,12 +1023,12 @@
     }
   },
   {
-    "user_id": "262036575486149",
-    "name": "Alejandro",
-    "registered_at": "2025-11-03T03:23:22.594Z",
+    "user_id": "86269451342032",
+    "name": "𖤍☯︎☢︎♤♡",
+    "registered_at": "2025-11-08T14:31:00.097Z",
     "is_banned": false,
-    "created_at": "2025-11-03T03:23:22.597Z",
-    "updated_at": "2025-11-03T03:23:22.597Z",
+    "created_at": "2025-11-08T14:31:00.098Z",
+    "updated_at": "2025-11-08T14:31:00.098Z",
     "economy": {
       "coins": 1000,
       "bank": 0,
@@ -279,12 +1054,12 @@
     }
   },
   {
-    "user_id": "231542223843427",
-    "name": "Frn",
-    "registered_at": "2025-11-03T03:23:44.028Z",
+    "user_id": "167667486949474",
+    "name": "María🌦️",
+    "registered_at": "2025-11-08T14:31:00.160Z",
     "is_banned": false,
-    "created_at": "2025-11-03T03:23:44.033Z",
-    "updated_at": "2025-11-03T03:23:44.033Z",
+    "created_at": "2025-11-08T14:31:00.161Z",
+    "updated_at": "2025-11-08T14:31:00.161Z",
     "economy": {
       "coins": 1000,
       "bank": 0,
@@ -310,12 +1085,12 @@
     }
   },
   {
-    "user_id": "144577289805867",
-    "name": "Seb",
-    "registered_at": "2025-11-03T03:24:02.363Z",
+    "user_id": "125503272951829",
+    "name": "𝑺𝒂𝒎𝒖",
+    "registered_at": "2025-11-08T14:31:02.330Z",
     "is_banned": false,
-    "created_at": "2025-11-03T03:24:02.367Z",
-    "updated_at": "2025-11-03T03:24:02.367Z",
+    "created_at": "2025-11-08T14:31:02.331Z",
+    "updated_at": "2025-11-08T14:31:02.331Z",
     "economy": {
       "coins": 1000,
       "bank": 0,
@@ -341,12 +1116,12 @@
     }
   },
   {
-    "user_id": "90023101747205",
-    "name": "yo",
-    "registered_at": "2025-11-03T04:21:40.911Z",
+    "user_id": "12052366106754",
+    "name": "el del gas 8====D",
+    "registered_at": "2025-11-08T14:31:03.129Z",
     "is_banned": false,
-    "created_at": "2025-11-03T04:21:40.912Z",
-    "updated_at": "2025-11-03T04:21:40.912Z",
+    "created_at": "2025-11-08T14:31:03.130Z",
+    "updated_at": "2025-11-08T14:31:03.130Z",
     "economy": {
       "coins": 1000,
       "bank": 0,
@@ -372,12 +1147,12 @@
     }
   },
   {
-    "user_id": "249679803592711",
-    "name": "Desert",
-    "registered_at": "2025-11-03T04:24:34.395Z",
+    "user_id": "277970904215693",
+    "name": "..?",
+    "registered_at": "2025-11-08T14:31:06.736Z",
     "is_banned": false,
-    "created_at": "2025-11-03T04:24:34.398Z",
-    "updated_at": "2025-11-03T04:24:34.398Z",
+    "created_at": "2025-11-08T14:31:06.737Z",
+    "updated_at": "2025-11-08T14:31:06.737Z",
     "economy": {
       "coins": 1000,
       "bank": 0,
@@ -403,12 +1178,322 @@
     }
   },
   {
-    "user_id": "229089864642645",
-    "name": "🥷🏽✨ゲール✨🥷🏽",
-    "registered_at": "2025-11-03T05:15:38.532Z",
+    "user_id": "147377625280598",
+    "name": "Mar",
+    "registered_at": "2025-11-08T14:31:08.242Z",
     "is_banned": false,
-    "created_at": "2025-11-03T05:15:38.534Z",
-    "updated_at": "2025-11-03T05:15:38.534Z",
+    "created_at": "2025-11-08T14:31:08.243Z",
+    "updated_at": "2025-11-08T14:31:08.243Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "79908436979770",
+    "name": "❤️‍🔥nayeli❤️‍🔥",
+    "registered_at": "2025-11-08T14:31:24.423Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:31:24.423Z",
+    "updated_at": "2025-11-08T14:31:24.423Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "179941983408152",
+    "name": "YøaИ 🪐",
+    "registered_at": "2025-11-08T14:34:07.429Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:34:07.430Z",
+    "updated_at": "2025-11-08T14:34:07.430Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "50389126762589",
+    "name": "كريستال جارسيا",
+    "registered_at": "2025-11-08T14:34:09.297Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:34:09.298Z",
+    "updated_at": "2025-11-08T14:34:09.298Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "26873627189282",
+    "name": "ʍɨɛʟ ძᥱ ᴍᴀᴘʟᴇ",
+    "registered_at": "2025-11-08T14:34:11.477Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:34:11.478Z",
+    "updated_at": "2025-11-08T14:34:11.478Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "202323242516663",
+    "name": "愛",
+    "registered_at": "2025-11-08T14:34:40.988Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:34:40.989Z",
+    "updated_at": "2025-11-08T14:34:40.989Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "198754175029387",
+    "name": "ㅤㅤㅤㅤㅤ",
+    "registered_at": "2025-11-08T14:37:09.021Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:37:09.022Z",
+    "updated_at": "2025-11-08T14:37:09.022Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "7177527914652",
+    "name": "salchipapas~pollitofrito",
+    "registered_at": "2025-11-08T14:41:47.539Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:41:47.540Z",
+    "updated_at": "2025-11-08T14:41:47.540Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "174028299960572",
+    "name": "ELEMIX10 PRO",
+    "registered_at": "2025-11-08T14:43:05.340Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:43:05.341Z",
+    "updated_at": "2025-11-08T14:43:05.341Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "39316717883447",
+    "name": "𐔌 . ⋮ 馬修.ᐟ ֹ ₊ ꒱",
+    "registered_at": "2025-11-08T14:53:01.489Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:53:01.490Z",
+    "updated_at": "2025-11-08T14:53:01.490Z",
+    "economy": {
+      "coins": 1000,
+      "bank": 0,
+      "last_daily": null,
+      "last_work": null,
+      "inventory": [],
+      "stats": {
+        "commands_used": 0,
+        "messages_sent": 0,
+        "items_bought": 0,
+        "items_sold": 0
+      }
+    },
+    "settings": {
+      "notifications": true,
+      "language": "es"
+    },
+    "achievements": [],
+    "xp": {
+      "level": 1,
+      "current": 0,
+      "required": 100
+    }
+  },
+  {
+    "user_id": "212459566690376",
+    "name": "Freddy Fazbear",
+    "registered_at": "2025-11-08T14:58:04.302Z",
+    "is_banned": false,
+    "created_at": "2025-11-08T14:58:04.303Z",
+    "updated_at": "2025-11-08T14:58:04.303Z",
     "economy": {
       "coins": 1000,
       "bank": 0,

@@ -1,184 +1,233 @@
-import { config, isOwner, isOwnerCommand, isAdminCommand, isGroupCommand, getUsedPrefix } from '../config/bot.js';
-import { isUserAdmin, isBotAdmin } from '../utils/permissions.js';
-import { isUserBanned } from '../database/users.js';
-import antilinkEvent from '../events/antilink.js';
-import baileys from '@neoxr/baileys';
-import { createRequire } from 'module';
+import {
+    config,
+    isOwner,
+    isOwnerCommand,
+    isAdminCommand,
+    isGroupCommand,
+    getUsedPrefix,
+} from "../config/bot.js";
+import { isUserAdmin, isBotAdmin } from "../utils/permissions.js";
+import { isUserBanned } from "../database/users.js";
+import antilinkEvent from "../events/antilink.js";
+import antinsfwEvent from "../events/anti-porn.js";
+import baileys from "@whiskeysockets/baileys";
 
-// Importar el módulo CJS de anti-porn
-const require = createRequire(import.meta.url);
-const { antinsfwEvent } = require('../events/anti-porn.cjs');
-
-const {
-  proto,
-  generateWAMessageFromContent,
-  generateWAMessageContent
-} = baileys;
+const { proto, generateWAMessageFromContent, generateWAMessageContent } =
+    baileys;
 
 export async function handleMessage(sock, msg, commands, events) {
     try {
         const senderId = msg.key.participant || msg.key.remoteJid;
         const chatId = msg.key.remoteJid;
-        const userNumber = senderId.split('@')[0]
-        
+        const userNumber = senderId.split("@")[0];
+
         if (await isUserBanned(userNumber)) {
-            return
+            return;
         }
-        
-        const isGroup = chatId.endsWith('@g.us')
-        
+
+        const isGroup = chatId.endsWith("@g.us");
+
         if (isGroup) {
             const userIsAdmin = await isUserAdmin(sock, chatId, senderId);
             const botIsAdmin = await isBotAdmin(sock, chatId);
-            
+
             // Ejecutar antilink
-            const wasRemovedByAntilink = await antilinkEvent.handleMessage(sock, msg, userIsAdmin, botIsAdmin);
-            if (wasRemovedByAntilink)
-                return
-            
+            const wasRemovedByAntilink = await antilinkEvent.handleMessage(
+                sock,
+                msg,
+                userIsAdmin,
+                botIsAdmin,
+            );
+            if (wasRemovedByAntilink) return;
+
             // Ejecutar anti-NSFW
-            const wasRemovedByAntinsfw = await antinsfwEvent.handleMessage(sock, msg, userIsAdmin, botIsAdmin);
-            if (wasRemovedByAntinsfw)
-                return
+            const wasRemovedByAntinsfw = await antinsfwEvent.handleMessage(
+                sock,
+                msg,
+                userIsAdmin,
+                botIsAdmin,
+            );
+            if (wasRemovedByAntinsfw) return;
         }
 
         if (msg.message?.listResponseMessage) {
-            const selectedId = msg.message.listResponseMessage.singleSelectReply.selectedRowId
-            await handleListResponse(sock, msg, selectedId, chatId)
-            return
+            const selectedId =
+                msg.message.listResponseMessage.singleSelectReply.selectedRowId;
+            await handleListResponse(sock, msg, selectedId, chatId);
+            return;
         }
-        
+
         if (msg.message?.interactiveResponseMessage) {
             try {
-                const response = JSON.parse(msg.message.interactiveResponseMessage.nativeFlowResponseMessage.paramsJson);
-                const selectedId = response.id
+                const response = JSON.parse(
+                    msg.message.interactiveResponseMessage
+                        .nativeFlowResponseMessage.paramsJson,
+                );
+                const selectedId = response.id;
                 await handleButtonResponse(sock, msg, selectedId, chatId);
                 return;
             } catch (error) {
-                console.error('Error procesando respuesta interactiva:', error)
+                console.error("Error procesando respuesta interactiva:", error);
             }
         }
-        
+
         if (msg.message?.buttonsResponseMessage) {
-            const selectedId = msg.message.buttonsResponseMessage.selectedButtonId
-            await handleButtonResponse(sock, msg, selectedId, chatId)
-            return
+            const selectedId =
+                msg.message.buttonsResponseMessage.selectedButtonId;
+            await handleButtonResponse(sock, msg, selectedId, chatId);
+            return;
         }
-        
-        const messageText = getMessageText(msg)
-        if (!messageText)
-            return
-        
-        const usedPrefix = getUsedPrefix(messageText)
-        if (!usedPrefix)
-            return
-        
-        const args = messageText.slice(usedPrefix.length).trim().split(/\s+/)
-        const commandName = args.shift()?.toLowerCase()
-        if (!commandName)
-            return
-        const command = commands.get(commandName)
-        if (!command)
-            return
+
+        const messageText = getMessageText(msg);
+        if (!messageText) return;
+
+        const usedPrefix = getUsedPrefix(messageText);
+        if (!usedPrefix) return;
+
+        const args = messageText.slice(usedPrefix.length).trim().split(/\s+/);
+        const commandName = args.shift()?.toLowerCase();
+        if (!commandName) return;
+        const command = commands.get(commandName);
+        if (!command) return;
         if (config.logs.commands) {
-            console.log(`📝 Comando: ${usedPrefix}${commandName} | Usuario: ${userNumber} | Grupo: ${isGroup ? 'Sí' : 'No'}`);
+            console.log(
+                `📝 Comando: ${usedPrefix}${commandName} | Usuario: ${userNumber} | Grupo: ${isGroup ? "Sí" : "No"}`,
+            );
         }
-        const canExecute = await checkCommandPermissions(sock, msg, command, senderId, chatId, isGroup);
-        if (!canExecute)
-            return
+        const canExecute = await checkCommandPermissions(
+            sock,
+            msg,
+            command,
+            senderId,
+            chatId,
+            isGroup,
+        );
+        if (!canExecute) return;
         try {
-            await command.execute(sock, msg, args)
+            await command.execute(sock, msg, args);
         } catch (error) {
             console.error(`Error ejecutando comando ${commandName}:`, error);
             await sock.sendMessage(chatId, {
-                text: config.messages.error
-            })
+                text: config.messages.error,
+            });
         }
     } catch (error) {
-        console.error('Error en handleMessage:', error)
+        console.error("Error en handleMessage:", error);
     }
 }
 
 async function handleListResponse(sock, msg, selectedId, chatId) {
     try {
-        switch(selectedId) {
-            case 'menu_tiktok':
-                await sock.sendMessage(chatId, {
-                    text: '📹 *TIKTOK DOWNLOADER*\n\n' +
-                          'Uso: #tiktoksearch [búsqueda]\n' +
-                          'Ejemplo: #tiktoksearch gatitos\n\n' +
-                          'Busca y descarga videos de TikTok'
-                }, { quoted: msg });
+        switch (selectedId) {
+            case "menu_tiktok":
+                await sock.sendMessage(
+                    chatId,
+                    {
+                        text:
+                            "📹 *TIKTOK DOWNLOADER*\n\n" +
+                            "Uso: #tiktoksearch [búsqueda]\n" +
+                            "Ejemplo: #tiktoksearch gatitos\n\n" +
+                            "Busca y descarga videos de TikTok",
+                    },
+                    { quoted: msg },
+                );
                 break;
-                
-            case 'menu_pinterest':
-                await sock.sendMessage(chatId, {
-                    text: '📌 *PINTEREST SEARCH*\n\n' +
-                          'Uso: #pinterest [búsqueda]\n' +
-                          'Ejemplo: #pinterest aesthetic wallpaper\n\n' +
-                          'Busca y descarga imágenes de Pinterest'
-                }, { quoted: msg });
+
+            case "menu_pinterest":
+                await sock.sendMessage(
+                    chatId,
+                    {
+                        text:
+                            "📌 *PINTEREST SEARCH*\n\n" +
+                            "Uso: #pinterest [búsqueda]\n" +
+                            "Ejemplo: #pinterest aesthetic wallpaper\n\n" +
+                            "Busca y descarga imágenes de Pinterest",
+                    },
+                    { quoted: msg },
+                );
                 break;
-                
-            case 'menu_instagram':
-                await sock.sendMessage(chatId, {
-                    text: '📸 *INSTAGRAM DOWNLOADER*\n\n' +
-                          'Uso: #instagram [enlace]\n' +
-                          'Ejemplo: #instagram https://instagram.com/p/xxxxx\n\n' +
-                          'Descarga posts e historias de Instagram'
-                }, { quoted: msg });
+
+            case "menu_instagram":
+                await sock.sendMessage(
+                    chatId,
+                    {
+                        text:
+                            "📸 *INSTAGRAM DOWNLOADER*\n\n" +
+                            "Uso: #instagram [enlace]\n" +
+                            "Ejemplo: #instagram https://instagram.com/p/xxxxx\n\n" +
+                            "Descarga posts e historias de Instagram",
+                    },
+                    { quoted: msg },
+                );
                 break;
-                
+
             default:
-                await sock.sendMessage(chatId, {
-                    text: '⚠️ Esta opción aún no está disponible'
-                }, { quoted: msg });
+                await sock.sendMessage(
+                    chatId,
+                    {
+                        text: "⚠️ Esta opción aún no está disponible",
+                    },
+                    { quoted: msg },
+                );
         }
     } catch (error) {
-        console.error('Error en handleListResponse:', error);
+        console.error("Error en handleListResponse:", error);
     }
 }
 
 async function handleButtonResponse(sock, msg, selectedId, chatId) {
     try {
-        if (selectedId === 'info_creador') {
-            const vcard = 'BEGIN:VCARD\n' +
-                'VERSION:3.0\n' +
-                'FN:DeltaByte\n' +
-                'ORG:Nishikigi Chisato Bot;\n' +
-                'TEL;type=CELL;type=VOICE;waid=573187994478:+57 318 799 4478\n' +
-                'END:VCARD';
+        if (selectedId === "info_creador") {
+            const vcard =
+                "BEGIN:VCARD\n" +
+                "VERSION:3.0\n" +
+                "FN:DeltaByte\n" +
+                "ORG:Nishikigi Chisato Bot;\n" +
+                "TEL;type=CELL;type=VOICE;waid=573187994478:+57 318 799 4478\n" +
+                "END:VCARD";
 
             await sock.sendMessage(chatId, {
                 contacts: {
-                    displayName: 'DeltaByte',
-                    contacts: [{ vcard }]
-                }
+                    displayName: "DeltaByte",
+                    contacts: [{ vcard }],
+                },
             });
-            
-            await sock.sendMessage(chatId, {
-                text: '《✧》 *CREADOR DEL BOT*\n\n' +
-                      '👨‍💻 *Nombre:* DeltaByte\n' +
-                      '📱 *WhatsApp:* +57 318 799 4478\n' +
-                      '🌐 *Web:* https://deltabyte.com\n' +
-                      '💬 *Telegram:* @DeltaByte\n\n' +
-                      '━━━━━━━━━━━━━━━━━━━\n\n' +
-                      '💡 Si tienes dudas, sugerencias o quieres reportar un error, ' +
-                      'no dudes en contactarlo.\n\n' +
-                      '❤️ ¡Gracias por usar Nishikigi Chisato Bot!'
-            }, { quoted: msg });
+
+            await sock.sendMessage(
+                chatId,
+                {
+                    text:
+                        "《✧》 *CREADOR DEL BOT*\n\n" +
+                        "👨‍💻 *Nombre:* DeltaByte\n" +
+                        "📱 *WhatsApp:* +57 318 799 4478\n" +
+                        "🌐 *Web:* https://deltabyte.com\n" +
+                        "💬 *Telegram:* @DeltaByte\n\n" +
+                        "━━━━━━━━━━━━━━━━━━━\n\n" +
+                        "💡 Si tienes dudas, sugerencias o quieres reportar un error, " +
+                        "no dudes en contactarlo.\n\n" +
+                        "❤️ ¡Gracias por usar Nishikigi Chisato Bot!",
+                },
+                { quoted: msg },
+            );
         }
     } catch (error) {
-        console.error('Error en handleButtonResponse:', error);
+        console.error("Error en handleButtonResponse:", error);
     }
 }
 
-async function checkCommandPermissions(sock, msg, command, senderId, chatId, isGroup) {
-    const senderNumber = senderId.split('@')[0];
+async function checkCommandPermissions(
+    sock,
+    msg,
+    command,
+    senderId,
+    chatId,
+    isGroup,
+) {
+    const senderNumber = senderId.split("@")[0];
     if (command.ownerOnly || isOwnerCommand(command.name)) {
         if (!isOwner(senderNumber)) {
             await sock.sendMessage(chatId, {
-                text: config.messages.notOwner
+                text: config.messages.notOwner,
             });
             return false;
         }
@@ -186,7 +235,7 @@ async function checkCommandPermissions(sock, msg, command, senderId, chatId, isG
     if (command.groupOnly || isGroupCommand(command.name)) {
         if (!isGroup) {
             await sock.sendMessage(chatId, {
-                text: config.messages.notGroup
+                text: config.messages.notGroup,
             });
             return false;
         }
@@ -194,7 +243,7 @@ async function checkCommandPermissions(sock, msg, command, senderId, chatId, isG
     if (command.adminOnly || isAdminCommand(command.name)) {
         if (!isGroup) {
             await sock.sendMessage(chatId, {
-                text: config.messages.notGroup
+                text: config.messages.notGroup,
             });
             return false;
         }
@@ -202,7 +251,7 @@ async function checkCommandPermissions(sock, msg, command, senderId, chatId, isG
         const userIsOwner = isOwner(senderNumber);
         if (!userIsAdmin && !userIsOwner) {
             await sock.sendMessage(chatId, {
-                text: config.messages.notAdmin
+                text: config.messages.notAdmin,
             });
             return false;
         }
@@ -210,14 +259,14 @@ async function checkCommandPermissions(sock, msg, command, senderId, chatId, isG
     if (command.botAdminRequired) {
         if (!isGroup) {
             await sock.sendMessage(chatId, {
-                text: config.messages.notGroup
+                text: config.messages.notGroup,
             });
             return false;
         }
         const botIsAdmin = await isBotAdmin(sock, chatId);
         if (!botIsAdmin) {
             await sock.sendMessage(chatId, {
-                text: config.messages.notBotAdmin
+                text: config.messages.notBotAdmin,
             });
             return false;
         }
@@ -240,8 +289,7 @@ export function getMessageText(msg) {
             return msg.message.videoMessage.caption;
         }
         return null;
-    }
-    catch (error) {
+    } catch (error) {
         return null;
     }
 }
@@ -258,23 +306,21 @@ export function getMentionedUser(msg) {
             return msg.quoted.sender;
         }
         return null;
-    }
-    catch (error) {
+    } catch (error) {
         return null;
     }
 }
 
 export function hasImage(msg) {
-    return !!(msg.message?.imageMessage);
+    return !!msg.message?.imageMessage;
 }
 
 export async function downloadMedia(sock, msg) {
     try {
         const buffer = await sock.downloadMediaMessage(msg);
         return buffer;
-    }
-    catch (error) {
-        console.error('Error descargando media:', error);
+    } catch (error) {
+        console.error("Error descargando media:", error);
         return null;
     }
 }
@@ -283,11 +329,10 @@ export async function reply(sock, chatId, text, quotedMsg) {
     try {
         await sock.sendMessage(chatId, {
             text: text,
-            ...(quotedMsg && { quoted: quotedMsg })
+            ...(quotedMsg && { quoted: quotedMsg }),
         });
-    }
-    catch (error) {
-        console.error('Error enviando respuesta:', error);
+    } catch (error) {
+        console.error("Error enviando respuesta:", error);
     }
 }
 
@@ -295,25 +340,27 @@ export async function sendWithMention(sock, chatId, text, mentions) {
     try {
         await sock.sendMessage(chatId, {
             text: text,
-            mentions: mentions
+            mentions: mentions,
         });
-    }
-    catch (error) {
-        console.error('Error enviando mensaje con mención:', error);
+    } catch (error) {
+        console.error("Error enviando mensaje con mención:", error);
     }
 }
 
 export async function createVideoMessage(sock, url) {
     try {
-        const message = await generateWAMessageContent({
-            video: { url }
-        }, {
-            upload: sock.waUploadToServer
-        });
-        
+        const message = await generateWAMessageContent(
+            {
+                video: { url },
+            },
+            {
+                upload: sock.waUploadToServer,
+            },
+        );
+
         return message.videoMessage;
     } catch (error) {
-        console.error('Error creando video message:', error);
+        console.error("Error creando video message:", error);
         throw error;
     }
 }
@@ -321,45 +368,59 @@ export async function createVideoMessage(sock, url) {
 export async function sendCarousel(sock, chatId, options, quotedMsg) {
     try {
         const { cards, headerText, footerText } = options;
-        
+
         if (!cards || cards.length === 0) {
-            throw new Error('No hay tarjetas para mostrar en el carousel');
+            throw new Error("No hay tarjetas para mostrar en el carousel");
         }
 
-        const messageContent = generateWAMessageFromContent(chatId, {
-            viewOnceMessage: {
-                message: {
-                    messageContextInfo: {
-                        deviceListMetadata: {},
-                        deviceListMetadataVersion: 2
+        const messageContent = generateWAMessageFromContent(
+            chatId,
+            {
+                viewOnceMessage: {
+                    message: {
+                        messageContextInfo: {
+                            deviceListMetadata: {},
+                            deviceListMetadataVersion: 2,
+                        },
+                        interactiveMessage:
+                            proto.Message.InteractiveMessage.fromObject({
+                                body: proto.Message.InteractiveMessage.Body.create(
+                                    {
+                                        text: headerText || "",
+                                    },
+                                ),
+                                footer: proto.Message.InteractiveMessage.Footer.create(
+                                    {
+                                        text: footerText || "",
+                                    },
+                                ),
+                                header: proto.Message.InteractiveMessage.Header.create(
+                                    {
+                                        hasMediaAttachment: false,
+                                    },
+                                ),
+                                carouselMessage:
+                                    proto.Message.InteractiveMessage.CarouselMessage.fromObject(
+                                        {
+                                            cards: cards,
+                                        },
+                                    ),
+                            }),
                     },
-                    interactiveMessage: proto.Message.InteractiveMessage.fromObject({
-                        body: proto.Message.InteractiveMessage.Body.create({
-                            text: headerText || ''
-                        }),
-                        footer: proto.Message.InteractiveMessage.Footer.create({
-                            text: footerText || ''
-                        }),
-                        header: proto.Message.InteractiveMessage.Header.create({
-                            hasMediaAttachment: false
-                        }),
-                        carouselMessage: proto.Message.InteractiveMessage.CarouselMessage.fromObject({
-                            cards: cards
-                        })
-                    })
-                }
-            }
-        }, {
-            quoted: quotedMsg
-        });
+                },
+            },
+            {
+                quoted: quotedMsg,
+            },
+        );
 
         await sock.relayMessage(chatId, messageContent.message, {
-            messageId: messageContent.key.id
+            messageId: messageContent.key.id,
         });
 
         return true;
     } catch (error) {
-        console.error('Error enviando carousel:', error);
+        console.error("Error enviando carousel:", error);
         return false;
     }
 }
@@ -367,26 +428,31 @@ export async function sendCarousel(sock, chatId, options, quotedMsg) {
 export async function createCarouselCard(sock, title, videoUrl, footerText) {
     try {
         const videoMessage = await createVideoMessage(sock, videoUrl);
-        
+
         if (!videoMessage) {
-            console.error('No se pudo crear el videoMessage');
+            console.error("No se pudo crear el videoMessage");
             return null;
         }
 
         return {
-            body: proto.Message.InteractiveMessage.Body.fromObject({ text: null }),
-            footer: proto.Message.InteractiveMessage.Footer.fromObject({ text: footerText || '' }),
-            header: proto.Message.InteractiveMessage.Header.fromObject({
-                title: title || '',
-                hasMediaAttachment: true,
-                videoMessage: videoMessage
+            body: proto.Message.InteractiveMessage.Body.fromObject({
+                text: null,
             }),
-            nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.fromObject({ 
-                buttons: [] 
-            })
+            footer: proto.Message.InteractiveMessage.Footer.fromObject({
+                text: footerText || "",
+            }),
+            header: proto.Message.InteractiveMessage.Header.fromObject({
+                title: title || "",
+                hasMediaAttachment: true,
+                videoMessage: videoMessage,
+            }),
+            nativeFlowMessage:
+                proto.Message.InteractiveMessage.NativeFlowMessage.fromObject({
+                    buttons: [],
+                }),
         };
     } catch (error) {
-        console.error('Error creando tarjeta de carousel:', error);
+        console.error("Error creando tarjeta de carousel:", error);
         return null;
     }
 }
@@ -401,5 +467,5 @@ export default {
     sendWithMention,
     createVideoMessage,
     sendCarousel,
-    createCarouselCard
+    createCarouselCard,
 };

@@ -43,5 +43,41 @@
     "welcome": true,
     "created_at": "2025-11-03T03:23:17.906Z",
     "updated_at": "2025-11-03T03:23:17.906Z"
+  },
+  {
+    "group_id": "120363198490676100@g.us",
+    "alertas": true,
+    "antilink": false,
+    "antinsfw": false,
+    "welcome": true,
+    "created_at": "2025-11-08T14:16:09.924Z",
+    "updated_at": "2025-11-08T14:16:09.924Z"
+  },
+  {
+    "group_id": "972526900129-1418022908@g.us",
+    "alertas": true,
+    "antilink": false,
+    "antinsfw": false,
+    "welcome": true,
+    "created_at": "2025-11-08T14:18:27.435Z",
+    "updated_at": "2025-11-08T14:18:27.435Z"
+  },
+  {
+    "group_id": "120363403874960157@g.us",
+    "alertas": true,
+    "antilink": false,
+    "antinsfw": false,
+    "welcome": true,
+    "created_at": "2025-11-08T14:26:21.767Z",
+    "updated_at": "2025-11-08T14:26:21.767Z"
+  },
+  {
+    "group_id": "120363401177015368@g.us",
+    "alertas": true,
+    "antilink": false,
+    "antinsfw": false,
+    "welcome": true,
+    "created_at": "2025-11-08T14:43:05.495Z",
+    "updated_at": "2025-11-08T14:43:05.495Z"
   }
 ]

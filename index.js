@@ -1,11 +1,10 @@
-import baileys from '@neoxr/baileys';
-const {
+import {
     useMultiFileAuthState,
     DisconnectReason,
     Browsers,
     makeWASocket,
     fetchLatestBaileysVersion
-} = baileys;
+} from '@whiskeysockets/baileys';
 import pino from 'pino';
 import qrcode from 'qrcode-terminal';
 import chalk from 'chalk';

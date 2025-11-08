@@ -7,6 +7,11 @@
   "imports": {
     "#buffer": "buffer/index.js"
   },
+  "overrides": {
+    "nsfwjs": {
+      "buffer": "npm:buffer@^6.0.3"
+    }
+  },
   "scripts": {
     "start": "node index.js"
   },
@@ -26,7 +31,8 @@
     "@napi-rs/canvas": "^0.1.80",
     "@supabase/supabase-js": "^2.45.4",
     "@tensorflow/tfjs-node": "^4.22.0",
-    "@neoxr/baileys": "^8.2.18",
+    "@whiskeysockets/baileys": "github:Kone457/baileys",
+    "api-dylux": "^1.8.5",
     "archiver": "^7.0.1",
     "axios": "^1.7.7",
     "chalk": "^5.3.0",
@@ -77,4 +83,3 @@
     "node": ">=18.0.0"
   }
 }
-
