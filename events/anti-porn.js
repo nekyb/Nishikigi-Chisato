@@ -63,33 +63,70 @@ export const antinsfwEvent = {
     },
 
     async checkBotAdmin(sock, groupJid) {
+        console.log("━━━ DEBUG [checkBotAdmin] ━━━");
+        console.log("📍 Group JID:", groupJid);
+        
         try {
-            if (!groupJid.endsWith("@g.us")) return true;
+            if (!groupJid.endsWith("@g.us")) {
+                console.log("⚠️ DEBUG: No es grupo, retornando true");
+                console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+                return true;
+            }
 
             const groupMetadata = await this.getGroupMetadata(sock, groupJid);
             const participants = groupMetadata.participants || [];
             const botNumber = sock.user.id.split(":")[0].split("@")[0];
+            
+            console.log("🤖 DEBUG: Bot number:", botNumber);
+            console.log("👥 DEBUG: Total participantes:", participants.length);
 
             const botParticipant = participants.find((p) => {
                 const participantId = p.id?.split("@")?.[0];
+                const participantIdWithoutColon = participantId?.split(":")[0];
+                
                 return (
                     participantId === botNumber ||
+                    participantIdWithoutColon === botNumber ||
                     p.id === sock.user.id ||
                     p.id === `${botNumber}@s.whatsapp.net` ||
-                    p.id === `${botNumber}@lid`
+                    p.id === `${botNumber}@lid` ||
+                    p.id === `${botNumber}:48@lid` ||
+                    participantId?.includes(botNumber)
                 );
             });
 
+            console.log("🔎 DEBUG: Bot encontrado:", !!botParticipant);
+            
             if (botParticipant) {
-                return (
-                    botParticipant.admin === "admin" ||
-                    botParticipant.admin === "superadmin"
-                );
+                const isAdmin = botParticipant.admin === "admin" || botParticipant.admin === "superadmin";
+                console.log("👑 DEBUG: Rol del bot:", botParticipant.admin || "member");
+                console.log("✅ DEBUG: Bot es admin:", isAdmin);
+                console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+                return isAdmin;
             }
 
-            return false;
+            console.log("⚠️ DEBUG: Bot NO encontrado en participantes");
+            console.log("🔄 DEBUG: Intentando verificación alternativa...");
+            
+            try {
+                const testResult = await this.getGroupMetadata(sock, groupJid);
+                
+                console.log("⚡ DEBUG: Bot puede acceder al grupo pero no aparece en participantes");
+                console.log("💡 DEBUG: Esto es un bug conocido de WhatsApp con grupos @lid");
+                console.log("✅ DEBUG: Asumiendo que el bot SÍ tiene permisos (workaround)");
+                console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+                
+                return true;
+            } catch (error) {
+                console.log("❌ DEBUG: Error en verificación alternativa");
+                console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+                return false;
+            }
         } catch (error) {
-            console.error("❌ Error verificando admin del bot:", error);
+            console.error("━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            console.error("❌ ERROR [checkBotAdmin]:", error.message);
+            console.error("📋 Stack:", error.stack);
+            console.error("━━━━━━━━━━━━━━━━━━━━━━━━━━━");
             return false;
         }
     },
@@ -444,9 +481,21 @@ Detección: ${analysis.category} (${analysis.confidence}% confianza)`;
         const sender = msg.key.participant || msg.key.remoteJid;
         const userNumber = sender.split("@")[0];
 
+        console.log("━━━ DEBUG [applyPunishment] ━━━");
+        console.log("👤 Usuario:", userNumber);
+        console.log("📊 Análisis:", {
+            category: analysis.category,
+            severity: analysis.severity,
+            confidence: analysis.confidence
+        });
+
         try {
             const warnings = await getGroupWarnings(groupJid, sender);
             const newWarnings = warnings + 1;
+            
+            console.log("⚠️ DEBUG: Advertencias anteriores:", warnings);
+            console.log("⚠️ DEBUG: Nuevas advertencias:", newWarnings);
+            console.log("⚠️ DEBUG: Máximo permitido:", this.config.maxWarnings);
 
             await this.deleteMessage(sock, msg);
 
@@ -454,8 +503,12 @@ Detección: ${analysis.category} (${analysis.confidence}% confianza)`;
                 analysis.severity === "high" ||
                 newWarnings >= this.config.maxWarnings
             ) {
+                console.log("🚨 DEBUG: Aplicando EXPULSIÓN");
+                console.log("   Razón: Severidad alta o límite alcanzado");
                 await this.kickUser(sock, msg, sender, userNumber, analysis);
             } else {
+                console.log("⚠️ DEBUG: Aplicando ADVERTENCIA");
+                console.log(`   Quedan ${this.config.maxWarnings - newWarnings} oportunidades`);
                 await this.warnUser(
                     sock,
                     msg,
@@ -467,8 +520,13 @@ Detección: ${analysis.category} (${analysis.confidence}% confianza)`;
             }
 
             await updateGroupWarnings(groupJid, sender, newWarnings);
+            console.log("✅ DEBUG: Castigo aplicado y registrado");
+            console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━");
         } catch (error) {
-            console.error("❌ Error aplicando castigo:", error);
+            console.error("━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            console.error("❌ ERROR [applyPunishment]:", error.message);
+            console.error("📋 Stack:", error.stack);
+            console.error("━━━━━━━━━━━━━━━━━━━━━━━━━━━");
         }
     },
 

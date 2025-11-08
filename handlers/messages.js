@@ -6,11 +6,12 @@ import {
     isGroupCommand,
     getUsedPrefix,
 } from "../config/bot.js";
-import { isUserAdmin, isBotAdmin } from "../utils/permissions.js";
+import { isUserAdmin, isBotAdmin } from "../lib/adminUtils.js";
 import { isUserBanned } from "../database/users.js";
 import antilinkEvent from "../events/antilink.js";
 import antinsfwEvent from "../events/anti-porn.js";
 import baileys from "@whiskeysockets/baileys";
+import { trackMessageActivity } from "../plugins/group-fantasmas-view.js";
 
 const { proto, generateWAMessageFromContent, generateWAMessageContent } =
     baileys;
@@ -26,6 +27,11 @@ export async function handleMessage(sock, msg, commands, events) {
         }
 
         const isGroup = chatId.endsWith("@g.us");
+
+        // Track message activity for ghost detection
+        if (isGroup) {
+            trackMessageActivity(chatId, senderId);
+        }
 
         if (isGroup) {
             const userIsAdmin = await isUserAdmin(sock, chatId, senderId);
@@ -104,12 +110,33 @@ export async function handleMessage(sock, msg, commands, events) {
         );
         if (!canExecute) return;
         try {
+            console.log(`🚀 [HANDLER] Ejecutando comando: ${commandName}`)
             await command.execute(sock, msg, args);
+            console.log(`✅ [HANDLER] Comando ${commandName} ejecutado`)
         } catch (error) {
-            console.error(`Error ejecutando comando ${commandName}:`, error);
-            await sock.sendMessage(chatId, {
-                text: config.messages.error,
-            });
+            console.error(`━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
+            console.error(`❌ [HANDLER] Error ejecutando comando ${commandName}`)
+            console.error(`📋 Error:`, error.message)
+            console.error(`📚 Stack:`, error.stack)
+            console.error(`━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
+            
+            // No intentar enviar mensajes si hay problemas de conexión
+            const isConnectionError = error.message?.includes('Connection Closed') || 
+                                     error.message?.includes('Stream Errored') ||
+                                     error.output?.statusCode === 428 ||
+                                     error.output?.statusCode === 440;
+            
+            if (!isConnectionError) {
+                try {
+                    await sock.sendMessage(chatId, {
+                        text: `❌ Error ejecutando el comando.\n\n${error.message}`,
+                    });
+                } catch (sendError) {
+                    console.error(`❌ [HANDLER] No se pudo enviar mensaje de error:`, sendError.message)
+                }
+            } else {
+                console.log(`⚠️ [HANDLER] Error de conexión detectado, esperando reconexión automática...`)
+            }
         }
     } catch (error) {
         console.error("Error en handleMessage:", error);
