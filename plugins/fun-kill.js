@@ -1,5 +1,6 @@
 import axios from 'axios'
-import { fileTypeFromBuffer } from 'file-type'
+import fileType from 'file-type';
+const { fileTypeFromBuffer } = fileType;
 
 export default {
   name: 'kill',
