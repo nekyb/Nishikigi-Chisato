@@ -1,5 +1,5 @@
 import { getGroupSettings, updateGroupSettings } from '../database/users.js';
-import { antinsfwEvent } from '../events/anti-porn.cjs';
+import { antinsfwEvent } from '../events/anti-porn.js';
 import { isBotAdmin, isUserAdmin } from '../lib/adminUtils.js'
 
 export default {
