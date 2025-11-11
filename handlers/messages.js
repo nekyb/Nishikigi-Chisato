@@ -12,6 +12,7 @@ import antilinkEvent from "../events/antilink.js";
 import antinsfwEvent from "../events/anti-porn.js";
 import baileys from "@whiskeysockets/baileys";
 import { trackMessageActivity } from "../plugins/group-fantasmas-view.js";
+import { createPluginSendMessage } from "../lib/messaging.js";
 
 const { proto, generateWAMessageFromContent, generateWAMessageContent } =
     baileys;
@@ -20,15 +21,12 @@ export async function handleMessage(sock, msg, commands, events) {
     try {
         const senderId = msg.key.participant || msg.key.remoteJid;
         const chatId = msg.key.remoteJid;
-        const userNumber = senderId.split("@")[0];
-
+        const userNumber = senderId.split("@")[0]
         if (await isUserBanned(userNumber)) {
             return;
         }
 
         const isGroup = chatId.endsWith("@g.us");
-
-        // Track message activity for ghost detection
         if (isGroup) {
             trackMessageActivity(chatId, senderId);
         }
@@ -36,8 +34,6 @@ export async function handleMessage(sock, msg, commands, events) {
         if (isGroup) {
             const userIsAdmin = await isUserAdmin(sock, chatId, senderId);
             const botIsAdmin = await isBotAdmin(sock, chatId);
-
-            // Ejecutar antilink
             const wasRemovedByAntilink = await antilinkEvent.handleMessage(
                 sock,
                 msg,
@@ -45,8 +41,6 @@ export async function handleMessage(sock, msg, commands, events) {
                 botIsAdmin,
             );
             if (wasRemovedByAntilink) return;
-
-            // Ejecutar anti-NSFW
             const wasRemovedByAntinsfw = await antinsfwEvent.handleMessage(
                 sock,
                 msg,
@@ -86,10 +80,8 @@ export async function handleMessage(sock, msg, commands, events) {
 
         const messageText = getMessageText(msg);
         if (!messageText) return;
-
         const usedPrefix = getUsedPrefix(messageText);
         if (!usedPrefix) return;
-
         const args = messageText.slice(usedPrefix.length).trim().split(/\s+/);
         const commandName = args.shift()?.toLowerCase();
         if (!commandName) return;
@@ -111,7 +103,9 @@ export async function handleMessage(sock, msg, commands, events) {
         if (!canExecute) return;
         try {
             console.log(`🚀 [HANDLER] Ejecutando comando: ${commandName}`)
-            await command.execute(sock, msg, args);
+            const enhancedSock = Object.create(sock);
+            enhancedSock.sendMessage = createPluginSendMessage(sock, commandName);
+            await command.execute(enhancedSock, msg, args);
             console.log(`✅ [HANDLER] Comando ${commandName} ejecutado`)
         } catch (error) {
             console.error(`━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
@@ -119,8 +113,6 @@ export async function handleMessage(sock, msg, commands, events) {
             console.error(`📋 Error:`, error.message)
             console.error(`📚 Stack:`, error.stack)
             console.error(`━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
-            
-            // No intentar enviar mensajes si hay problemas de conexión
             const isConnectionError = error.message?.includes('Connection Closed') || 
                                      error.message?.includes('Stream Errored') ||
                                      error.output?.statusCode === 428 ||

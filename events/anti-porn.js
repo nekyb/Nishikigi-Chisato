@@ -1,4 +1,3 @@
-import * as tf from "@tensorflow/tfjs-node";
 import {
     getGroupSettings,
     updateGroupWarnings,
@@ -6,20 +5,26 @@ import {
 } from "../database/users.js";
 import sharp from "sharp";
 
-await tf.ready();
+let tf = null;
+let nsfwjs = null;
 
-// Cargar nsfwjs dinámicamente
-let nsfwjs;
 try {
+    tf = await import("@tensorflow/tfjs-node");
+    await tf.ready();
+    console.log("✅ TensorFlow.js cargado correctamente");
+    
     nsfwjs = await import("nsfwjs");
+    console.log("✅ NSFWJS cargado correctamente");
 } catch (error) {
-    console.error("Error cargando nsfwjs:", error);
+    console.warn("⚠️ TensorFlow.js o NSFWJS no disponible:", error.message);
+    console.warn("⚠️ El sistema anti-NSFW estará deshabilitado");
+    tf = null;
     nsfwjs = null;
 }
 
 export const antinsfwEvent = {
     name: "antinsfw",
-    enabled: true,
+    enabled: tf !== null && nsfwjs !== null,
     model: null,
     metadataCache: new Map(),
     cacheTimeout: 60000,
