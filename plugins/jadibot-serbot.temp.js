@@ -1,4 +1,5 @@
-import { useMultiFileAuthState, DisconnectReason, makeCacheableSignalKeyStore, fetchLatestBaileysVersion, Browsers } from "@whiskeysockets/baileys"
+import pkg from "@soblend/baileys";
+const { useMultiFileAuthState, DisconnectReason, makeCacheableSignalKeyStore, fetchLatestBaileysVersion, Browsers } = pkg;
 import qrcode from "qrcode"
 import NodeCache from "node-cache"
 import fs from "fs"

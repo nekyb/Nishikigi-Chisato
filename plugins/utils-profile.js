@@ -12,7 +12,6 @@ const profileCommand = {
         
         try {
             let targetUser;
-            
             if (msg.message?.extendedTextMessage?.contextInfo?.mentionedJid &&
                 msg.message.extendedTextMessage.contextInfo.mentionedJid.length > 0) {
                 targetUser = msg.message.extendedTextMessage.contextInfo.mentionedJid[0];
@@ -45,11 +44,9 @@ const profileCommand = {
                 }
                 
                 const userName = targetUser.split('@')[0];
-                
                 const response = await fetch(profilePicUrl);
                 const buffer = await response.arrayBuffer();
                 const imageBuffer = Buffer.from(buffer);
-                
                 await sock.sendMessage(chatId, {
                     image: imageBuffer,
                     caption: `┏━━━━━━━━━━━━━━━┓
@@ -80,7 +77,6 @@ const profileCommand = {
             
         } catch (error) {
             console.error('Error en comando profile:', error)
-            
             await sock.sendMessage(chatId, {
                 react: {
                     text: '❌',

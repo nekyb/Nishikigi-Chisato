@@ -2,7 +2,7 @@ import { config } from '../config/bot.js';
 
 export default {
     name: 'menu',
-    aliases: ['help', 'comandos', 'ayuda'],
+    aliases: ['comandos', 'ayuda'],
     category: 'info',
     description: 'Muestra el menú principal con botones interactivos',
     usage: '#menu',

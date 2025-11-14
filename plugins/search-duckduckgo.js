@@ -22,10 +22,6 @@ const ddgsearchCommand = {
             }
 
             const query = args.join(' ')
-            await sock.sendMessage(chatId, {
-                text: '《✧》 Buscando en DuckDuckGo...'
-            })
-
             const searchUrl = `https://duckduckgo.com/html/?q=${encodeURIComponent(query)}`
             const { data } = await axios.get(searchUrl, {
                 headers: {

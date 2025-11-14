@@ -1,4 +1,5 @@
-import { downloadMediaMessage } from '@whiskeysockets/baileys'
+import pkg from '@soblend/baileys';
+const { downloadMediaMessage } = pkg;
 import { Sticker, StickerTypes } from 'wa-sticker-formatter'
 import axios from 'axios';
 async function fetchBuffer(url) {

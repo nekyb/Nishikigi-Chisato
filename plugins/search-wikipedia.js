@@ -22,10 +22,6 @@ const wikipediaCommand = {
                 }, { quoted: msg });
             }
             const query = args.join(' ')
-            await sock.sendMessage(chatId, {
-                text: `《✧》 Buscando en Wikipedia: "${query}"...`
-            })
-
             const searchUrl = `https://es.wikipedia.org/w/api.php?action=opensearch&search=${encodeURIComponent(query)}&limit=1&format=json`
             const searchResponse = await axios.get(searchUrl)
             const [, titles, , urls] = searchResponse.data

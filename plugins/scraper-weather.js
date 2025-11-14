@@ -26,19 +26,11 @@ export default {
             }
 
             const city = args.join(' ');
-
-            await sock.sendMessage(chatId, {
-                text: `《✧》 🌤️ Obteniendo clima de ${city}...`
-            });
-
             const response = await axios.get(`https://wttr.in/${encodeURIComponent(city)}?format=j1`);
             const data = response.data;
-
             const current = data.current_condition[0];
             const location = data.nearest_area[0];
-
             const weatherDesc = current.lang_es?.[0]?.value || current.weatherDesc[0].value;
-            
             const tempC = current.temp_C;
             const feelsLikeC = current.FeelsLikeC;
             const humidity = current.humidity;
@@ -46,7 +38,6 @@ export default {
             const pressure = current.pressure;
             const visibility = current.visibility;
             const uvIndex = current.uvIndex;
-
             const weatherEmoji = {
                 'Sunny': '☀️',
                 'Clear': '🌙',
@@ -64,7 +55,6 @@ export default {
             };
 
             const emoji = weatherEmoji[current.weatherDesc[0].value] || '🌤️';
-
             await sock.sendMessage(chatId, {
                 text: `《✧》 *Clima en ${location.areaName[0].value}, ${location.country[0].value}*\n\n` +
                     `${emoji} *Estado:* ${weatherDesc}\n\n` +
@@ -78,7 +68,6 @@ export default {
                     `📅 *Actualizado:* ${current.observation_time}\n\n` +
                     `_Datos proporcionados por wttr.in_`
             }, { quoted: msg });
-
         } catch (error) {
             console.error('Error en weather:', error);
             await sock.sendMessage(chatId, {

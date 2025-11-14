@@ -22,10 +22,6 @@ const bravesearchCommand = {
             }
 
             const query = args.join(' ')
-            await sock.sendMessage(chatId, {
-                text: '《✧》 Buscando en Brave Search...'
-            })
-
             const searchUrl = `https://search.brave.com/search?q=${encodeURIComponent(query)}`
             const { data } = await axios.get(searchUrl, {
                 headers: {

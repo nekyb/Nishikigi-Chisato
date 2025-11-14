@@ -26,10 +26,6 @@ const dafontCommand = {
             }
 
             const query = args.join(' ').toLowerCase().trim()
-            await sock.sendMessage(chatId, {
-                text: '《✧》 🔍 Buscando fuente en DaFont...'
-            })
-
             const searchResults = await searchDaFont(query)
             if (searchResults.length === 0) {
                 return await sock.sendMessage(chatId, {

@@ -1,5 +1,6 @@
 import { PDFDocument } from 'pdf-lib'
-import { downloadContentFromMessage } from '@whiskeysockets/baileys'
+import pkg from '@soblend/baileys';
+const { downloadContentFromMessage } = pkg;
 if (!global.pdfSessions) {
     global.pdfSessions = new Map()
 }

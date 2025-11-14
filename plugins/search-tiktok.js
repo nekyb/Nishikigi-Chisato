@@ -1,5 +1,5 @@
 import axios from 'axios'
-import * as baileys from '@whiskeysockets/baileys'
+import * as baileys from '@soblend/baileys'
 
 console.log('Funciones disponibles en baileys:', Object.keys(baileys))
 const tiktokSearchCommand = {

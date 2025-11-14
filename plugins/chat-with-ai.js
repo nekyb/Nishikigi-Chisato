@@ -19,10 +19,8 @@ text: `《✧》 *Uso incorrecto del comando*\n\n` +
         `✿ #ai Explícame qué es la inteligencia artificial`
                 })
             }
+            
             const userText = args.join(' ')
-            await sock.sendMessage(chatId, {
-                text: '《✧》 Consultando con genesis...'
-            });
             const encodedText = encodeURIComponent(userText);
             const response = await axios.get(`https://gpt-oss-bat.drexelxx.workers.dev/?ask=${encodedText}`, { timeout: 15000 })
             if (!response.data || !response.data.response) { return await sock.sendMessage(chatId, { text: '《✧》 La IA no pudo generar una respuesta. Intenta de nuevo.' })

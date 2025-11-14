@@ -25,9 +25,7 @@ const instagramCommand = {
                 return await sock.sendMessage(chatId, {
                     text: '《✧》 Por favor ingresa un link válido de Instagram.'
                 })
-            } await sock.sendMessage(chatId, {
-                text: '《✧》 Descargando contenido de Instagram...'
-            })
+            } 
 
             const response = await igdl(url)
             const data = response.data

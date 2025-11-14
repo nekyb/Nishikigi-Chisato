@@ -16,7 +16,6 @@ const toimgCommand = {
                     text: `《✧》 *Uso incorrecto del comando*\n\n` +
                         `Responde a un sticker con:\n` +
                         `✿ #toimg`})}
-            await sock.sendMessage(chatId, {text: '《✧》 Convirtiendo a imagen...'})
             const buffer = await sock.downloadMediaMessage(msg.message?.stickerMessage ? msg :
                 { message: { stickerMessage: msg.message.extendedTextMessage.contextInfo.quotedMessage.stickerMessage } })
             await sock.sendMessage(chatId, {

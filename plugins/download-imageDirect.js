@@ -27,9 +27,7 @@ const imgdlCommand = {
                 return await sock.sendMessage(chatId, {
                     text: '《✧》 Por favor, introduce una URL válida (ej. https://...).'
                 })
-            } await sock.sendMessage(chatId, {
-                text: `《✧》 Iniciando descarga de imagen desde ${url}...`
-            })
+            } 
 
             const dest = path.join('/tmp', `image_dl_${Date.now()}`)
             const options = {

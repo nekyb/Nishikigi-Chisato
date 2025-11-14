@@ -38,10 +38,6 @@ export default {
                 });
             }
 
-            await sock.sendMessage(chatId, {
-                text: '《✧》 📱 Generando código QR...'
-            });
-
             const qrOptions = {
                 errorCorrectionLevel: 'H',
                 type: 'image/png',
@@ -55,14 +51,12 @@ export default {
             };
 
             const qrBuffer = await QRCode.toBuffer(content, qrOptions);
-
             await sock.sendMessage(chatId, {
                 image: qrBuffer,
                 caption: `《✧》 *Código QR Generado*\n\n` +
                     `📝 *Contenido:*\n${content.substring(0, 100)}${content.length > 100 ? '...' : ''}\n\n` +
                     `💡 Escanea el código con cualquier lector QR`
             }, { quoted: msg });
-
         } catch (error) {
             console.error('Error en qr:', error);
             await sock.sendMessage(chatId, {

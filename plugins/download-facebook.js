@@ -25,9 +25,7 @@ const facebookCommand = {
                 return await sock.sendMessage(chatId, {
                     text: '《✧》 Por favor ingresa un link válido de Facebook.'
                 })
-            } await sock.sendMessage(chatId, {
-                text: '《✧》 Descargando video de Facebook...'
-            })
+            } 
             let response
             try {
                 response = await igdl(url)

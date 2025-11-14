@@ -25,21 +25,16 @@ export default {
             }
 
             const url = args[0];
-
             if (!url.startsWith('http://') && !url.startsWith('https://')) {
                 return await sock.sendMessage(chatId, {
                     text: '《✧》 ❌ Por favor ingresa una URL válida (debe comenzar con http:// o https://)'
                 });
             }
 
-            await sock.sendMessage(chatId, {
-                text: '《✧》 🔗 Acortando URL...'
-            });
 
             try {
                 const response = await axios.get(`https://is.gd/create.php?format=simple&url=${encodeURIComponent(url)}`);
                 const shortUrl = response.data;
-
                 await sock.sendMessage(chatId, {
                     text: `《✧》 *URL Acortada*\n\n` +
                         `🔗 *Original:*\n${url}\n\n` +
@@ -57,7 +52,6 @@ export default {
                         `✨ *Acortada:*\n${shortUrl}`
                 }, { quoted: msg });
             }
-
         } catch (error) {
             console.error('Error en shorturl:', error);
             await sock.sendMessage(chatId, {

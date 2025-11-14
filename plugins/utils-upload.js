@@ -1,5 +1,6 @@
 import FormData from "form-data";
-import { downloadMediaMessage } from "@whiskeysockets/baileys";
+import pkg from '@soblend/baileys';
+const { downloadMediaMessage } = pkg;;
 import fetch from "node-fetch";
 
 const UPLOAD_API =
@@ -176,10 +177,10 @@ const uploadCommand = {
                             `╭━━━━━━━━━━━━━━━━━╮\n` +
                             `┃  *✅ Archivo Subido*\n` +
                             `╰━━━━━━━━━━━━━━━━━╯\n\n` +
-                            `📁 *Nombre:* ${fileName}\n` +
-                            `💾 *Tamaño:* ${fileSizeMB} MB\n` +
-                            `📊 *Tipo:* ${mediaType}\n\n` +
-                            `🔗 *Link directo:*\n${result.url}`,
+                            `✩ *Nombre:* ${fileName}\n` +
+                            `✩ *Tamaño:* ${fileSizeMB} MB\n` +
+                            `✩ *Tipo:* ${mediaType}\n\n` +
+                            `✩ *Link directo:*\n${result.url}`,
                     },
                     { quoted: msg },
                 );

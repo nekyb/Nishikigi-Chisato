@@ -32,9 +32,7 @@ export default {
             const type = args[0].toLowerCase();
             const text = args.slice(1).join(' ');
             const isEncode = command === 'encode';
-
             let result;
-
             switch (type) {
                 case 'base64':
                     if (isEncode) {

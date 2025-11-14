@@ -1,6 +1,6 @@
 import axios from 'axios'
 import FormData from 'form-data'
-import { downloadMediaMessage } from @whiskeysockets/baileys'
+import { downloadMediaMessage } from '@soblend/baileys'
 
 const removebgCommand = {
     name: 'removebg',

@@ -27,10 +27,6 @@ const xvidlCommand = {
                 })
             }
 
-            await sock.sendMessage(chatId, {
-                text: '《✧》 Enlace de Twitter/X detectado. Intentando descargar video...'
-            })
-
             const apiEndpoint = `https://api.delirius.store/download/twitter?url=${encodeURIComponent(url)}`
             const response = await axios.get(apiEndpoint, { timeout: 20000 })
             const data = response.data.data

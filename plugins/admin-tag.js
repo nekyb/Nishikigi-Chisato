@@ -24,8 +24,6 @@ const tagCommand = {
                 return
             }
             
-            const more = String.fromCharCode(8206)
-            const masss = more.repeat(850)
             let finalText = messageText || '*¡₳₮Ɇ₦₵łØ₦ ₳ ₮ØĐØ₴!*'
             
             if (quotedMsg?.conversation || quotedMsg?.extendedTextMessage?.text) {
@@ -80,7 +78,7 @@ const tagCommand = {
                             caption: videoCaption,
                             mentions: mentions,
                             mimetype: 'video/mp4'
-                        });
+                        })
                         return
                     }
                 } catch (error) {
@@ -104,6 +102,13 @@ const tagCommand = {
                             mimetype: 'audio/mp4',
                             ptt: quotedMsg.audioMessage.ptt || false
                         })
+                        
+                        if (messageText) {
+                            await sock.sendMessage(chatId, {
+                                text: messageText,
+                                mentions: mentions
+                            })
+                        }
                         return
                     }
                 } catch (error) {
@@ -127,7 +132,7 @@ const tagCommand = {
                         
                         if (messageText) {
                             await sock.sendMessage(chatId, {
-                                text: `${masss}\n${messageText}`,
+                                text: messageText,
                                 mentions: mentions
                             })
                         }
@@ -139,7 +144,7 @@ const tagCommand = {
             } 
             
             await sock.sendMessage(chatId, {
-                text: `${masss}\n${finalText}`,
+                text: finalText,
                 mentions: mentions
             })
             

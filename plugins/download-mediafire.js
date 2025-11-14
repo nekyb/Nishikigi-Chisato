@@ -24,70 +24,99 @@ const mediafireCommand = {
             if (!url.includes('mediafire.com')) { return await sock.sendMessage(chatId, {
                     text: '《✧》 Por favor ingresa un link válido de MediaFire.'
                 })
-            } await sock.sendMessage(chatId, {
-                text: '《✧》 Obteniendo información del archivo...'
-            })
-
+            } 
+               
             const apiUrl = `https://delirius-apiofc.vercel.app/download/mediafire?url=${encodeURIComponent(url)}`
             const response = await axios.get(apiUrl, {
-                timeout: 30000
+                timeout: 60000
             })
+            
+            console.log('Respuesta API MediaFire:', JSON.stringify(response.data, null, 2))
             const data = response.data
-            if (!data || !data.data || !data.data[0]) {
+            let file;
+            if (data.data && Array.isArray(data.data) && data.data[0]) {
+                file = data.data[0]
+            } else if (data.data && !Array.isArray(data.data)) {
+                file = data.data
+            } else if (data.result) {
+                file = data.result
+            } else {
                 return await sock.sendMessage(chatId, {
                     text: '《✧》 No se pudo obtener información del enlace.\n\n' +
                         '💡 *Tip:* Verifica que sea un link válido de MediaFire.'
                 })
             }
-            const file = data.data[0]
-            if (!file.link) {
+            
+            const downloadLink = file.link || file.url || file.download || file.downloadUrl
+            
+            if (!downloadLink) {
+                console.log('Estructura del archivo:', JSON.stringify(file, null, 2))
                 return await sock.sendMessage(chatId, {
-                    text: '《✧》 No se pudo obtener el enlace de descarga.'
+                    text: '《✧》 No se pudo obtener el enlace de descarga.\n\n' +
+                        '💡 *Tip:* El archivo puede estar protegido o el enlace ha expirado.'
                 })
             } await sock.sendMessage(chatId, {
                 text: '《✧》 Descargando archivo...'
             })
 
+            const fileName = file.nama || file.name || file.filename || 'archivo'
+            const fileSize = file.size || file.filesize || 'N/A'
+            const fileMime = file.mime || file.mimetype || file.type || 'application/octet-stream'
+
             const caption = `╔═══《 MEDIAFIRE 》═══╗\n` +
                 `║\n` +
-                `║ ✦ *Nombre:* ${file.nama || 'Desconocido'}\n` +
-                `║ ✦ *Peso:* ${file.size || 'N/A'}\n` +
-                `║ ✦ *Tipo:* ${file.mime || 'N/A'}\n` +
+                `║ ✦ *Nombre:* ${fileName}\n` +
+                `║ ✦ *Peso:* ${fileSize}\n` +
+                `║ ✦ *Tipo:* ${fileMime}\n` +
                 `║\n` +
                 `╚═════════════════╝`;
 
             try {
-                const fileResponse = await axios.get(file.link, {
+                console.log('Descargando desde:', downloadLink)
+                
+                const fileResponse = await axios.get(downloadLink, {
                     responseType: 'arraybuffer',
-                    timeout: 60000, 
-                    maxContentLength: 100 * 1024 * 1024 
+                    timeout: 120000, 
+                    maxContentLength: 100 * 1024 * 1024,
+                    headers: {
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                    }
                 })
                 const buffer = Buffer.from(fileResponse.data);
-                if (file.mime?.includes('image')) { await sock.sendMessage(chatId, {
+                
+                console.log('Archivo descargado, tamaño:', buffer.length, 'bytes')
+                
+                if (fileMime.includes('image')) { 
+                    await sock.sendMessage(chatId, {
                         image: buffer,
                         caption: caption,
-                        fileName: file.nama || 'archivo'
+                        fileName: fileName
                     }, { quoted: msg })
-                } else if (file.mime?.includes('video')) { await sock.sendMessage(chatId, {
+                } else if (fileMime.includes('video')) { 
+                    await sock.sendMessage(chatId, {
                         video: buffer,
                         caption: caption,
-                        fileName: file.nama || 'video.mp4',
-                        mimetype: file.mime
+                        fileName: fileName.endsWith('.mp4') ? fileName : fileName + '.mp4',
+                        mimetype: fileMime
                     }, { quoted: msg })
-                } else if (file.mime?.includes('audio')) { await sock.sendMessage(chatId, {
+                } else if (fileMime.includes('audio')) { 
+                    await sock.sendMessage(chatId, {
                         audio: buffer,
                         caption: caption,
-                        fileName: file.nama || 'audio.mp3',
-                        mimetype: file.mime
+                        fileName: fileName.endsWith('.mp3') ? fileName : fileName + '.mp3',
+                        mimetype: fileMime
                     }, { quoted: msg })
-                } else { await sock.sendMessage(chatId, {
+                } else { 
+                    await sock.sendMessage(chatId, {
                         document: buffer,
                         caption: caption,
-                        fileName: file.nama || 'archivo',
-                        mimetype: file.mime || 'application/octet-stream'
+                        fileName: fileName,
+                        mimetype: fileMime
                     }, { quoted: msg })
-                } await sock.sendMessage(chatId, {
-                    text: `《✧》 ✅ *Descarga completada*\n\n✿ Archivo: ${file.nama || 'archivo'}`
+                } 
+                
+                await sock.sendMessage(chatId, {
+                    text: `《✧》 ✅ *Descarga completada*\n\n✿ Archivo: ${fileName}`
                 })
             } catch (downloadError) {
                 console.error('Error al descargar archivo:', downloadError)

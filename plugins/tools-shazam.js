@@ -1,6 +1,7 @@
 import axios from 'axios'
 import FormData from 'form-data'
-import { downloadMediaMessage } from '@whiskeysockets/baileys'
+import pkg from '@soblend/baileys';
+const { downloadMediaMessage } = pkg;
 
 const shazamCommand = {
     name: 'shazam',
@@ -30,10 +31,6 @@ const shazamCommand = {
                         `💡 *Tip:* El audio debe tener al menos 3-5 segundos para mejor precisión.`
                 })
             }
-
-            await sock.sendMessage(chatId, {
-                text: '《✧》 🎵 Escuchando la canción...\n⏳ Identificando con Shazam...'
-            })
 
             const buffer = await downloadMediaMessage(
                 quotedMsg || msg,

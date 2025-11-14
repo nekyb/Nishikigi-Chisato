@@ -25,11 +25,7 @@ const webdlNameCommand = {
             const url = args[0]
             const fileName = args.slice(1).join(' ')
             const filePath = path.join('/tmp', fileName)
-            await sock.sendMessage(chatId, {
-                text: `《✧》 Iniciando descarga de ${fileName} desde ${url}...`
-            });
-
-            const response = await axios({
+                        const response = await axios({
                 url,
                 method: 'GET',
                 responseType: 'stream',

@@ -1,4 +1,5 @@
-import { useMultiFileAuthState, DisconnectReason, makeCacheableSignalKeyStore, fetchLatestBaileysVersion, Browsers, makeWASocket as makeWASocketBaileys } from "@whiskeysockets/baileys";
+import pkg from "@soblend/baileys";
+const { useMultiFileAuthState, DisconnectReason, makeCacheableSignalKeyStore, fetchLatestBaileysVersion, Browsers, makeWASocket: makeWASocketBaileys } = pkg;
 import qrcode from "qrcode";
 import NodeCache from "node-cache";
 import fs from "fs";
@@ -115,6 +116,9 @@ async function connectToWhatsApp(options) {
                         console.error('Error al eliminar QR:', err);
                     }
                 }, 45000);
+            } catch (error) {
+                console.error('Error generando QR:', error);
+            }
         }
     });
     sock.ev.on('creds.update', saveCreds);

@@ -11,7 +11,6 @@ const pingCommand = {
     async execute(sock, msg, args) {
         const chatId = msg.key.remoteJid
         try {const startTime = Date.now()
-            await sock.sendMessage(chatId, {text: '《✧》 Calculando ping...'})
             const endTime = Date.now()
             const responseTime = endTime - startTime
             await sock.sendMessage(chatId, {

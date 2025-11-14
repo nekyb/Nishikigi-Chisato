@@ -1,6 +1,7 @@
 import { webp2mp4 } from '../lib/webp2mp4.js'
 import { ffmpeg } from '../lib/converter.js'
-import { downloadContentFromMessage } from '@whiskeysockets/baileys'
+import pkg from '@soblend/baileys';
+const { downloadContentFromMessage } = pkg;
 
 async function downloadMedia(msg) {
     const messageType = Object.keys(msg.message)[0]

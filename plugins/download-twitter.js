@@ -32,28 +32,20 @@ export default {
                 });
             }
 
-            await sock.sendMessage(chatId, {
-                text: '《✧》 📥 Descargando contenido de Twitter/X...'
-            });
-
             try {
                 const apiUrl = `https://api.vxtwitter.com/Twitter/status/${url.split('/status/')[1]?.split('?')[0]}`;
                 const response = await axios.get(apiUrl);
-                
                 if (response.data && response.data.media_extended) {
                     const media = response.data.media_extended[0];
-                    
                     if (media.type === 'video') {
                         const videoUrl = media.url;
-                        
                         await sock.sendMessage(chatId, {
                             video: { url: videoUrl },
                             caption: `《✧》 *Twitter/X Video*\n\n` +
                                 `📝 ${response.data.text || 'Sin descripción'}\n` +
                                 `👤 @${response.data.user_screen_name}\n` +
                                 `🔗 ${url}`
-                        }, { quoted: msg });
-                        
+                        }, { quoted: msg })
                     } else if (media.type === 'image') {
                         await sock.sendMessage(chatId, {
                             image: { url: media.url },
