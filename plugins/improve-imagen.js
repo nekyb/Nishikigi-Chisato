@@ -1,4 +1,5 @@
-import { downloadMediaMessage } from "@whiskeysockets/baileys";
+import pkg from '@soblend/baileys';
+const { downloadMediaMessage } = pkg;;
 import axios from "axios";
 
 const improveCommand = {

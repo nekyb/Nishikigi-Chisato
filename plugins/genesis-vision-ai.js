@@ -1,5 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { downloadMediaMessage } from "@whiskeysockets/baileys";
+import pkg from '@soblend/baileys';
+const { downloadMediaMessage } = pkg;;
 import pino from "pino";
 const logger = pino({ level: "silent" });
 

@@ -2,7 +2,8 @@
 
 import Replicate from "replicate";
 import axios from "axios";
-import { downloadContentFromMessage } from "@whiskeysockets/baileys";
+import pkg from '@soblend/baileys';
+const { downloadContentFromMessage } = pkg;;
 
 const animeyouCommand = {
     name: "animeyou",

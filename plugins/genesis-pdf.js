@@ -1,7 +1,8 @@
 // Codigo creado por: PanDev
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { downloadContentFromMessage } from "@whiskeysockets/baileys";
+import pkg from '@soblend/baileys';
+const { downloadContentFromMessage } = pkg;;
 import PDFDocument from "pdfkit";
 
 const gempdfCommand = {

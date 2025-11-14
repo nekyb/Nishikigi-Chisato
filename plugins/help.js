@@ -2,12 +2,16 @@ import { config } from '../config/bot.js'
 
 const helpCommand = {
     name: 'help',
-    aliases: ['ayuda', 'menu', 'comandos'],
-    category: 'group',
+    aliases: ['ayuda', 'comandos'],
+    category: 'general',
     description: 'Muestra todos los comandos disponibles',
-    usage: '#help',
+    usage: '.help',
+    adminOnly: false,
+    groupOnly: false,
+    botAdminRequired: false,
     async execute(sock, msg, args) {
         const chatId = msg.key.remoteJid
+
         try {
             const helpText = `Hola, soy *Nishikigi Chisato*, soy un asistente personalizado, aquí tienes los comandos. ૮꒰ ˶• ༝ •˶꒱ა ♡
 
@@ -39,6 +43,35 @@ const helpCommand = {
 
 ✿ *#tag* + [ text ] 
 ╰⪼ Avisa algo a todos.
+
+✿ *#tagall*
+╰⪼ Lista y menciona a todos los miembros.
+
+✿ *#autoadmin*
+╰⪼ Sistema de auto-administración.
+
+✿ *#porn* » *#nsfw* + [ on / off ]
+╰⪼ Activa/desactiva comandos NSFW.
+
+» ⊹ ˚୨ •(=^●ω●^=)• Información ⊹
+
+✿ *#menu*
+╰⪼ Menú con botones interactivos.
+
+✿ *#botinfo*
+╰⪼ Información del bot con botones.
+
+✿ *#info*
+╰⪼ Información general del bot.
+
+✿ *#bansystem*
+╰⪼ Sistema de baneos.
+
+✿ *#getplugin* + [ nombre ]
+╰⪼ Obtiene código de un plugin.
+
+✿ *#addplugin*
+╰⪼ Añade un nuevo plugin.
 
 » ⊹ ˚୨ •(=^●ω●^=)• Utilidades ⊹
 
@@ -130,6 +163,12 @@ const helpCommand = {
 ✿ *#scsearch*  » *#sc* + [ texto ]
 ╰⪼ Busca una cancion en SoundCloud.
 
+✿ *#github* + [ repositorio ]
+╰⪼ Busca repositorios en GitHub.
+
+✿ *#weather* » *#clima* + [ ciudad ]
+╰⪼ Información del clima de una ciudad.
+
 » ⊹ ˚୨ •(=^●ω●^=)• Economia ⊹
 
 ✿ *#work*  » *#w*
@@ -151,15 +190,10 @@ const helpCommand = {
 ╰⪼ Roba coins a otro usuario.
 
 ✿ *#baltop*  » *#eboard* 
-╰⪼ Mira el top 1 con mas coins
+╰⪼ Mira el top 1 con mas coins.
 
-» ⊹ ˚୨ •(=^●ω●^=)• Random ⊹
-
-✿ *#meme* 
-╰⪼ Mira un meme.
-
-✿ *#cat* 
-╰⪼ Mira un gato.
+✿ *#bank* » *#darcoins* + [ @user ] + [ cantidad ]
+╰⪼ Gestión de banco y transferencias.
 
 » ⊹ ˚୨ •(=^●ω●^=)• Games ⊹
 
@@ -183,6 +217,70 @@ const helpCommand = {
 
 ✿ *#glx* 
 ╰⪼ Juega en el espacio, explora, mina, descubre.
+
+✿ *#8ball* + [ pregunta ]
+╰⪼ Bola 8 mágica con respuestas aleatorias.
+
+✿ *#trivia*
+╰⪼ Juego de preguntas y respuestas.
+
+✿ *#tictactoe* » *#ttt*
+╰⪼ Juega tres en raya.
+
+» ⊹ ˚୨ •(=^●ω●^=)• Diversión ⊹
+
+✿ *#meme* 
+╰⪼ Muestra un meme aleatorio.
+
+✿ *#cat* 
+╰⪼ Imagen aleatoria de gatos.
+
+✿ *#abrazar* + [ @user ]
+╰⪼ Abraza a alguien.
+
+✿ *#acariciar* + [ @user ]
+╰⪼ Acaricia a alguien.
+
+✿ *#kiss* + [ @user ]
+╰⪼ Besa a alguien.
+
+✿ *#slap* + [ @user ]
+╰⪼ Abofetea a alguien.
+
+✿ *#angry*
+╰⪼ Muestra enojo.
+
+✿ *#cry*
+╰⪼ Llora.
+
+✿ *#dance*
+╰⪼ Baila.
+
+✿ *#kill* + [ @user ]
+╰⪼ Mata (roleplay).
+
+✿ *#fumar*
+╰⪼ Fuma (roleplay).
+
+✿ *#seducir* + [ @user ]
+╰⪼ Seduce a alguien.
+
+✿ *#tijeras*
+╰⪼ Tijeras (roleplay).
+
+» ⊹ ˚୨ •(=^●ω●^=)• NSFW ⊹
+
+✿ *#porn* » *#nsfw* + [ on / off ]
+╰⪼ Activa/desactiva modo NSFW.
+
+✿ *#himg* » *#hentaimages*
+╰⪼ Imagen hentai aleatoria (requiere NSFW).
+
+✿ *#phdll* » *#pornhubdl* + [ url ]
+╰⪼ Descarga videos de Pornhub (requiere NSFW).
+
+✿ *#cojer* » *#blobjob*
+╰⪼ Acciones +18 (requiere NSFW).
 
 » ⊹ ˚୨ •(=^●ω●^=)• Gacha ⊹
 
@@ -216,6 +314,26 @@ const helpCommand = {
 ✿ *#winfo* + [ waifu ]
 ╰⪼ Muestra la informacion de un personaje
 
+✿ *#dar* + [ @user ] + [ waifu ]
+╰⪼ Da una waifu a otro usuario.
+
+✿ *#robarwaifu* + [ @user ]
+╰⪼ Intenta robar una waifu de otro usuario.
+
+✿ *#antirobo* + [ on / off ]
+╰⪼ Protege tus waifus de robos.
+
+» ⊹ ˚୨ •(=^●ω●^=)• JadiBot ⊹
+
+✿ *#jadibot* » *#serbot*
+╰⪼ Convierte tu número en un sub-bot.
+
+✿ *#stopjadibot* » *#stop*
+╰⪼ Detiene tu sub-bot.
+
+✿ *#listbots* » *#bots*
+╰⪼ Lista de bots activos.
+
 » ⊹ ˚୨ •(=^●ω●^=)• Herramientas ⊹
 
 ✿ *#lyrics* » *#letra* » *#lyric* + [ nombre de la canción ]
@@ -227,9 +345,39 @@ const helpCommand = {
 ✿ *#news* + [ tema (opcional) ] 
 ╰⪼ Mira las noticias de ultima hora.
 
+✿ *#qr* » *#qrcode* + [ texto ]
+╰⪼ Genera códigos QR.
+
+✿ *#shorturl* + [ url ]
+╰⪼ Acorta URLs.
+
+✿ *#calc* » *#calculate* + [ operación ]
+╰⪼ Calculadora matemática.
+
+✿ *#reverse* + [ texto ]
+╰⪼ Invierte el texto.
+
+✿ *#encode* » *#decode* + [ texto ]
+╰⪼ Codifica/decodifica en Base64.
+
+✿ *#translate* + [ idioma ] + [ texto ]
+╰⪼ Traduce texto a otro idioma.
+
+✿ *#pdf* + [ texto o imagen ]
+╰⪼ Genera archivos PDF.
+
+✿ *#fantasmas* » *#kickfantasmas*
+╰⪼ Expulsa usuarios inactivos del grupo.
+
+✿ *#fantasmasview*
+╰⪼ Ver lista de usuarios inactivos.
+
 » ⊹ ˚୨ •(=^●ω●^=)• Innovacion ⊹
 
-✿ *#crypto* » *#coin* 
+✿ *#genesis* » *#ai* + [ mensaje ]
+╰⪼ Chat con IA avanzada.
+
+✿ *#crypto* » *#coin* + [ moneda ]
 ╰⪼ Muestra el precio de una criptomoneda actualmente.
 
 ✿ *#speak* + [ texto ]
@@ -247,8 +395,35 @@ const helpCommand = {
 ✿ *#heygen* » *#genvideo* » *#texttovideo* » *#makevideo* + [ tu texto para el video ]
 ╰⪼ Genera videos con IA usando texto.
 
+✿ *#codegen* » *#generatecode* + [ descripción ]
+╰⪼ Genera código con IA.
+
+✿ *#explaincode* + [ código ]
+╰⪼ Explica código con IA.
+
+✿ *#fixcode* + [ código ]
+╰⪼ Corrige errores de código con IA.
+
+✿ *#animeyou* + [ imagen ]
+╰⪼ Convierte tu foto en estilo anime.
+
+✿ *#deline* + [ imagen ]
+╰⪼ Elimina líneas de una imagen.
+
+✿ *#blur* + [ imagen ]
+╰⪼ Difumina una imagen.
+
+✿ *#elevenlabs* + [ texto ]
+╰⪼ Text-to-speech avanzado con IA.
+
+✿ *#translateadv* + [ idioma ] + [ texto ]
+╰⪼ Traducción avanzada con IA.
+
 ━━━━━━━━━━━━━━━━━━━━━
-_𝕻𝖔𝖜𝖊𝖗𝖊𝖉 𝕭𝐲 𝕯𝖊𝖑𝖙𝖆𝕭𝐲𝖙𝖊_`;
+_𝕻𝖔𝖜𝖊𝖗𝖊𝖉 𝕭𝐲 𝕯𝖊𝖑𝖙𝖆𝕭𝐲𝖙𝖊_`
+
+            console.log('📤 Enviando mensaje de ayuda...')
+
             await sock.sendMessage(chatId, {
                 text: helpText,
                 contextInfo: {
@@ -267,28 +442,55 @@ _𝕻𝖔𝖜𝖊𝖗𝖊𝖉 𝕭𝐲 𝕯𝖊𝖑𝖙𝖆𝕭𝐲𝖙𝖊_`;
                         renderLargerThumbnail: true,
                     },
                 },
-            });
-        }
-        catch (error) {
-            console.error('Error en comando help:', error);
-            try {
-                await sock.sendMessage(chatId, {
-                    text: `❌ Error al cargar la imagen del menú.\n\nAquí están los comandos disponibles:\n\n` +
-                        `*Comandos de Administración:*\n` +
-                        `• ${config.prefix}kick @user - Expulsa a un usuario\n` +
-                        `• ${config.prefix}ban @user - Banea a un usuario\n` +
-                        `• ${config.prefix}change [option] - Cambia configuración del grupo\n` +
-                        `• ${config.prefix}alertas [on/off] - Activa/desactiva alertas\n` +
-                        `• ${config.prefix}antilink [on/off] - Activa/desactiva antilink\n` +
-                        `• ${config.prefix}welcome [on/off] - Activa/desactiva bienvenida\n` +
-                        `• ${config.prefix}tag [texto] - Etiqueta a todos\n\n` +
-                        `Para más información, visita: ${config.links.commands}`
-                });
+            }, { quoted: msg })
+
+            console.log('✅ Mensaje de ayuda enviado correctamente')
+
+        } catch (error) {
+            console.error('❌ Error en comando help:', error.message)
+            console.error('Stack:', error.stack)
+
+            // Detectar errores de conexión
+            const isConnectionError = error.message?.includes('Connection Closed') || 
+                                     error.message?.includes('Stream Errored') ||
+                                     error.message?.includes('Timed Out') ||
+                                     error.output?.statusCode === 428 ||
+                                     error.output?.statusCode === 440;
+
+            if (isConnectionError) {
+                console.log('⚠️ Error de conexión detectado en help, esperando reconexión...')
+                return;
             }
-            catch (fallbackError) {
-                console.error('Error enviando mensaje fallback:', fallbackError);
+
+            // Intentar envío simple sin contextInfo
+            try {
+                console.log('📤 Intentando envío simplificado...')
+                await sock.sendMessage(chatId, {
+                    text: helpText
+                }, { quoted: msg })
+
+                console.log('✅ Mensaje simplificado enviado')
+            } catch (simpleError) {
+                console.error('❌ Error en envío simplificado:', simpleError.message)
+
+                // Último intento: mensaje corto
+                try {
+                    await sock.sendMessage(chatId, {
+                        text: `《✧》 *Comandos Principales*\n\n` +
+                            `Admin: kick, ban, tag\n` +
+                            `Downloads: tiktok, instagram, spotify\n` +
+                            `Utilidad: clima, sticker, translate\n` +
+                            `Juegos: roulette, ppt, trivia\n\n` +
+                            `📖 Más info: ${config.links.commands}`
+                    }, { quoted: msg })
+
+                    console.log('✅ Mensaje corto enviado')
+                } catch (fallbackError) {
+                    console.error('❌ Error crítico en help:', fallbackError.message)
+                }
             }
         }
     }
-};
-export default helpCommand;
+}
+
+export default helpCommand

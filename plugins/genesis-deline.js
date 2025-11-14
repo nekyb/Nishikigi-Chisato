@@ -1,6 +1,7 @@
 import axios from "axios";
 import FormData from "form-data";
-import { downloadMediaMessage } from "@whiskeysockets/baileys";
+import pkg from '@soblend/baileys';
+const { downloadMediaMessage } = pkg;;
 import sharp from "sharp";
 
 const delinearCommand = {
