@@ -118,11 +118,34 @@ export function generateId() {
     return Date.now().toString(36) + Math.random().toString(36).substr(2);
 }
 export function parseMention(text) {
-    const match = text.match(/@(\d+)/);
-    return match ? `${match[1]}@s.whatsapp.net` : null;
+    if (!text) return null;
+    
+    // Extrae números de formato @123456 o 123456@s.whatsapp.net
+    const jidMatch = text.match(/(\d+)@s\.whatsapp\.net/);
+    if (jidMatch) {
+        return jidMatch[1];
+    }
+    
+    // Extrae números de formato @123456
+    const atMatch = text.match(/@(\d+)/);
+    if (atMatch) {
+        return atMatch[1];
+    }
+    
+    // Si es solo números, retorna tal cual
+    if (/^\d+$/.test(text)) {
+        return text;
+    }
+    
+    return null;
 }
 export function formatCommand(command, prefix = '#') {
     return `${prefix}${command}`;
+}
+export function mentionToJid(number) {
+    if (!number) return null;
+    const cleanNumber = parseMention(number);
+    return cleanNumber ? `${cleanNumber}@s.whatsapp.net` : null;
 }
 export function pluralize(count, singular, plural) {
     return count === 1 ? `${count} ${singular}` : `${count} ${plural}`;
@@ -153,6 +176,7 @@ export default {
     cleanText,
     generateId,
     parseMention,
+    mentionToJid,
     formatCommand,
     pluralize
 };

@@ -1,6 +1,6 @@
 {
   "name": "nishikigi-chisato",
-  "version": "1.0.6",
+  "version": "2.0.1",
   "description": "un asistente que demuestra que los bots no tienen limites y lo que demuestra la verdadera Innovación",
   "main": "index.js",
   "type": "module",
@@ -29,9 +29,9 @@
     "@google/generative-ai": "^0.24.1",
     "@mediapipe/tasks-vision": "^0.10.22-rc.20250304",
     "@napi-rs/canvas": "^0.1.80",
+    "@soblend/baileys": "^1.0.4",
     "@supabase/supabase-js": "^2.45.4",
     "@tensorflow/tfjs-node": "^4.22.0",
-    "@whiskeysockets/baileys": "github:Kone457/baileys",
     "api-dylux": "^1.8.5",
     "archiver": "^7.0.1",
     "axios": "^1.7.7",

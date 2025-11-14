@@ -1,10 +1,5 @@
-import {
-    useMultiFileAuthState,
-    DisconnectReason,
-    Browsers,
-    makeWASocket,
-    fetchLatestBaileysVersion
-} from '@whiskeysockets/baileys';
+import pkg from '@soblend/baileys';
+const { useMultiFileAuthState, DisconnectReason, Browsers, makeWASocket, fetchLatestBaileysVersion } = pkg;
 import pino from 'pino';
 import qrcode from 'qrcode-terminal';
 import chalk from 'chalk';
