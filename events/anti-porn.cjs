@@ -30,7 +30,6 @@ const antinsfwEvent = {
     async initialize() {
         if (this.model) return this.model
         try {
-            console.log('🤖 Cargando modelo NSFW.js (MobileNetV2Mid)...')
             this.model = await nsfwjs.load('MobileNetV2Mid')
             console.log('✅ Modelo NSFW cargado exitosamente')
             return this.model
@@ -42,21 +41,15 @@ const antinsfwEvent = {
     },
 
     async handleMessage(sock, msg, isAdmin, isBotAdmin) {
-        console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-        console.log('🔍 ANTI-NSFW: Verificación iniciada')
-        console.log('👤 Usuario es admin:', isAdmin)
-        console.log('🤖 Bot es admin:', isBotAdmin)
         
         try {
             if (!msg.key.remoteJid?.endsWith('@g.us')) {
-                console.log('❌ No es un grupo')
                 return false
             }
             
             // SI EL BOT ES ADMIN: Los admins están exentos
             // SI EL BOT NO ES ADMIN: Analizar a todos (incluso admins) para poder alertar
             if (isAdmin && isBotAdmin) {
-                console.log('✅ Usuario es admin y bot tiene permisos - EXENTO del filtro')
                 return false
             }
             
@@ -74,15 +67,12 @@ const antinsfwEvent = {
             }
             
             const mediaType = this.getMediaType(msg)
-            console.log('📎 Tipo de media:', mediaType)
             
             if (!mediaType) {
-                console.log('❌ No hay media para analizar')
                 return false
             }
             
             if (!this.model) {
-                console.log('⌛ Inicializando modelo IA...')
                 await this.initialize()
                 if (!this.model) {
                     console.error('❌ No se pudo cargar el modelo')
@@ -90,7 +80,6 @@ const antinsfwEvent = {
                 }
             }
 
-            console.log('🔬 Analizando contenido...')
             const analysis = await this.analyzeMedia(sock, msg, mediaType)
             
             if (!analysis) {
@@ -98,11 +87,6 @@ const antinsfwEvent = {
                 return false
             }
             
-            console.log('📊 Resultado del análisis:', {
-                isNSFW: analysis.isNSFW,
-                category: analysis.category,
-                confidence: analysis.confidence + '%'
-            })
             
             if (analysis.isNSFW) {
                 console.log('🚨 ¡CONTENIDO NSFW DETECTADO!')
@@ -135,7 +119,6 @@ const antinsfwEvent = {
             console.error('❌ Error crítico en antinsfw:', error)
             return false
         } finally {
-            console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━')
         }
     },
 
@@ -223,7 +206,6 @@ const antinsfwEvent = {
     },
 
     evaluatePredictions(predictions) {
-        console.log('📊 Predicciones del modelo:', predictions)
         
         const useStrictMode = this.config.strictMode
         let isNSFW = false
@@ -432,7 +414,6 @@ Se le dio suficientes oportunidades pero no respetó las reglas del grupo 🚪`
             )
 
             if (response[0]?.status === '200') {
-                console.log('✅ Usuario expulsado por contenido NSFW')
                 await updateGroupWarnings(msg.key.remoteJid, sender, 0)
             }
         } catch (error) {

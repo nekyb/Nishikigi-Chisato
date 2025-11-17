@@ -1,0 +1,78 @@
+{
+  "users": {
+    "170893057728762@lid": {
+      "registered": true,
+      "name": "Drexel",
+      "id": "170893057728762@lid",
+      "money": 420,
+      "totalXP": 5110,
+      "currentIsland": "Isla Inicial",
+      "rebirths": 0,
+      "dailyStreak": 1,
+      "lastDaily": 1763331523509,
+      "lastMine": null,
+      "chest": {
+        "type": "Madera",
+        "maxXP": 110,
+        "currentXP": 0
+      },
+      "robots": [
+        {
+          "id": "bob",
+          "name": "Bob",
+          "xpPerMinute": 15,
+          "price": 1,
+          "working": true,
+          "startTime": 1763332016159,
+          "accumulatedXP": 15
+        }
+      ],
+      "inventory": [
+        {
+          "id": "potion5",
+          "name": "Poción de Velocidad",
+          "price": 80,
+          "description": "Aumenta la velocidad de robots 50% por 30 minutos",
+          "type": "potion",
+          "effect": {
+            "speed": 1.5,
+            "duration": 1800000
+          },
+          "quantity": 1
+        }
+      ],
+      "votes": {},
+      "multipliers": {
+        "xp": 1,
+        "money": 1
+      },
+      "achievements": [],
+      "statistics": {
+        "totalFarmed": 0,
+        "totalMined": 0,
+        "totalBought": 0,
+        "totalSold": 0
+      }
+    }
+  },
+  "votes": {},
+  "globalStats": {
+    "totalUsers": 0,
+    "totalXP": 0,
+    "totalMoney": 0,
+    "totalRebirths": 0
+  },
+  "leaderboard": {
+    "xp": [],
+    "money": [],
+    "rebirths": []
+  },
+  "events": {
+    "current": null,
+    "history": []
+  },
+  "economy": {
+    "inflation": 1,
+    "marketPrices": {}
+  }
+}

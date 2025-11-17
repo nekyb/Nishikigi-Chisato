@@ -1,0 +1,362 @@
+{
+  "items": [
+    {
+      "id": "potion1",
+      "name": "Poción de XP x2",
+      "price": 50,
+      "type": "potion",
+      "effect": {
+        "xp": 2,
+        "duration": 3600000
+      },
+      "description": "Duplica la ganancia de XP durante 1 hora"
+    },
+    {
+      "id": "potion2",
+      "name": "Poción de XP x3",
+      "price": 120,
+      "type": "potion",
+      "effect": {
+        "xp": 3,
+        "duration": 3600000
+      },
+      "description": "Triplica la ganancia de XP durante 1 hora"
+    },
+    {
+      "id": "potion3",
+      "name": "Poción de XP x4",
+      "price": 200,
+      "type": "potion",
+      "effect": {
+        "xp": 4,
+        "duration": 3600000
+      },
+      "description": "Cuadruplica la ganancia de XP durante 1 hora"
+    },
+    {
+      "id": "potion4",
+      "name": "Poción de Dinero x2",
+      "price": 60,
+      "type": "potion",
+      "effect": {
+        "money": 2,
+        "duration": 3600000
+      },
+      "description": "Duplica las ganancias de dinero por 1 hora"
+    },
+    {
+      "id": "potion5",
+      "name": "Poción de Velocidad",
+      "price": 80,
+      "type": "potion",
+      "effect": {
+        "speed": 1.5,
+        "duration": 1800000
+      },
+      "description": "Aumenta la velocidad de robots 50% por 30 minutos"
+    },
+    {
+      "id": "upgrade1",
+      "name": "Chip de Eficiencia",
+      "price": 150,
+      "type": "upgrade",
+      "effect": {
+        "xpBonus": 0.1
+      },
+      "description": "Aumenta la ganancia de XP en 10% permanentemente"
+    },
+    {
+      "id": "upgrade2",
+      "name": "Módulo de Potencia",
+      "price": 200,
+      "type": "upgrade",
+      "effect": {
+        "xpBonus": 0.15
+      },
+      "description": "Aumenta la ganancia de XP en 15% permanentemente"
+    },
+    {
+      "id": "upgrade3",
+      "name": "Core Avanzado",
+      "price": 300,
+      "type": "upgrade",
+      "effect": {
+        "xpBonus": 0.25
+      },
+      "description": "Aumenta la ganancia de XP en 25% permanentemente"
+    },
+    {
+      "id": "util1",
+      "name": "Llave Maestra",
+      "price": 100,
+      "type": "utility",
+      "effect": {
+        "unlockRobots": true
+      },
+      "description": "Desbloquea la sección de robots en la tienda"
+    },
+    {
+      "id": "util2",
+      "name": "Ticket de Viaje",
+      "price": 50,
+      "type": "utility",
+      "effect": {
+        "freeTravel": 1
+      },
+      "description": "Un viaje gratis a cualquier isla"
+    },
+    {
+      "id": "util3",
+      "name": "Reset de Cooldown",
+      "price": 75,
+      "type": "utility",
+      "effect": {
+        "resetCooldown": true
+      },
+      "description": "Resetea el cooldown de minería instantáneamente"
+    },
+    {
+      "id": "util4",
+      "name": "Expansión de Cofre",
+      "price": 180,
+      "type": "utility",
+      "effect": {
+        "chestBonus": 50
+      },
+      "description": "Aumenta la capacidad del cofre en 50 XP"
+    },
+    {
+      "id": "special1",
+      "name": "Batería Energética",
+      "price": 40,
+      "type": "consumable",
+      "effect": {
+        "instantXP": 500
+      },
+      "description": "Otorga 500 XP instantáneos"
+    },
+    {
+      "id": "special2",
+      "name": "Caja de Engranajes",
+      "price": 60,
+      "type": "consumable",
+      "effect": {
+        "instantMoney": 100
+      },
+      "description": "Otorga $100 instantáneos"
+    },
+    {
+      "id": "special3",
+      "name": "Blueprint Raro",
+      "price": 250,
+      "type": "consumable",
+      "effect": {
+        "randomRobot": true
+      },
+      "description": "Obtienes un robot aleatorio gratis"
+    },
+    {
+      "id": "cosmetic1",
+      "name": "Pintura Cromada",
+      "price": 30,
+      "type": "cosmetic",
+      "effect": {
+        "cosmetic": true
+      },
+      "description": "Personaliza la apariencia de tus robots"
+    },
+    {
+      "id": "cosmetic2",
+      "name": "Holograma Personalizado",
+      "price": 50,
+      "type": "cosmetic",
+      "effect": {
+        "cosmetic": true
+      },
+      "description": "Añade un holograma único a tu perfil"
+    },
+    {
+      "id": "cosmetic3",
+      "name": "Tema Neon",
+      "price": 80,
+      "type": "cosmetic",
+      "effect": {
+        "cosmetic": true
+      },
+      "description": "Tema visual especial con efectos neon"
+    },
+    {
+      "id": "rare1",
+      "name": "Cristal de Energía",
+      "price": 300,
+      "type": "rare",
+      "effect": {
+        "xpBoost": 5,
+        "duration": 7200000
+      },
+      "description": "Multiplica XP por 5 durante 2 horas"
+    },
+    {
+      "id": "rare2",
+      "name": "Núcleo Cuántico",
+      "price": 400,
+      "type": "rare",
+      "effect": {
+        "allBonus": 2,
+        "duration": 3600000
+      },
+      "description": "Duplica todas las ganancias por 1 hora"
+    },
+    {
+      "id": "rare3",
+      "name": "Gema del Tiempo",
+      "price": 500,
+      "type": "rare",
+      "effect": {
+        "timeSkip": 3600000
+      },
+      "description": "Avanza 1 hora de farming instantáneamente"
+    },
+    {
+      "id": "legend1",
+      "name": "Fragmento Estelar",
+      "price": 800,
+      "type": "legendary",
+      "effect": {
+        "xpMulti": 10,
+        "duration": 1800000
+      },
+      "description": "Multiplica XP por 10 durante 30 minutos"
+    },
+    {
+      "id": "legend2",
+      "name": "Esencia Robótica",
+      "price": 1000,
+      "type": "legendary",
+      "effect": {
+        "duplicateRobot": true
+      },
+      "description": "Duplica un robot que ya poseas"
+    },
+    {
+      "id": "legend3",
+      "name": "Orbe del Destino",
+      "price": 1500,
+      "type": "legendary",
+      "effect": {
+        "rebirthBonus": 1
+      },
+      "description": "Otorga +1 Renacimiento sin perder progreso"
+    },
+    {
+      "id": "tool1",
+      "name": "Pico Mejorado",
+      "price": 90,
+      "type": "tool",
+      "effect": {
+        "miningBonus": 0.5
+      },
+      "description": "Aumenta ganancias de minería en 50%"
+    },
+    {
+      "id": "tool2",
+      "name": "Taladro Láser",
+      "price": 150,
+      "type": "tool",
+      "effect": {
+        "miningBonus": 1.0
+      },
+      "description": "Duplica las ganancias de minería"
+    },
+    {
+      "id": "tool3",
+      "name": "Excavadora Automática",
+      "price": 250,
+      "type": "tool",
+      "effect": {
+        "autoMine": true
+      },
+      "description": "Minería automática cada 6 horas"
+    },
+    {
+      "id": "protection1",
+      "name": "Escudo Anti-Pérdida",
+      "price": 200,
+      "type": "protection",
+      "effect": {
+        "protectItems": 1
+      },
+      "description": "Protege 1 item cuando renazcas"
+    },
+    {
+      "id": "protection2",
+      "name": "Seguro de Robots",
+      "price": 350,
+      "type": "protection",
+      "effect": {
+        "protectRobots": 1
+      },
+      "description": "Protege 1 robot cuando renazcas"
+    },
+    {
+      "id": "protection3",
+      "name": "Bóveda Segura",
+      "price": 500,
+      "type": "protection",
+      "effect": {
+        "protectMoney": 0.5
+      },
+      "description": "Conservas 50% del dinero al renacer"
+    },
+    {
+      "id": "misc1",
+      "name": "Mapa del Tesoro",
+      "price": 120,
+      "type": "misc",
+      "effect": {
+        "randomReward": true
+      },
+      "description": "Otorga una recompensa aleatoria valiosa"
+    },
+    {
+      "id": "misc2",
+      "name": "Lootbox Básica",
+      "price": 100,
+      "type": "misc",
+      "effect": {
+        "lootbox": "basic"
+      },
+      "description": "Contiene 3 items aleatorios"
+    },
+    {
+      "id": "misc3",
+      "name": "Lootbox Premium",
+      "price": 300,
+      "type": "misc",
+      "effect": {
+        "lootbox": "premium"
+      },
+      "description": "Contiene 5 items aleatorios raros"
+    },
+    {
+      "id": "misc4",
+      "name": "Lootbox Legendaria",
+      "price": 600,
+      "type": "misc",
+      "effect": {
+        "lootbox": "legendary"
+      },
+      "description": "Contiene 3 items legendarios garantizados"
+    },
+    {
+      "id": "misc5",
+      "name": "Contrato de Trabajo",
+      "price": 180,
+      "type": "misc",
+      "effect": {
+        "workerBonus": 0.2
+      },
+      "description": "Tus robots trabajan 20% más rápido"
+    }
+  ]
+}

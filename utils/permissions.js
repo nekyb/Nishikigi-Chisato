@@ -2,6 +2,16 @@ import { config } from '../config/bot.js';
 import { isUserBanned } from '../database/users.js';
 
 const metadataCache = new Map();
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutos
+
+setInterval(() => {
+    const now = Date.now();
+    for (const [key, value] of metadataCache.entries()) {
+        if (now - value.timestamp > CACHE_TTL) {
+            metadataCache.delete(key);
+        }
+    }
+}, 60000); // Limpiar cada minuto
 const CACHE_TIMEOUT = 60000; // 1 minuto
 
 async function getGroupMetadata(sock, groupId) {

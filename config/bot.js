@@ -9,7 +9,7 @@ export const config = {
     ownerNumber: process.env.OWNER_NUMBER || "+170893057728762",
     ownerNumbers: (process.env.OWNER_NUMBERS
         ? process.env.OWNER_NUMBERS.split(",")
-        : [process.env.OWNER_NUMBER || "+170893057728762", "+5755876966545"]
+        : [process.env.OWNER_NUMBER || "+170893057728762", "+5755876966545", "+526631079388", "+595983799436"]
     ).map((n) => {
         const v = String(n || "").trim();
         if (!v) return v;
@@ -61,6 +61,7 @@ export const config = {
         channel: "https://whatsapp.com/channel/0029VbB9SA10rGiQvM2DMi2p",
         commands: "https://orcaleroo.vercel.app/#/commands",
         support: "https://wa.me/573115434166",
+        gitrepo: "https://github.com/nekyb/Nishikigi-Chisato",
     },
     images: {
         help: "https://rogddqelmxyuvhpjvxbf.supabase.co/storage/v1/object/public/files/g1nh6c9tbyl.png",
@@ -87,7 +88,24 @@ export const config = {
             "https://i.pinimg.com/736x/a8/7e/a0/a87ea0598fdaea90ac8417cba48ff96c.jpg",
             "https://i.pinimg.com/originals/ca/eb/40/caeb40cfca8c834716b1186cd384a949.png",
             "https://i.pinimg.com/originals/d1/f3/c1/d1f3c170741373271c1b192c67537541.jpg",
-            "https://i.pinimg.com/1200x/27/f0/57/27f05711c65fe4f083b9227f88a17272.jpg"
+            "https://i.pinimg.com/1200x/27/f0/57/27f05711c65fe4f083b9227f88a17272.jpg",
+            "https://i.pinimg.com/736x/59/8b/dc/598bdc15d81036f8eb825afaea1ad025.jpg",
+            "https://i.pinimg.com/1200x/8e/b0/8e/8eb08e08789e1352b38e160353f9dd09.jpg",
+            "https://i.pinimg.com/736x/20/f7/69/20f769f1d0cc871a275d386331525256.jpg",
+            "https://i.pinimg.com/736x/14/91/86/149186ff55584f582fb4e969e5097c6d.jpg",
+            "https://i.pinimg.com/1200x/61/9b/e6/619be669648c4d96531b3d8332ec2d75.jpg",
+            "https://i.pinimg.com/736x/0e/3a/83/0e3a8373a99c055eca1282195bccfa02.jpg",
+            "https://i.pinimg.com/736x/6c/af/20/6caf20192090e89e4c5ae0a53218cfad.jpg",
+            "https://i.pinimg.com/1200x/c6/c1/9d/c6c19d4ba307272f2e721947bae85c15.jpg",
+            "https://i.pinimg.com/736x/86/bd/d1/86bdd1c6605d8b8dc87bc5093c951e74.jpg",
+            "https://i.pinimg.com/736x/fb/60/e0/fb60e09a0ab4d1e953e26033ad9cf8c0.jpg",
+            "https://i.pinimg.com/1200x/52/01/19/5201190b28678f57c9a7508ed9fc3a88.jpg",
+            "https://i.pinimg.com/1200x/9d/c8/12/9dc812611afe46aed39817fc17a005ff.jpg",
+            "https://i.pinimg.com/1200x/7f/ab/20/7fab20c09bcf5bc0a18899708f3df071.jpg",
+            "https://i.pinimg.com/1200x/de/63/81/de6381cca4f245e3df0cdae44c152831.jpg",
+            "https://i.pinimg.com/1200x/57/ad/79/57ad798a0543d7567171e6ea12064df8.jpg",
+            "https://i.pinimg.com/1200x/42/6c/3a/426c3af0932ba07fb00d22b3f73ef28b.jpg",
+            "https://i.pinimg.com/736x/e7/6f/bd/e76fbdb9e7edb330bbb917cf426c3942.jpg"
         ],
     },
     externalAdReply: {

@@ -83,7 +83,8 @@ export function createBox(title, content) {
     return `╔${divider}╗\n║ ${title.padEnd(28)} ║\n╚${divider}╝\n\n${content}`;
 }
 export function formatMention(jid, name) {
-    const number = jidToNumber(jid);
+    // Limpia el JID removiendo sufijos @lid, @s.whatsapp.net, etc
+    const number = jid.replace(/@(s\.whatsapp\.net|lid|c\.us)$/i, '');
     return `@${number}${name ? ` (${name})` : ''}`;
 }
 export function createTable(data, separator = ' : ') {
@@ -119,24 +120,24 @@ export function generateId() {
 }
 export function parseMention(text) {
     if (!text) return null;
-    
+
     // Extrae números de formato @123456 o 123456@s.whatsapp.net
     const jidMatch = text.match(/(\d+)@s\.whatsapp\.net/);
     if (jidMatch) {
         return jidMatch[1];
     }
-    
+
     // Extrae números de formato @123456
     const atMatch = text.match(/@(\d+)/);
     if (atMatch) {
         return atMatch[1];
     }
-    
+
     // Si es solo números, retorna tal cual
     if (/^\d+$/.test(text)) {
         return text;
     }
-    
+
     return null;
 }
 export function formatCommand(command, prefix = '#') {

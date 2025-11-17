@@ -82,7 +82,7 @@ export async function initializeTables() {
         await ensureUsersFile();
         console.log('✅ Archivo users.json inicializado correctamente')
     } catch (error) {
-        console.error('❌ Error al inicializar users.json:', error)
+        // console.error('❌ Error al inicializar users.json:', error)
     }
 }
 

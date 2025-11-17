@@ -2,9 +2,9 @@ import { getGroupSettings } from '../database/users.js'
 
 function normalizeJid(jid) {
     if (!jid) return null;
-    // Eliminar cualquier sufijo adicional (como @lid)
-    const cleanJid = jid.split('@')[0];
-    return cleanJid + '@s.whatsapp.net';
+    // Limpiar el JID de sufijos como @lid, @s.whatsapp.net, @c.us
+    const cleanNumber = jid.replace(/@(s\.whatsapp\.net|lid|c\.us)$/i, '');
+    return cleanNumber + '@s.whatsapp.net';
 }
 
 export const alertasEvent = {
@@ -19,27 +19,31 @@ export const alertasEvent = {
             const groupMetadata = await sock.groupMetadata(groupId)
             for (const participant of participants) {
                 const userNumber = participant.split('@')[0]
-                const userName = `@${userNumber}`
-                let alertMessage = ''
-
+                
                 // Obtener nombre del actor (admin)
                 const actorId = update.actor ? normalizeJid(update.actor) : null;
-                const actorName = actorId ? `@${actorId.split('@')[0]}` : ''
+
+                // Limpiar números de menciones
+                const cleanUserNumber = userNumber.replace(/\+/g, '');
+                const userMention = `@${cleanUserNumber}`;
+                const actorMention = actorId ? `@${actorId.split('@')[0].replace(/\+/g, '')}` : '';
+
+                let alertMessage = ''
 
                 switch (action) {
                     case 'add':
-                        alertMessage = `《✧》 Un nuevo usuario se ha unido al grupo.\n✿ Usuario: ${userName}`
+                        alertMessage = `《✧》 Un nuevo usuario se ha unido al grupo.\n✿ Usuario: ${userMention}`
                         break
                     case 'remove':
-                        alertMessage = actorName ? 
-                            `《✧》 El admin ${actorName} ha eliminado a ${userName}.` :
-                            `《✧》 ${userName} ha salido del grupo.`
+                        alertMessage = actorMention ? 
+                            `《✧》 El admin ${actorMention} ha eliminado a ${userMention}.` :
+                            `《✧》 ${userMention} ha salido del grupo.`
                         break
                     case 'promote':
-                        alertMessage = `《✧》 El admin ${actorName} ha promovido a ${userName} como administrador.`
+                        alertMessage = `《✧》 El admin ${actorMention} ha promovido a ${userMention} como administrador.`
                         break
                     case 'demote':
-                        alertMessage = `《✧》 El admin ${actorName} ha removido a ${userName} como administrador.`
+                        alertMessage = `《✧》 El admin ${actorMention} ha removido a ${userMention} como administrador.`
                         break
                     default:
                         return
@@ -59,7 +63,7 @@ export const alertasEvent = {
                 }
             }
         } catch (error) {
-            console.error('Error en alertas event:', error)
+            // console.error('Error en alertas event:', error)
         }
     },
 
@@ -84,7 +88,7 @@ export const alertasEvent = {
                 })
             }
         } catch (error) {
-            console.error('Error en alertas group update:', error)
+            // console.error('Error en alertas group update:', error)
         }
     },
     async handleGroupPictureUpdate(sock, groupId) {
@@ -97,14 +101,14 @@ export const alertasEvent = {
                 text: alertMessage
             })
         } catch (error) {
-            console.error('Error en alertas picture update:', error)
+            // console.error('Error en alertas picture update:', error)
         }
     },
     async handleBotRemoved(sock, groupId) {
         try {
             console.log(`Bot removido del grupo: ${groupId}`)
         } catch (error) {
-            console.error('Error en bot removed:', error)
+            // console.error('Error en bot removed:', error)
         }
     }
 }

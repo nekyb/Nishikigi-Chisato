@@ -29,7 +29,7 @@ export async function handleEvents(sock, update, events) {
         }
     }
     catch (error) {
-        console.error('Error manejando evento:', error);
+        // console.error('Error manejando evento:', error);
     }
 }
 
@@ -42,7 +42,7 @@ export async function loadEvents() {
         return events;
     }
     catch (error) {
-        console.error('❌ Error cargando eventos:', error);
+        // console.error('❌ Error cargando eventos:', error);
         return events;
     }
 }
@@ -56,7 +56,7 @@ export async function isUserAdmin(sock, groupId, userId) {
         return !!participant?.admin;
     }
     catch (error) {
-        console.error('Error verificando si es admin:', error);
+        // console.error('Error verificando si es admin:', error);
         return false;
     }
 }
@@ -71,7 +71,7 @@ export async function isBotAdmin(sock, groupId) {
         return !!participant?.admin;
     }
     catch (error) {
-        console.error('Error verificando si bot es admin:', error);
+        // console.error('Error verificando si bot es admin:', error);
         return false;
     }
 }
@@ -82,7 +82,7 @@ export async function getGroupOwner(sock, groupId) {
         return groupMetadata.owner || null;
     }
     catch (error) {
-        console.error('Error obteniendo owner del grupo:', error);
+        // console.error('Error obteniendo owner del grupo:', error);
         return null;
     }
 }
@@ -95,7 +95,7 @@ export async function getGroupAdmins(sock, groupId) {
             .map((p) => p.id);
     }
     catch (error) {
-        console.error('Error obteniendo admins del grupo:', error);
+        // console.error('Error obteniendo admins del grupo:', error);
         return [];
     }
 }
@@ -106,7 +106,7 @@ export async function getGroupParticipants(sock, groupId) {
         return groupMetadata.participants || [];
     }
     catch (error) {
-        console.error('Error obteniendo participantes del grupo:', error);
+        // console.error('Error obteniendo participantes del grupo:', error);
         return [];
     }
 }
@@ -117,7 +117,7 @@ export async function isUserInGroup(sock, groupId, userId) {
         return participants.some((p) => jidNormalizedUser(p.id) === jidNormalizedUser(userId));
     }
     catch (error) {
-        console.error('Error verificando si usuario está en grupo:', error);
+        // console.error('Error verificando si usuario está en grupo:', error);
         return false;
     }
 }
@@ -127,7 +127,7 @@ export async function getGroupMetadata(sock, groupId) {
         return await sock.groupMetadata(groupId);
     }
     catch (error) {
-        console.error('Error obteniendo metadata del grupo:', error);
+        // console.error('Error obteniendo metadata del grupo:', error);
         return null;
     }
 }
@@ -137,7 +137,7 @@ export async function handleGroupPictureUpdate(sock, groupId) {
         await alertasEvent.handleGroupPictureUpdate(sock, groupId);
     }
     catch (error) {
-        console.error('Error manejando actualización de foto:', error);
+        // console.error('Error manejando actualización de foto:', error);
     }
 }
 

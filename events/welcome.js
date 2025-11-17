@@ -1,3 +1,4 @@
+
 import { getGroupSettings } from '../database/users.js'
 import { createCanvas, loadImage } from '@napi-rs/canvas'
 import axios from 'axios'
@@ -32,7 +33,6 @@ async function downloadImageWithRetry(url, retries = 3) {
         } catch (error) {
             if (error.response?.status === 429) {
                 const waitTime = Math.pow(2, i) * 2000
-                console.log(`Rate limit alcanzado, esperando ${waitTime}ms...`)
                 await sleep(waitTime)
                 continue
             }
@@ -59,16 +59,18 @@ export const welcomeEvent = {
             const groupName = groupMetadata.subject
             
             for (const participant of participants) {
-                const userNumber = participant.split('@')[0]
+                // Limpiar el número correctamente
+                const cleanNumber = participant.replace(/@(s\.whatsapp\.net|lid|c\.us)$/i, '');
+                const userNumber = cleanNumber;
                 const userName = await this.getUserName(sock, participant)
                 
                 try {
-                    let profilePicUrl = 'https://i.imgur.com/whjlJSf.jpg'
+                    let profilePicUrl = 'https://i.pinimg.com/474x/a8/09/0c/a8090cb1191598be42ea3470df628b93.jpg'
                     try {
                         const picUrl = await sock.profilePictureUrl(participant, 'image')
                         if (picUrl) profilePicUrl = picUrl
                     } catch {
-                        profilePicUrl = 'https://i.imgur.com/whjlJSf.jpg'
+                        profilePicUrl = 'https://i.pinimg.com/474x/a8/09/0c/a8090cb1191598be42ea3470df628b93.jpg'
                     }
                     
                     const welcomeImage = await this.createWelcomeImage(
@@ -81,8 +83,10 @@ export const welcomeEvent = {
                     if (welcomeImage) {
                         await sock.sendMessage(groupId, {
                             image: welcomeImage,
+                            mimetype: 'image/png',
                             caption: `✦ ¡Bienvenid@ @${userNumber}!\n\nEscribe #help para comenzar`,
                             mentions: [participant],
+                            jpegThumbnail: null,
                             contextInfo: {
                                 isForwarded: true,
                                 forwardedNewsletterMessageInfo: {
@@ -108,7 +112,6 @@ export const welcomeEvent = {
                         })
                     }
                 } catch (error) {
-                    console.error('Error enviando bienvenida:', error)
                     const welcomeMessage = this.createWelcomeMessage(userName, userNumber)
                     await sock.sendMessage(groupId, {
                         text: welcomeMessage,
@@ -129,171 +132,139 @@ export const welcomeEvent = {
                 }
             }
         } catch (error) {
-            console.error('Error en welcome event:', error)
+            // Error silencioso
         }
     },
     
     async createWelcomeImage(userName, userNumber, groupName, profilePicUrl) {
         try {
-            const canvas = createCanvas(1200, 400)
+            // Dimensiones originales de la imagen: 413px ancho x 735px alto
+            const width = 413
+            const height = 735
+            const canvas = createCanvas(width, height)
             const ctx = canvas.getContext('2d')
             
-            // Gradiente moderno (estilo cyberpunk/neon)
-            const gradient = ctx.createLinearGradient(0, 0, 1200, 400)
-            gradient.addColorStop(0, '#0f0c29')
-            gradient.addColorStop(0.5, '#302b63')
-            gradient.addColorStop(1, '#24243e')
-            ctx.fillStyle = gradient
-            ctx.fillRect(0, 0, 1200, 400)
+            // Cargar imagen de fondo
+            const backgroundUrl = 'https://i.pinimg.com/736x/6e/5d/e7/6e5de7ce1261df88e0d69cc4d8c58119.jpg'
+            const backgroundBuffer = await downloadImageWithRetry(backgroundUrl)
+            const backgroundImage = await loadImage(backgroundBuffer)
             
-            // Efecto de cuadrícula futurista
-            ctx.strokeStyle = 'rgba(100, 255, 218, 0.1)'
-            ctx.lineWidth = 1
-            for (let i = 0; i < 1200; i += 40) {
-                ctx.beginPath()
-                ctx.moveTo(i, 0)
-                ctx.lineTo(i, 400)
-                ctx.stroke()
-            }
-            for (let i = 0; i < 400; i += 40) {
-                ctx.beginPath()
-                ctx.moveTo(0, i)
-                ctx.lineTo(1200, i)
-                ctx.stroke()
-            }
+            // Dibujar fondo sin escalar (mantener dimensiones originales)
+            ctx.drawImage(backgroundImage, 0, 0, width, height)
             
-            // Círculos brillantes flotantes (estilo neon)
-            const neonColors = ['#64ffda', '#ff6b9d', '#c471f5', '#00d4ff']
-            for (let i = 0; i < 25; i++) {
-                const x = Math.random() * 1200
-                const y = Math.random() * 400
-                const radius = Math.random() * 4 + 2
-                const color = neonColors[Math.floor(Math.random() * neonColors.length)]
-                
-                ctx.shadowBlur = 20
-                ctx.shadowColor = color
-                ctx.fillStyle = color + '40'
-                ctx.beginPath()
-                ctx.arc(x, y, radius, 0, Math.PI * 2)
-                ctx.fill()
-            }
-            ctx.shadowBlur = 0
+            // Overlay oscuro semi-transparente para mejorar legibilidad
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.25)'
+            ctx.fillRect(0, 0, 413, 735)
             
-            // Avatar con efecto glassmorphism
+            // Cargar y dibujar foto de perfil circular
             try {
-                const imageBuffer = await downloadImageWithRetry(profilePicUrl)
-                const avatarImage = await loadImage(imageBuffer)
+                const avatarBuffer = await downloadImageWithRetry(profilePicUrl)
+                const avatarImage = await loadImage(avatarBuffer)
                 
-                // Círculo de fondo con blur
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.05)'
+                // Posición: centro horizontalmente, un poco arriba verticalmente
+                const avatarSize = 140
+                const avatarX = 206.5 // Centro horizontal
+                const avatarY = 200 // Un poco arriba
+                
+                // Círculo de fondo blanco con sombra
+                ctx.shadowBlur = 20
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.4)'
+                ctx.fillStyle = '#ffffff'
                 ctx.beginPath()
-                ctx.arc(180, 200, 100, 0, Math.PI * 2)
+                ctx.arc(avatarX, avatarY, avatarSize / 2 + 6, 0, Math.PI * 2)
                 ctx.fill()
+                ctx.shadowBlur = 0
                 
-                // Avatar circular
+                // Recortar avatar en círculo
                 ctx.save()
                 ctx.beginPath()
-                ctx.arc(180, 200, 90, 0, Math.PI * 2)
+                ctx.arc(avatarX, avatarY, avatarSize / 2, 0, Math.PI * 2)
                 ctx.closePath()
                 ctx.clip()
-                ctx.drawImage(avatarImage, 90, 110, 180, 180)
+                ctx.drawImage(avatarImage, avatarX - avatarSize / 2, avatarY - avatarSize / 2, avatarSize, avatarSize)
                 ctx.restore()
                 
-                // Borde neon triple
-                ctx.strokeStyle = '#64ffda'
+                // Borde circular decorativo
+                ctx.strokeStyle = '#ffffff'
                 ctx.lineWidth = 3
-                ctx.shadowBlur = 15
-                ctx.shadowColor = '#64ffda'
                 ctx.beginPath()
-                ctx.arc(180, 200, 90, 0, Math.PI * 2)
+                ctx.arc(avatarX, avatarY, avatarSize / 2, 0, Math.PI * 2)
                 ctx.stroke()
                 
-                ctx.strokeStyle = '#ff6b9d'
-                ctx.lineWidth = 2
-                ctx.shadowColor = '#ff6b9d'
-                ctx.beginPath()
-                ctx.arc(180, 200, 100, 0, Math.PI * 2)
-                ctx.stroke()
-                
-                ctx.shadowBlur = 0
             } catch (error) {
-                console.error('Error cargando avatar:', error)
-                // Avatar fallback con gradiente
-                const avatarGradient = ctx.createRadialGradient(180, 200, 30, 180, 200, 90)
-                avatarGradient.addColorStop(0, '#64ffda')
-                avatarGradient.addColorStop(1, '#302b63')
-                ctx.fillStyle = avatarGradient
+                // Usar imagen por defecto
+                const defaultAvatarBuffer = await downloadImageWithRetry('https://i.pinimg.com/474x/a8/09/0c/a8090cb1191598be42ea3470df628b93.jpg')
+                const defaultAvatar = await loadImage(defaultAvatarBuffer)
+                
+                const avatarSize = 140
+                const avatarX = 206.5
+                const avatarY = 200
+                
+                ctx.shadowBlur = 20
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.4)'
+                ctx.fillStyle = '#ffffff'
                 ctx.beginPath()
-                ctx.arc(180, 200, 90, 0, Math.PI * 2)
+                ctx.arc(avatarX, avatarY, avatarSize / 2 + 6, 0, Math.PI * 2)
                 ctx.fill()
+                ctx.shadowBlur = 0
+                
+                ctx.save()
+                ctx.beginPath()
+                ctx.arc(avatarX, avatarY, avatarSize / 2, 0, Math.PI * 2)
+                ctx.closePath()
+                ctx.clip()
+                ctx.drawImage(defaultAvatar, avatarX - avatarSize / 2, avatarY - avatarSize / 2, avatarSize, avatarSize)
+                ctx.restore()
+                
+                ctx.strokeStyle = '#ffffff'
+                ctx.lineWidth = 3
+                ctx.beginPath()
+                ctx.arc(avatarX, avatarY, avatarSize / 2, 0, Math.PI * 2)
+                ctx.stroke()
             }
             
-            // Línea divisoria neon
-            const lineGradient = ctx.createLinearGradient(330, 200, 1150, 200)
-            lineGradient.addColorStop(0, 'rgba(100, 255, 218, 0)')
-            lineGradient.addColorStop(0.5, 'rgba(100, 255, 218, 0.8)')
-            lineGradient.addColorStop(1, 'rgba(100, 255, 218, 0)')
-            ctx.strokeStyle = lineGradient
-            ctx.lineWidth = 2
-            ctx.beginPath()
-            ctx.moveTo(330, 200)
-            ctx.lineTo(1150, 200)
-            ctx.stroke()
+            // Limpiar número de caracteres extraños
+            const displayNumber = userNumber.replace(/\+/g, '');
             
-            // Texto "WELCOME" minimalista
-            ctx.fillStyle = '#64ffda'
-            ctx.font = 'bold 35px "Inter", "SF Pro Display", sans-serif'
-            ctx.textAlign = 'left'
-            ctx.letterSpacing = '0.1em'
-            ctx.fillText('WELCOME', 330, 120)
-            
-            // Nombre del usuario - fuente grande
+            // Dibujar número debajo de la foto (Product Sans simulado con Arial)
             ctx.fillStyle = '#ffffff'
-            ctx.font = 'bold 48px "Inter", "SF Pro Display", sans-serif'
-            const maxNameWidth = 800
-            let displayName = userName
-            let nameWidth = ctx.measureText(displayName).width
+            ctx.font = 'bold 32px Arial, sans-serif'
+            ctx.textAlign = 'center'
+            ctx.shadowBlur = 8
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.7)'
+            ctx.fillText(`+${displayNumber}`, 206.5, 330)
+            ctx.shadowBlur = 0
             
-            while (nameWidth > maxNameWidth && displayName.length > 0) {
-                displayName = displayName.slice(0, -1)
-                nameWidth = ctx.measureText(displayName + '...').width
-            }
-            if (displayName !== userName) {
-                displayName += '...'
-            }
-            ctx.fillText(displayName, 330, 170)
+            // Texto de bienvenida más abajo
+            ctx.fillStyle = '#ffffff'
+            ctx.font = '28px Arial, sans-serif'
+            ctx.textAlign = 'center'
+            ctx.shadowBlur = 8
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.7)'
+            ctx.fillText('Bienvenido/a,', 206.5, 400)
+            ctx.fillText('disfruta tu estadía', 206.5, 440)
+            ctx.shadowBlur = 0
             
-            // Número con estilo
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)'
-            ctx.font = '24px "JetBrains Mono", "Courier New", monospace'
-            ctx.fillText(`+${userNumber}`, 330, 240)
+            // Marca de agua DeltaByte en la parte inferior
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)'
+            ctx.font = '16px Arial, sans-serif'
+            ctx.textAlign = 'center'
+            ctx.fillText('DeltaByte', 206.5, 700)
             
-            // Badge "NEW MEMBER"
-            ctx.fillStyle = 'rgba(100, 255, 218, 0.2)'
-            ctx.fillRect(330, 260, 150, 30)
-            ctx.fillStyle = '#64ffda'
-            ctx.font = 'bold 14px "Inter", sans-serif'
-            ctx.fillText('NEW MEMBER', 345, 280)
-            
-            // Marca de agua minimalista
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)'
-            ctx.font = '14px "Inter", sans-serif'
-            ctx.textAlign = 'right'
-            ctx.fillText('DeltaByte', 1160, 370)
-            
-            return canvas.toBuffer('image/png')
+            // Retornar buffer PNG de alta calidad
+            return canvas.toBuffer('image/png', { quality: 1.0 })
         } catch (error) {
-            console.error('Error creando imagen de bienvenida:', error)
             return null
         }
     },
     
     createWelcomeMessage(userName, userNumber) {
+        const cleanNumber = userNumber.replace(/\+/g, '');
         return `━━━━━━━━━━━━━━━━━━━━━
     ✦ 𝗪𝗘𝗟𝗖𝗢𝗠𝗘 ✦
 ━━━━━━━━━━━━━━━━━━━━━
 
-👤 @${userNumber}
+👤 @${cleanNumber}
 📝 ${userName}
 
 ━━━━━━━━━━━━━━━━━━━━━
@@ -326,7 +297,8 @@ Escribe #help para comenzar
             if (!settings || !settings.welcome) return
             
             for (const participant of participants) {
-                const userNumber = participant.split('@')[0]
+                const cleanNumber = participant.replace(/@(s\.whatsapp\.net|lid|c\.us)$/i, '');
+                const userNumber = cleanNumber;
                 const userName = await this.getUserName(sock, participant)
                 
                 const goodbyeMessage = `━━━━━━━━━━━━━━━━━━━━━
@@ -354,7 +326,7 @@ ha salido del grupo
                 })
             }
         } catch (error) {
-            console.error('Error en goodbye message:', error)
+            // Error silencioso
         }
     }
 }

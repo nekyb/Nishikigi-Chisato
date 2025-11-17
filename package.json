@@ -13,7 +13,8 @@
     }
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "web": "node server.js"
   },
   "keywords": [
     "whatsapp",
@@ -29,15 +30,17 @@
     "@google/generative-ai": "^0.24.1",
     "@mediapipe/tasks-vision": "^0.10.22-rc.20250304",
     "@napi-rs/canvas": "^0.1.80",
-    "@soblend/baileys": "^1.0.4",
+    "@soblend/baileys": "^1.0.5",
     "@supabase/supabase-js": "^2.45.4",
     "@tensorflow/tfjs-node": "^4.22.0",
+    "acrcloud": "^1.4.0",
     "api-dylux": "^1.8.5",
     "archiver": "^7.0.1",
     "axios": "^1.7.7",
     "chalk": "^5.3.0",
     "compromise": "^14.14.4",
     "dotenv": "^16.4.5",
+    "express": "^4.21.2",
     "form-data": "^4.0.0",
     "formdata-node": "^6.0.3",
     "genius-lyrics": "^4.4.7",
@@ -80,6 +83,6 @@
     "typescript": "^5.5.4"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   }
 }

@@ -1,0 +1,137 @@
+{
+  "robots": [
+    {
+      "id": "bob",
+      "name": "Bob",
+      "xpPerMinute": 15,
+      "price": 1,
+      "rarity": "common",
+      "description": "Un robot trabajador básico y confiable. Perfecto para comenzar tu aventura en el imperio robótico.",
+      "unlockXP": 0,
+      "image": "🤖",
+      "stats": {
+        "efficiency": 1,
+        "durability": 100,
+        "speed": 1.0
+      }
+    },
+    {
+      "id": "joel",
+      "name": "Joel",
+      "xpPerMinute": 30,
+      "price": 10,
+      "rarity": "common",
+      "description": "Un robot mejorado con mejor capacidad de recolección. Duplica la eficiencia de Bob.",
+      "unlockXP": 30,
+      "image": "🤖",
+      "stats": {
+        "efficiency": 2,
+        "durability": 150,
+        "speed": 1.2
+      }
+    },
+    {
+      "id": "johndoe",
+      "name": "John Doe",
+      "xpPerMinute": 50,
+      "price": 20,
+      "rarity": "uncommon",
+      "description": "Un robot misterioso con tecnología desconocida. Su identidad es un enigma, pero su productividad es real.",
+      "unlockXP": 30,
+      "image": "🦾",
+      "stats": {
+        "efficiency": 3,
+        "durability": 200,
+        "speed": 1.5
+      }
+    },
+    {
+      "id": "walle",
+      "name": "WALL-E",
+      "xpPerMinute": 70,
+      "price": 40,
+      "rarity": "uncommon",
+      "description": "Un adorable robot recolector con gran dedicación. Especializado en trabajos de largo plazo.",
+      "unlockXP": 30,
+      "image": "🤖",
+      "stats": {
+        "efficiency": 4,
+        "durability": 300,
+        "speed": 1.8
+      }
+    },
+    {
+      "id": "bender",
+      "name": "Bender Bending Rodriguez",
+      "xpPerMinute": 100,
+      "price": 60,
+      "rarity": "rare",
+      "description": "Un robot con actitud y gran poder. No le importa las reglas, solo los resultados.",
+      "unlockXP": 30,
+      "image": "🦿",
+      "stats": {
+        "efficiency": 6,
+        "durability": 400,
+        "speed": 2.0
+      }
+    },
+    {
+      "id": "optimus",
+      "name": "Optimus Prime",
+      "xpPerMinute": 180,
+      "price": 80,
+      "rarity": "epic",
+      "description": "El legendario líder de los Autobots. Poderoso, noble y extremadamente eficiente en su trabajo.",
+      "unlockXP": 30,
+      "image": "🚛",
+      "stats": {
+        "efficiency": 10,
+        "durability": 600,
+        "speed": 2.5
+      }
+    },
+    {
+      "id": "cyn",
+      "name": "Cyn",
+      "xpPerMinute": 250,
+      "price": 100,
+      "rarity": "epic",
+      "description": "Un robot avanzado con capacidades superiores. Utiliza tecnología de última generación.",
+      "unlockXP": 30,
+      "image": "🦾",
+      "stats": {
+        "efficiency": 15,
+        "durability": 800,
+        "speed": 3.0
+      }
+    },
+    {
+      "id": "eva",
+      "name": "Eva",
+      "xpPerMinute": 300,
+      "price": 110,
+      "rarity": "legendary",
+      "description": "El robot más avanzado, eficiente y poderoso del universo. La cúspide de la tecnología robótica.",
+      "unlockXP": 30,
+      "image": "👾",
+      "stats": {
+        "efficiency": 20,
+        "durability": 1000,
+        "speed": 3.5
+      }
+    }
+  ],
+  "rarityColors": {
+    "common": "⚪",
+    "uncommon": "🟢",
+    "rare": "🔵",
+    "epic": "🟣",
+    "legendary": "🟡"
+  },
+  "upgradeSystem": {
+    "enabled": true,
+    "maxLevel": 10,
+    "costPerLevel": 50,
+    "bonusPerLevel": 0.1
+  }
+}

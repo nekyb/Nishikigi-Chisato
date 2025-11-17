@@ -27,7 +27,7 @@ async function loadUsers() {
         }
         return JSON.parse(data)
     } catch (error) {
-        console.error('Error parseando users.json, recreando archivo:', error)
+        // console.error('Error parseando users.json, recreando archivo:', error)
         await fs.writeFile(usersFilePath, JSON.stringify([], null, 2), 'utf-8')
         return []
     }
@@ -46,7 +46,7 @@ async function loadGroups() {
         }
         return JSON.parse(data)
     } catch (error) {
-        console.error('Error parseando groups.json, recreando archivo:', error)
+        // console.error('Error parseando groups.json, recreando archivo:', error)
         await fs.writeFile(groupsFilePath, JSON.stringify([], null, 2), 'utf-8')
         return []
     }
@@ -65,7 +65,7 @@ async function loadWarnings() {
         }
         return JSON.parse(data)
     } catch (error) {
-        console.error('Error parseando warnings.json, recreando archivo:', error)
+        // console.error('Error parseando warnings.json, recreando archivo:', error)
         await fs.writeFile(warningsFilePath, JSON.stringify({}, null, 2), 'utf-8')
         return {}
     }
@@ -117,7 +117,7 @@ export async function registerUser(userData) {
         await saveUsers(users)
         return true
     } catch (error) {
-        console.error('Error en registerUser:', error)
+        // console.error('Error en registerUser:', error)
         return false
     }
 }
@@ -127,7 +127,7 @@ export async function checkUserRegistered(userId) {
         const users = await loadUsers()
         return users.some(u => u.user_id === userId)
     } catch (error) {
-        console.error('Error en checkUserRegistered:', error)
+        // console.error('Error en checkUserRegistered:', error)
         return false
     }
 }
@@ -137,7 +137,7 @@ export async function getUser(userId) {
         const users = await loadUsers()
         return users.find(u => u.user_id === userId) || null
     } catch (error) {
-        console.error('Error en getUser:', error)
+        // console.error('Error en getUser:', error)
         return null
     }
 }
@@ -147,7 +147,7 @@ export async function isUserBanned(userId) {
         const user = await getUser(userId)
         return user?.is_banned || false
     } catch (error) {
-        console.error('Error en isUserBanned:', error)
+        // console.error('Error en isUserBanned:', error)
         return false
     }
 }
@@ -164,7 +164,7 @@ export async function setBanStatus(userId, banned) {
         await saveUsers(users)
         return true
     } catch (error) {
-        console.error('Error en setBanStatus:', error)
+        // console.error('Error en setBanStatus:', error)
         return false
     }
 }
@@ -178,7 +178,7 @@ export async function getGroupSettings(groupId) {
         }
         return group
     } catch (error) {
-        console.error('Error en getGroupSettings:', error)
+        // console.error('Error en getGroupSettings:', error)
         return null
     }
 }
@@ -199,7 +199,7 @@ export async function createGroupSettings(groupId) {
         await saveGroups(groups)
         return newGroup;
     } catch (error) {
-        console.error('Error en createGroupSettings:', error)
+        // console.error('Error en createGroupSettings:', error)
         return null
     }
 }
@@ -219,7 +219,7 @@ export async function updateGroupSettings(groupId, settings) {
         await saveGroups(groups)
         return true;
     } catch (error) {
-        console.error('Error en updateGroupSettings:', error)
+        // console.error('Error en updateGroupSettings:', error)
         return false;
     }
 }
@@ -233,7 +233,7 @@ export async function getAllUsers() {
             return dateB - dateA
         });
     } catch (error) {
-        console.error('Error en getAllUsers:', error)
+        // console.error('Error en getAllUsers:', error)
         return []
     }
 }
@@ -243,7 +243,7 @@ export async function countUsers() {
         const users = await loadUsers()
         return users.length
     } catch (error) {
-        console.error('Error en countUsers:', error)
+        // console.error('Error en countUsers:', error)
         return 0
     }
 }
@@ -263,7 +263,7 @@ export async function updateUser(userId, updates) {
         await saveUsers(users);
         return users[userIndex];
     } catch (error) {
-        console.error('Error en updateUser:', error);
+        // console.error('Error en updateUser:', error);
         return false;
     }
 }
@@ -295,7 +295,7 @@ export async function addCoins(userId, amount) {
         await saveUsers(users)
         return users[userIndex].economy.coins
     } catch (error) {
-        console.error('Error en addCoins:', error)
+        // console.error('Error en addCoins:', error)
         return false
     }
 }
@@ -315,7 +315,7 @@ export async function removeCoins(userId, amount) {
         await saveUsers(users)
         return users[userIndex].economy.coins
     } catch (error) {
-        console.error('Error en removeCoins:', error)
+        // console.error('Error en removeCoins:', error)
         return false
     }
 }
@@ -351,7 +351,7 @@ export async function updateUserStats(userId, stat, value = 1) {
         await saveUsers(users)
         return users[userIndex].economy.stats[stat]
     } catch (error) {
-        console.error('Error en updateUserStats:', error)
+        // console.error('Error en updateUserStats:', error)
         return false
     }
 }
@@ -384,7 +384,7 @@ export async function updateGroupWarnings(groupJid, userJid, warnings) {
         await saveWarnings(warningsData)
         return true
     } catch (error) {
-        console.error('Error en updateGroupWarnings:', error)
+        // console.error('Error en updateGroupWarnings:', error)
         return false
     }
 }
@@ -413,7 +413,7 @@ export async function getGroupWarnings(groupJid, userJid) {
         
         return userData.count || 0
     } catch (error) {
-        console.error('Error en getGroupWarnings:', error)
+        // console.error('Error en getGroupWarnings:', error)
         return 0
     }
 }
@@ -450,7 +450,7 @@ export async function cleanExpiredWarnings() {
         
         return true
     } catch (error) {
-        console.error('Error en cleanExpiredWarnings:', error)
+        // console.error('Error en cleanExpiredWarnings:', error)
         return false
     }
 }
@@ -465,7 +465,7 @@ export async function getAllGroupWarnings(groupJid) {
         const warningsData = await loadWarnings()
         return warningsData[groupJid] || {}
     } catch (error) {
-        console.error('Error en getAllGroupWarnings:', error)
+        // console.error('Error en getAllGroupWarnings:', error)
         return {}
     }
 }
@@ -482,7 +482,7 @@ export async function resetGroupWarnings(groupJid) {
         await saveWarnings(warningsData)
         return true
     } catch (error) {
-        console.error('Error en resetGroupWarnings:', error)
+        // console.error('Error en resetGroupWarnings:', error)
         return false
     }
 }

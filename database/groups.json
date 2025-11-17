@@ -152,5 +152,14 @@
     "welcome": true,
     "created_at": "2025-11-14T03:48:47.546Z",
     "updated_at": "2025-11-14T03:48:47.546Z"
+  },
+  {
+    "group_id": "120363421700719914@g.us",
+    "alertas": true,
+    "antilink": false,
+    "antinsfw": false,
+    "welcome": true,
+    "created_at": "2025-11-15T20:19:32.303Z",
+    "updated_at": "2025-11-15T20:19:32.303Z"
   }
 ]

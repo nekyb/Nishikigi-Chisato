@@ -11,13 +11,8 @@ let nsfwjs = null;
 try {
     tf = await import("@tensorflow/tfjs-node");
     await tf.ready();
-    console.log("✅ TensorFlow.js cargado correctamente");
-    
     nsfwjs = await import("nsfwjs");
-    console.log("✅ NSFWJS cargado correctamente");
 } catch (error) {
-    console.warn("⚠️ TensorFlow.js o NSFWJS no disponible:", error.message);
-    console.warn("⚠️ El sistema anti-NSFW estará deshabilitado");
     tf = null;
     nsfwjs = null;
 }
@@ -68,22 +63,12 @@ export const antinsfwEvent = {
     },
 
     async checkBotAdmin(sock, groupJid) {
-        console.log("━━━ DEBUG [checkBotAdmin] ━━━");
-        console.log("📍 Group JID:", groupJid);
-        
         try {
-            if (!groupJid.endsWith("@g.us")) {
-                console.log("⚠️ DEBUG: No es grupo, retornando true");
-                console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-                return true;
-            }
+            if (!groupJid.endsWith("@g.us")) return true;
 
             const groupMetadata = await this.getGroupMetadata(sock, groupJid);
             const participants = groupMetadata.participants || [];
             const botNumber = sock.user.id.split(":")[0].split("@")[0];
-            
-            console.log("🤖 DEBUG: Bot number:", botNumber);
-            console.log("👥 DEBUG: Total participantes:", participants.length);
 
             const botParticipant = participants.find((p) => {
                 const participantId = p.id?.split("@")?.[0];
@@ -99,39 +84,18 @@ export const antinsfwEvent = {
                     participantId?.includes(botNumber)
                 );
             });
-
-            console.log("🔎 DEBUG: Bot encontrado:", !!botParticipant);
             
             if (botParticipant) {
-                const isAdmin = botParticipant.admin === "admin" || botParticipant.admin === "superadmin";
-                console.log("👑 DEBUG: Rol del bot:", botParticipant.admin || "member");
-                console.log("✅ DEBUG: Bot es admin:", isAdmin);
-                console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-                return isAdmin;
+                return botParticipant.admin === "admin" || botParticipant.admin === "superadmin";
             }
 
-            console.log("⚠️ DEBUG: Bot NO encontrado en participantes");
-            console.log("🔄 DEBUG: Intentando verificación alternativa...");
-            
             try {
-                const testResult = await this.getGroupMetadata(sock, groupJid);
-                
-                console.log("⚡ DEBUG: Bot puede acceder al grupo pero no aparece en participantes");
-                console.log("💡 DEBUG: Esto es un bug conocido de WhatsApp con grupos @lid");
-                console.log("✅ DEBUG: Asumiendo que el bot SÍ tiene permisos (workaround)");
-                console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-                
+                await this.getGroupMetadata(sock, groupJid);
                 return true;
-            } catch (error) {
-                console.log("❌ DEBUG: Error en verificación alternativa");
-                console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            } catch {
                 return false;
             }
         } catch (error) {
-            console.error("━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-            console.error("❌ ERROR [checkBotAdmin]:", error.message);
-            console.error("📋 Stack:", error.stack);
-            console.error("━━━━━━━━━━━━━━━━━━━━━━━━━━━");
             return false;
         }
     },
@@ -140,89 +104,40 @@ export const antinsfwEvent = {
         if (this.model) return this.model;
         try {
             if (!nsfwjs) {
-                console.error("❌ nsfwjs no está disponible");
                 this.enabled = false;
                 return null;
             }
-            console.log(
-                "🤖 Cargando modelo NSFW.js (MobileNetV2 - Default)...",
-            );
-            // Usar modelo por defecto sin especificar
             this.model = await nsfwjs.load();
-            console.log("✅ Modelo NSFW cargado exitosamente");
             return this.model;
         } catch (error) {
-            console.error("❌ Error cargando modelo NSFW:", error);
             this.enabled = false;
             return null;
         }
     },
 
     async handleMessage(sock, msg, isAdmin) {
-        console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-        console.log("🔍 ANTI-NSFW: Verificación iniciada");
-        console.log("👤 Usuario es admin:", isAdmin);
-
         const groupJid = msg.key.remoteJid;
 
         try {
-            if (!groupJid.endsWith("@g.us")) {
-                console.log("❌ No es un grupo");
-                return false;
-            }
-
-            if (!this.enabled) {
-                console.log("❌ Sistema deshabilitado");
-                return false;
-            }
+            if (!groupJid.endsWith("@g.us") || !this.enabled) return false;
 
             const isBotAdmin = await this.checkBotAdmin(sock, groupJid);
-            console.log("🤖 Bot es admin:", isBotAdmin);
 
-            if (isAdmin && isBotAdmin) {
-                console.log(
-                    "✅ Usuario es admin y bot tiene permisos - EXENTO del filtro",
-                );
-                return false;
-            }
+            if (isAdmin && isBotAdmin) return false;
 
             const settings = await getGroupSettings(groupJid);
-
-            if (!settings?.antinsfw) {
-                console.log("❌ Anti-NSFW no activado en este grupo");
-                return false;
-            }
+            if (!settings?.antinsfw) return false;
 
             const mediaType = this.getMediaType(msg);
-            console.log("📎 Tipo de media:", mediaType);
-
-            if (!mediaType) {
-                console.log("❌ No hay media para analizar");
-                return false;
-            }
+            if (!mediaType) return false;
 
             if (!this.model) {
-                console.log("⌛ Inicializando modelo IA...");
                 await this.initialize();
-                if (!this.model) {
-                    console.error("❌ No se pudo cargar el modelo");
-                    return false;
-                }
+                if (!this.model) return false;
             }
 
-            console.log("🔬 Analizando contenido...");
             const analysis = await this.analyzeMedia(sock, msg, mediaType);
-
-            if (!analysis) {
-                console.log("❌ Error en el análisis");
-                return false;
-            }
-
-            console.log("📊 Resultado del análisis:", {
-                isNSFW: analysis.isNSFW,
-                category: analysis.category,
-                confidence: analysis.confidence + "%",
-            });
+            if (!analysis) return false;
 
             if (analysis.isNSFW) {
                 console.log("🚨 ¡CONTENIDO NSFW DETECTADO!");
@@ -257,10 +172,9 @@ export const antinsfwEvent = {
             console.log("✅ Contenido seguro");
             return false;
         } catch (error) {
-            console.error("❌ Error crítico en antinsfw:", error);
+            // console.error("❌ Error crítico en antinsfw:", error);
             return false;
         } finally {
-            console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━");
         }
     },
 
@@ -288,9 +202,9 @@ export const antinsfwEvent = {
             return result;
         } catch (error) {
             if (error.message === "Timeout") {
-                console.error("⏱️ Timeout analizando media");
+                // console.error("⏱️ Timeout analizando media");
             } else {
-                console.error("❌ Error analizando media:", error);
+                // console.error("❌ Error analizando media:", error);
             }
             return null;
         }
@@ -301,7 +215,7 @@ export const antinsfwEvent = {
             const buffer = await sock.downloadMediaMessage(msg);
 
             if (!buffer) {
-                console.error("❌ No se pudo descargar la media");
+                // console.error("❌ No se pudo descargar la media");
                 return null;
             }
 
@@ -317,7 +231,7 @@ export const antinsfwEvent = {
                 .toBuffer({ resolveWithObject: true });
 
             if (info.channels !== 3) {
-                console.error("❌ La imagen no tiene 3 canales RGB");
+                // console.error("❌ La imagen no tiene 3 canales RGB");
                 return null;
             }
 
@@ -331,7 +245,7 @@ export const antinsfwEvent = {
 
             return this.evaluatePredictions(predictions);
         } catch (error) {
-            console.error("❌ Error en análisis:", error);
+            // console.error("❌ Error en análisis:", error);
             return null;
         }
     },
@@ -346,7 +260,7 @@ export const antinsfwEvent = {
                 .toBuffer();
             return frame;
         } catch (error) {
-            console.error("❌ Error extrayendo frame:", error);
+            // console.error("❌ Error extrayendo frame:", error);
             return null;
         }
     },
@@ -453,7 +367,7 @@ Mientras tanto, les toca manejarlo ustedes 👀`;
                 `🔔 Alerta enviada. Admins mencionados: ${admins.length}`,
             );
         } catch (error) {
-            console.error("❌ Error enviando alerta a admins:", error);
+            // console.error("❌ Error enviando alerta a admins:", error);
         }
     },
 
@@ -486,7 +400,6 @@ Detección: ${analysis.category} (${analysis.confidence}% confianza)`;
         const sender = msg.key.participant || msg.key.remoteJid;
         const userNumber = sender.split("@")[0];
 
-        console.log("━━━ DEBUG [applyPunishment] ━━━");
         console.log("👤 Usuario:", userNumber);
         console.log("📊 Análisis:", {
             category: analysis.category,
@@ -498,9 +411,6 @@ Detección: ${analysis.category} (${analysis.confidence}% confianza)`;
             const warnings = await getGroupWarnings(groupJid, sender);
             const newWarnings = warnings + 1;
             
-            console.log("⚠️ DEBUG: Advertencias anteriores:", warnings);
-            console.log("⚠️ DEBUG: Nuevas advertencias:", newWarnings);
-            console.log("⚠️ DEBUG: Máximo permitido:", this.config.maxWarnings);
 
             await this.deleteMessage(sock, msg);
 
@@ -508,11 +418,9 @@ Detección: ${analysis.category} (${analysis.confidence}% confianza)`;
                 analysis.severity === "high" ||
                 newWarnings >= this.config.maxWarnings
             ) {
-                console.log("🚨 DEBUG: Aplicando EXPULSIÓN");
                 console.log("   Razón: Severidad alta o límite alcanzado");
                 await this.kickUser(sock, msg, sender, userNumber, analysis);
             } else {
-                console.log("⚠️ DEBUG: Aplicando ADVERTENCIA");
                 console.log(`   Quedan ${this.config.maxWarnings - newWarnings} oportunidades`);
                 await this.warnUser(
                     sock,
@@ -525,13 +433,11 @@ Detección: ${analysis.category} (${analysis.confidence}% confianza)`;
             }
 
             await updateGroupWarnings(groupJid, sender, newWarnings);
-            console.log("✅ DEBUG: Castigo aplicado y registrado");
-            console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━");
         } catch (error) {
-            console.error("━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-            console.error("❌ ERROR [applyPunishment]:", error.message);
-            console.error("📋 Stack:", error.stack);
-            console.error("━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            // console.error("━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            // console.error("❌ ERROR [applyPunishment]:", error.message);
+            // console.error("📋 Stack:", error.stack);
+            // console.error("━━━━━━━━━━━━━━━━━━━━━━━━━━━");
         }
     },
 
@@ -616,7 +522,7 @@ Se le dio suficientes oportunidades pero no respetó las reglas del grupo 🚪`;
                 await updateGroupWarnings(msg.key.remoteJid, sender, 0);
             }
         } catch (error) {
-            console.error("❌ Error expulsando usuario:", error);
+            // console.error("❌ Error expulsando usuario:", error);
         }
     },
 
@@ -629,7 +535,7 @@ Se le dio suficientes oportunidades pero no respetó las reglas del grupo 🚪`;
             await sock.sendMessage(msg.key.remoteJid, { delete: msg.key });
             console.log("🗑️ Contenido NSFW eliminado");
         } catch (error) {
-            console.error("❌ Error eliminando mensaje:", error);
+            // console.error("❌ Error eliminando mensaje:", error);
         }
     },
 

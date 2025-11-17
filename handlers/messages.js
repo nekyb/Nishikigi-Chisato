@@ -10,7 +10,7 @@ import { isUserAdmin, isBotAdmin } from "../lib/adminUtils.js";
 import { isUserBanned } from "../database/users.js";
 import antilinkEvent from "../events/antilink.js";
 import antinsfwEvent from "../events/anti-porn.js";
-import baileys from "@whiskeysockets/baileys";
+import baileys from "@soblend/baileys";
 import { trackMessageActivity } from "../plugins/group-fantasmas-view.js";
 import { createPluginSendMessage } from "../lib/messaging.js";
 
@@ -106,18 +106,18 @@ export async function handleMessage(sock, msg, commands, events) {
             const enhancedSock = Object.create(sock);
             enhancedSock.sendMessage = createPluginSendMessage(sock, commandName);
             await command.execute(enhancedSock, msg, args);
-            console.log(`✅ [HANDLER] Comando ${commandName} ejecutado`)
+            // Comando ejecutado exitosamente
         } catch (error) {
             console.error(`━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
             console.error(`❌ [HANDLER] Error ejecutando comando ${commandName}`)
             console.error(`📋 Error:`, error.message)
             console.error(`📚 Stack:`, error.stack)
             console.error(`━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
-            const isConnectionError = error.message?.includes('Connection Closed') || 
+            const isConnectionError = error.message?.includes('Connection Closed') ||
                                      error.message?.includes('Stream Errored') ||
                                      error.output?.statusCode === 428 ||
                                      error.output?.statusCode === 440;
-            
+
             if (!isConnectionError) {
                 try {
                     await sock.sendMessage(chatId, {

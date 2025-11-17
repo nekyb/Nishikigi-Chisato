@@ -1,0 +1,46 @@
+{
+  "islands": [
+    {
+      "id": "inicial",
+      "name": "Isla Inicial",
+      "description": "El punto de partida de tu aventura robótica. Una isla tranquila perfecta para comenzar.",
+      "travelCost": 0,
+      "bonuses": {
+        "xp": 1.0,
+        "money": 1.0
+      },
+      "requirements": {
+        "minXP": 0,
+        "minLevel": 0
+      }
+    },
+    {
+      "id": "tecnologia",
+      "name": "Isla Tecnológica",
+      "description": "Una isla llena de fábricas avanzadas y tecnología de punta. Los robots trabajan más eficientemente aquí.",
+      "travelCost": 100,
+      "bonuses": {
+        "xp": 1.2,
+        "money": 1.1
+      },
+      "requirements": {
+        "minXP": 500,
+        "minLevel": 0
+      }
+    },
+    {
+      "id": "robotica",
+      "name": "Isla Robótica",
+      "description": "El paraíso de los robots más poderosos. Aquí la productividad alcanza su máximo potencial.",
+      "travelCost": 250,
+      "bonuses": {
+        "xp": 1.5,
+        "money": 1.3
+      },
+      "requirements": {
+        "minXP": 2000,
+        "minLevel": 0
+      }
+    }
+  ]
+}
